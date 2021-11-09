@@ -8,7 +8,7 @@ class Tests_Media extends WP_UnitTestCase {
 	protected static $large_id;
 	protected static $_sizes;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$_sizes = wp_get_additional_image_sizes();
 		$GLOBALS['_wp_additional_image_sizes'] = array();
 
@@ -742,7 +742,11 @@ VIDEO;
 
 	/**
 	 * Test [video] shortcode processing
-	 *
+	 * this test may skip in some environment
+	 * 
+	 * @group video
+	 * @group mayskip
+	 * @backupStaticAttributes enabled
 	 */
 	function test_video_shortcode_body() {
 		$width = 720;
@@ -789,7 +793,9 @@ VIDEO;
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35367
+	 * @covers ::wp_video_shortcode
 	 * @depends test_video_shortcode_body
+	 * @group video
 	 */
 	function test_wp_video_shortcode_with_empty_params() {
 		$this->assertNull( wp_video_shortcode( array() ) );
@@ -798,6 +804,8 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35367
 	 * @depends test_video_shortcode_body
+	 * @covers ::wp_video_shortcode
+	 * @group video
 	 */
 	function test_wp_video_shortcode_with_bad_attr() {
 		$this->assertSame(
@@ -811,6 +819,8 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35367
 	 * @depends test_video_shortcode_body
+	 * @covers ::wp_video_shortcode
+	 * @group video
 	 */
 	function test_wp_video_shortcode_attributes() {
 		$actual = wp_video_shortcode( array(
@@ -849,6 +859,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40866
 	 * @depends test_video_shortcode_body
+	 * @covers ::wp_video_shortcode
 	 */
 	function test_wp_video_shortcode_youtube_remove_feature() {
 		$actual = wp_video_shortcode( array(
@@ -860,7 +871,13 @@ VIDEO;
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40866
+	 * this test may skip in some environment
+	 *
+	 * @covers ::wp_video_shortcode
 	 * @depends test_video_shortcode_body
+	 * @group video
+	 * @group mayskip
+	 * @backupStaticAttributes enabled
 	 */
 	function test_wp_video_shortcode_youtube_force_ssl() {
 		$actual = wp_video_shortcode( array(
@@ -872,7 +889,13 @@ VIDEO;
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40866
+	 * this test may skip in some environment
+	 *
+	 * @covers ::wp_video_shortcode
 	 * @depends test_video_shortcode_body
+	 * @group video
+	 * @group mayskip
+	 * @backupStaticAttributes enabled
 	 */
 	function test_wp_video_shortcode_vimeo_force_ssl_remove_query_args() {
 		$actual = wp_video_shortcode( array(
@@ -885,7 +908,9 @@ VIDEO;
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40977
+	 * @covers ::wp_video_shortcode
 	 * @depends test_video_shortcode_body
+	 * @group video
 	 */
 	function test_wp_video_shortcode_vimeo_adds_loop() {
 		$actual = wp_video_shortcode( array(
@@ -897,7 +922,9 @@ VIDEO;
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40977
+	 * @covers ::wp_video_shortcode
 	 * @depends test_video_shortcode_body
+	 * @group video
 	 */
 	function test_wp_video_shortcode_vimeo_force_adds_loop_true() {
 		$actual = wp_video_shortcode( array(

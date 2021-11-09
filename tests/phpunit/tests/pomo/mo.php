@@ -149,7 +149,7 @@ class Tests_POMO_MO extends WP_UnitTestCase {
 
 	function test_overloaded_mb_functions() {
 		if ((ini_get("mbstring.func_overload") & 2) == 0) {
-			$this->markTestSkipped( __METHOD__ . ' only runs when mbstring.func_overload is enabled.' );
+			$this->markTestSkipped( __METHOD__ . ' only runs when mbstring.func_overload is enabled. add mbstring.func_overload=2 in the php.ini or mbstring.ini' );
 		}
 
 		$mo = new MO();

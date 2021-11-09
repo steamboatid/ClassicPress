@@ -399,6 +399,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/31050
+	 * @group pdf
 	 */
 	public function test_wp_generate_attachment_metadata_pdf() {
 		if ( ! wp_image_editor_supports( array( 'mime_type' => 'application/pdf' ) ) ) {
@@ -450,6 +451,8 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		);
 
 		$metadata = wp_generate_attachment_metadata( $attachment_id, $test_file );
+		krsort($expected['sizes']);
+		krsort($metadata['sizes']);
 		$this->assertSame( $expected, $metadata );
 
 		unlink( $test_file );
@@ -459,10 +462,25 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		}
 	}
 
+
+	protected function array_reorder_keys(&$array, $keynames){
+		if(empty($array) || !is_array($array) || empty($keynames)) return;
+		if(!is_array($keynames)) $keynames = explode(',',$keynames);
+		if(!empty($keynames)) $keynames = array_reverse($keynames);
+		foreach($keynames as $n){
+			if(array_key_exists($n, $array)){
+				$newarray = array($n=>$array[$n]); //copy the node before unsetting
+				unset($array[$n]); //remove the node
+				$array = $newarray + array_filter($array); //combine copy with filtered array
+			}
+		}
+	}
+
 	/**
 	 * Crop setting for PDF.
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43226
+	 * @group pdf
 	 */
 	public function test_crop_setting_for_pdf() {
 
@@ -519,6 +537,8 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		);
 
 		$metadata = wp_generate_attachment_metadata( $attachment_id, $test_file );
+		krsort($expected['sizes']);
+		krsort($metadata['sizes']);
 		$this->assertSame( $expected, $metadata );
 
 		unlink( $test_file );
@@ -529,6 +549,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/39231
+	 * @group pdf
 	 */
 	public function test_fallback_intermediate_image_sizes() {
 		if ( ! wp_image_editor_supports( array( 'mime_type' => 'application/pdf' ) ) ) {
@@ -586,6 +607,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 	/**
 	 * Test PDF preview doesn't overwrite existing JPEG.
 	 * @see https://core.trac.wordpress.org/ticket/39875
+	 * @group pdf
 	 */
 	public function test_pdf_preview_doesnt_overwrite_existing_jpeg() {
 		if ( ! wp_image_editor_supports( array( 'mime_type' => 'application/pdf' ) ) ) {

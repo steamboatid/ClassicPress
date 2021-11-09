@@ -56,3 +56,30 @@ wp-tests-config.php
 .svn
 
 vendor
+
+
+# devs
+/*/_dev/*
+*.org
+*.old
+*.bak
+*bak
+
+# vscode
+.vscode/*
+*.code-workspace
+
+# netbeans project
+/nbproject/*/*
+nbproject/*/*
+nbproject/*
+nbproject
+
+!/nbproject
+!/nbproject/*
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/

@@ -6,6 +6,7 @@
  * We're testing against a known data set, so we can check that specific posts are included in the output.
  *
  * @group query
+ * @group wp_query
  */
 class Tests_Query_Results extends WP_UnitTestCase {
 	protected $q;
@@ -22,7 +23,10 @@ class Tests_Query_Results extends WP_UnitTestCase {
 	static $child_three;
 	static $child_four;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	/*
+	 * Prepare posts and related data which will be used by tests
+	 */
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$cat_ids[] = $cat_a = $factory->term->create( array( 'taxonomy' => 'category', 'name' => 'cat-a' ) );
 		self::$cat_ids[] = $cat_b = $factory->term->create( array( 'taxonomy' => 'category', 'name' => 'cat-b' ) );
 		self::$cat_ids[] = $cat_c = $factory->term->create( array( 'taxonomy' => 'category', 'name' => 'cat-c' ) );
@@ -32,21 +36,29 @@ class Tests_Query_Results extends WP_UnitTestCase {
 		self::$tag_ids[] = $tag_c = $factory->term->create( array( 'taxonomy' => 'post_tag', 'name' => 'tag-c' ) );
 		self::$tag_ids[] = $tag_nun = $factory->term->create( array( 'taxonomy' => 'post_tag', 'name' => 'tag-נ' ) );
 
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'tag-נ', 'tags_input' => array( 'tag-נ' ), 'post_date' => '2008-11-01 00:00:00' ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-a-b-c', 'post_date' => '2008-12-01 00:00:00', 'post_category' => array( $cat_a, $cat_b, $cat_c ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-a-and-b', 'post_date' => '2009-01-01 00:00:00', 'post_category' => array( $cat_a, $cat_b ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-b-and-c', 'post_date' => '2009-02-01 00:00:00', 'post_category' => array( $cat_b, $cat_c ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-a-and-c', 'post_date' => '2009-03-01 00:00:00', 'post_category' => array( $cat_a, $cat_c ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cat-a', 'post_date' => '2009-04-01 00:00:00', 'post_category' => array( $cat_a ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cat-b', 'post_date' => '2009-05-01 00:00:00', 'post_category' => array( $cat_b ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cat-c', 'post_date' => '2009-06-01 00:00:00', 'post_category' => array( $cat_c ) ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'lorem-ipsum', 'post_date' => '2009-07-01 00:00:00' ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'comment-test', 'post_date' => '2009-08-01 00:00:00' ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'one-trackback', 'post_date' => '2009-09-01 00:00:00' ) );
-		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'many-trackbacks', 'post_date' => '2009-10-01 00:00:00' ) );
+		/*
+		 * create 1 post once every month at first day of every month at midnight.
+		 * oldest post dated at 2008-10-01 00:00:00
+		 * newest post dated at 2010-10-01 00:00:00
+		 * this post date is important, because, by default, WP order the results by post_date
+		 */
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'tag-נ', 'tags_input' => array( 'tag-נ' ), 'post_date' => '2008-10-01 00:00:00' ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-a-b-c', 'post_date' => '2008-11-01 00:00:00', 'post_category' => array( $cat_a, $cat_b, $cat_c ) ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-a-and-b', 'post_date' => '2008-12-01 00:00:00', 'post_category' => array( $cat_a, $cat_b ) ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-b-and-c', 'post_date' => '2009-01-01 00:00:00', 'post_category' => array( $cat_b, $cat_c ) ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cats-a-and-c', 'post_date' => '2009-02-01 00:00:00', 'post_category' => array( $cat_a, $cat_c ) ) );
+
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cat-a', 'post_date' => '2009-03-01 00:00:00', 'post_category' => array( $cat_a ) ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cat-b', 'post_date' => '2009-04-01 00:00:00', 'post_category' => array( $cat_b ) ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'cat-c', 'post_date' => '2009-05-01 00:00:00', 'post_category' => array( $cat_c ) ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'lorem-ipsum', 'post_date' => '2009-06-01 00:00:00' ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'comment-test', 'post_date' => '2009-07-01 00:00:00' ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'one-trackback', 'post_date' => '2009-08-01 00:00:00' ) );
+		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'many-trackbacks', 'post_date' => '2009-09-01 00:00:00' ) );
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'no-comments', 'post_date' => '2009-10-01 00:00:00' ) );
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'one-comment', 'post_date' => '2009-11-01 00:00:00' ) );
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'contributor-post-approved', 'post_date' => '2009-12-01 00:00:00' ) );
+
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'embedded-video', 'post_date' => '2010-01-01 00:00:00' ) );
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'simple-markup-test', 'post_date' => '2010-02-01 00:00:00' ) );
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'raw-html-code', 'post_date' => '2010-03-01 00:00:00' ) );
@@ -58,12 +70,15 @@ class Tests_Query_Results extends WP_UnitTestCase {
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'tags-b-and-c', 'tags_input' => array( 'tag-b', 'tag-c' ), 'post_date' => '2010-09-01 00:00:00' ) );
 		self::$post_ids[] = $factory->post->create( array( 'post_title' => 'tags-a-and-c', 'tags_input' => array( 'tag-a', 'tag-c' ), 'post_date' => '2010-10-01 00:00:00' ) );
 
-		self::$post_ids[] = self::$parent_one = $factory->post->create( array( 'post_title' => 'parent-one', 'post_date' => '2007-01-01 00:00:00' ) );
-		self::$post_ids[] = self::$parent_two = $factory->post->create( array( 'post_title' => 'parent-two', 'post_date' => '2007-01-01 00:00:00' ) );
-		self::$post_ids[] = self::$parent_three = $factory->post->create( array( 'post_title' => 'parent-three', 'post_date' => '2007-01-01 00:00:00' ) );
-		self::$post_ids[] = self::$child_one = $factory->post->create( array( 'post_title' => 'child-one', 'post_parent' => self::$parent_one, 'post_date' => '2007-01-01 00:00:01' ) );
-		self::$post_ids[] = self::$child_two = $factory->post->create( array( 'post_title' => 'child-two', 'post_parent' => self::$parent_one, 'post_date' => '2007-01-01 00:00:02' ) );
-		self::$post_ids[] = self::$child_three = $factory->post->create( array( 'post_title' => 'child-three', 'post_parent' => self::$parent_two, 'post_date' => '2007-01-01 00:00:03' ) );
+		/*
+		 * create parental posts
+		 */
+		self::$post_ids[] = self::$parent_one = $factory->post->create( array( 'post_title' => 'parent-one', 'post_date' => '2004-11-01 00:00:00' ) );
+		self::$post_ids[] = self::$parent_two = $factory->post->create( array( 'post_title' => 'parent-two', 'post_date' => '2004-12-01 00:00:00' ) );
+		self::$post_ids[] = self::$parent_three = $factory->post->create( array( 'post_title' => 'parent-three', 'post_date' => '2005-01-01 00:00:00' ) );
+		self::$post_ids[] = self::$child_one = $factory->post->create( array( 'post_title' => 'child-one', 'post_parent' => self::$parent_one, 'post_date' => '2006-10-01 00:00:01' ) );
+		self::$post_ids[] = self::$child_two = $factory->post->create( array( 'post_title' => 'child-two', 'post_parent' => self::$parent_one, 'post_date' => '2006-11-01 00:00:02' ) );
+		self::$post_ids[] = self::$child_three = $factory->post->create( array( 'post_title' => 'child-three', 'post_parent' => self::$parent_two, 'post_date' => '2006-12-01 00:00:03' ) );
 		self::$post_ids[] = self::$child_four = $factory->post->create( array( 'post_title' => 'child-four', 'post_parent' => self::$parent_two, 'post_date' => '2007-01-01 00:00:04' ) );
 	}
 
@@ -168,6 +183,10 @@ class Tests_Query_Results extends WP_UnitTestCase {
 		$this->assertSame( 'tags-a-b-c', $posts[5]->post_name );
 	}
 
+	/**
+	 * @covers WP_Query::query
+	 * @group mayfail
+	 */
 	function test_query_tag__not_in() {
 		$tag_a = tag_exists('tag-a');
 		$posts = $this->q->query( "tag__not_in[]=" . $tag_a['term_id'] );
@@ -183,8 +202,8 @@ class Tests_Query_Results extends WP_UnitTestCase {
 			5 => 'embedded-video',
 			6 => 'contributor-post-approved',
 			7 => 'one-comment',
-			8 => 'many-trackbacks',
-			9 => 'no-comments',
+			8 => 'no-comments',
+			9 => 'many-trackbacks',
 		);
 
 		$this->assertSame( $expected, wp_list_pluck( $posts, 'post_name' ) );
@@ -261,14 +280,18 @@ class Tests_Query_Results extends WP_UnitTestCase {
 		$this->assertSame( $expected, wp_list_pluck( $posts, 'post_name' ) );
 	}
 
+	/**
+	 * @covers WP_Query::query
+	 * @group mayfail
+	 */
 	function test_query_paged() {
 		$posts = $this->q->query('paged=2');
 
 		$expected = array (
 			0 => 'contributor-post-approved',
 			1 => 'one-comment',
-			2 => 'many-trackbacks',
-			3 => 'no-comments',
+			2 => 'no-comments',
+			3 => 'many-trackbacks',
 			4 => 'one-trackback',
 			5 => 'comment-test',
 			6 => 'lorem-ipsum',

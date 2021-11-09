@@ -84,3 +84,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+# phpunit results
+phpunit-result*

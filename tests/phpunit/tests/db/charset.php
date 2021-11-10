@@ -471,6 +471,7 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 	/**
 	 * @dataProvider data_process_field_charsets
 	 * @see https://core.trac.wordpress.org/ticket/21212
+	 * @group mayskip
 	 */
 	function test_process_field_charsets( $data, $expected, $message ) {
 		$actual = self::$_wpdb->process_field_charsets( $data, $GLOBALS['wpdb']->posts );
@@ -483,6 +484,7 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/21212
 	 * @depends test_process_field_charsets
+	 * @group mayskip
 	 */
 	function test_process_field_charsets_on_nonexistent_table() {
 		$data = array( 'post_content' => array( 'value' => '¡foo foo foo!', 'format' => '%s' ) );

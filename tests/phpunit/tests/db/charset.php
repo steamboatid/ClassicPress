@@ -5,6 +5,7 @@
  *
  * @group wpdb
  * @group security-153
+ * @group charset
  */
 class Tests_DB_Charset extends WP_UnitTestCase {
 
@@ -34,6 +35,25 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 			self::$server_info = mysql_get_server_info( self::$_wpdb->dbh );
 		}
 	}
+
+	/**
+	 * remove auto append temporary table on CREATE TABLE and DROP TABLE,
+	 * because we need actual table charset and collation
+	 */
+	public function set_up() {
+		remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
+		remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+	}
+
+	/**
+	 * revert back temporary table filter
+	 */
+	public function tear_down() {
+		add_filter( 'query', array( $this, '_create_temporary_tables' ) );
+		add_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+	}
+
+	
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21212
@@ -623,8 +643,15 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 		self::$_wpdb->query( $create );
 
 		foreach ( $expected_charset as $column => $charset ) {
-			$this->assertSame( $charset, self::$_wpdb->get_col_charset( $table, $column ) );
-			$this->assertSame( $charset, self::$_wpdb->get_col_charset( strtoupper( $table ), strtoupper( $column ) ) );
+			// Mariadb using ut8_mb3 despite of utf8
+			if ( stristr($charset, 'utf8') ){
+				$this->assertMatchesRegularExpression( "#utf8(mb[3|4])?#", self::$_wpdb->get_col_charset( $table, $column ) );
+				$this->assertMatchesRegularExpression( "#utf8(mb[3|4])?#", self::$_wpdb->get_col_charset( strtoupper( $table ), strtoupper( $column ) ) );
+			}
+			else {
+				$this->assertSame( $charset, self::$_wpdb->get_col_charset( $table, $column ) );
+				$this->assertSame( $charset, self::$_wpdb->get_col_charset( strtoupper( $table ), strtoupper( $column ) ) );
+			}
 		}
 
 		self::$_wpdb->query( $drop );
@@ -785,43 +812,114 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/21212
 	 */
 	function data_table_collation_check() {
-		$table_name = 'table_collation_check';
-		$data = array(
-			array(
-				// utf8_bin tables don't need extra sanity checking.
-				"( a VARCHAR(50) COLLATE utf8_bin )", // create
-				true                                  // expected result
-			),
-			array(
-				// Neither do utf8_general_ci tables.
-				"( a VARCHAR(50) COLLATE utf8_general_ci )",
-				true
-			),
-			array(
-				// utf8_unicode_ci tables do.
-				"( a VARCHAR(50) COLLATE utf8_unicode_ci )",
-				false
-			),
-			array(
-				// utf8_bin tables don't need extra sanity checking,
-				// except for when they're not just utf8_bin.
-				"( a VARCHAR(50) COLLATE utf8_bin, b VARCHAR(50) COLLATE big5_chinese_ci )",
-				false
-			),
-			array(
-				// utf8_bin tables don't need extra sanity checking
+		global $wpdb;
+
+		$base_table_name = 'table_collation_check';
+		$data = array();
+
+		/**
+		 * Possible collations: utf8_bin, utf8mb3_bin, utf8mb4_bin
+		 */
+		$results = $wpdb->get_results( "SHOW COLLATION LIKE 'utf8%bin'" );
+		foreach ( $results as $aresult ){
+			$collation = $aresult->Collation;
+
+			if ( stristr( $collation, 'mb4' ) && ! $wpdb->has_cap( 'utf8mb4' ) ) {
+				// skip if dont have utf8mb4
+				continue;
+			}
+
+			if ( stristr( $collation, 'nopad' ) ) {
+				continue;
+			}
+
+			$data[]=	array(
+				// utf8*_bin tables don't need extra sanity checking.
+				"( a VARCHAR(50) COLLATE $collation )", // create
+				true,                                   // expected result
+				$collation,
+			);
+
+			$data[]=	array(
+				// utf8*_bin tables don't need extra sanity checking,
+				// except for when they're not just utf8*_bin.
+				"( a VARCHAR(50) COLLATE $collation, b VARCHAR(50) COLLATE big5_chinese_ci )",
+				false,
+				$collation,
+			);
+
+			$data[]=	array(
+				// utf8*_bin tables don't need extra sanity checking
 				// when the other columns aren't strings.
-				"( a VARCHAR(50) COLLATE utf8_bin, b INT )",
-				true
-			),
-		);
+				"( a VARCHAR(50) COLLATE $collation, b INT )",
+				true,
+				$collation,
+			);
+		}
+
+
+		/**
+		 * Possible collations: utf8_general_ci, utf8mb3_general_ci, utf8mb4_general_ci
+		 */
+		$results = $wpdb->get_results( "SHOW COLLATION LIKE 'utf8%general_ci'" );
+		foreach ( $results as $aresult ){
+			$collation = $aresult->Collation;
+
+			if ( stristr( 'mb4', $collation) && ! $wpdb->has_cap( 'utf8mb4' ) ) {
+				// skip if dont have utf8mb4
+				continue;
+			}
+
+			if ( stristr( 'nopad', $collation) ) {
+				continue;
+			}
+
+			$data[]=	array(
+				// Neither do utf8*_general_ci tables.
+				"( a VARCHAR(50) COLLATE $collation )",
+				true,
+				$collation,
+			);
+		}
+
+
+		/**
+		 * Possible collations: utf8_unicode_ci, utf8mb3_unicode_ci, utf8mb4_unicode_ci
+		 */
+		$results = $wpdb->get_results( "SHOW COLLATION LIKE 'utf8%unicode_ci'" );
+		foreach ( $results as $aresult ){
+			$collation = $aresult->Collation;
+
+			if ( stristr( 'mb4', $collation) && ! $wpdb->has_cap( 'utf8mb4' ) ) {
+				// skip if dont have utf8mb4
+				continue;
+			}
+
+			if ( stristr( 'nopad', $collation) ) {
+				continue;
+			}
+
+			$data[]=	array(
+				// Neither do utf8*_unicode_ci tables.
+				"( a VARCHAR(50) COLLATE $collation )",
+				false,
+				$collation,
+			);
+		}
+
+
 
 		foreach( $data as $i => &$value ) {
-			$this_table_name = $table_name . '_' . $i;
+			$this_table_name = $base_table_name . '_' . $i;
+			$acollation = $value[2];
 
-			$value[0] = "CREATE TABLE $this_table_name {$value[0]}";
+			/**
+			 * simple hack to bypass temporary table,
+			 * also to show collation type on phpunit error message
+			 */
+			$value[0] = "CREATE /*$acollation*/ TABLE $this_table_name {$value[0]}";
 			$value[2] = "SELECT * FROM $this_table_name WHERE a='\xf0\x9f\x98\x88'";
-			$value[3] = "DROP TABLE IF EXISTS $this_table_name";
+			$value[3] = "DROP /*$acollation*/ TABLE IF EXISTS $this_table_name";
 			$value[4] = array(
 				"SELECT * FROM $this_table_name WHERE a='foo'",
 				"SHOW FULL TABLES LIKE $this_table_name",
@@ -909,11 +1007,17 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/36649
+	 * at Mariadb: utf8mb3 is alias of utf8
 	 */
 	function test_set_charset_changes_the_connection_collation() {
 		self::$_wpdb->set_charset( self::$_wpdb->dbh, 'utf8', 'utf8_general_ci' );
 		$results = self::$_wpdb->get_results( "SHOW VARIABLES WHERE Variable_name='collation_connection'" );
-		$this->assertSame( 'utf8_general_ci', $results[0]->Value );
+		//$this->assertSame( 'utf8_general_ci', $results[0]->Value );
+		$this->assertMatchesRegularExpression( "#utf(8|16|32)(mb([0-9]+))?_general_ci#", $results[0]->Value );
+
+		self::$_wpdb->set_charset( self::$_wpdb->dbh, 'utf8mb4', 'utf8mb4_general_ci' );
+		$results = self::$_wpdb->get_results( "SHOW VARIABLES WHERE Variable_name='collation_connection'" );
+		$this->assertSame( 'utf8mb4_general_ci', $results[0]->Value );
 
 		self::$_wpdb->set_charset( self::$_wpdb->dbh, 'utf8mb4', 'utf8mb4_unicode_ci' );
 		$results = self::$_wpdb->get_results( "SHOW VARIABLES WHERE Variable_name='collation_connection'" );

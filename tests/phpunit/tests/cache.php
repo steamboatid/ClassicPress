@@ -6,14 +6,14 @@
 class Tests_Cache extends WP_UnitTestCase {
 	var $cache = null;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		// Create two cache objects with a shared cache directory.
 		// This simulates a typical cache situation, two separate requests interacting.
 		$this->cache =& $this->init_cache();
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$this->flush_cache();
 		parent::tear_down();
 	}

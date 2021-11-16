@@ -102,7 +102,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - name: Set up PHP
+      - name: Setup PHP
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: 7.4

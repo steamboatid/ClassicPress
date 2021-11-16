@@ -632,7 +632,7 @@ function wp_extract_urls( $content ) {
  * @param int|WP_Post    $post    Post ID or post object.
  * @return null|bool Returns false if post is not found.
  */
-function do_enclose( $content = null, $post ) {
+function do_enclose( $content, $post ) {
 	global $wpdb;
 
 	//TODO: Tidy this ghetto code up and make the debug code optional

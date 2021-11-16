@@ -4,6 +4,7 @@
  * @group canonical
  * @group rewrite
  * @group query
+ * @group mayfail
  */
 class Tests_Canonical_PageOnFront extends WP_Canonical_UnitTestCase {
 

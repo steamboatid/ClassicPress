@@ -4,12 +4,13 @@
  * test wp-includes/post.php
  *
  * @group post
+ * @group kses
  */
 class Tests_Post extends WP_UnitTestCase {
 	protected static $editor_id;
 	protected static $grammarian_id;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$editor_id = $factory->user->create( array( 'role' => 'editor' ) );
 
 		add_role( 'grammarian', 'Grammarian', array(
@@ -951,15 +952,30 @@ class Tests_Post extends WP_UnitTestCase {
 		}
 	}
 
+
+	function code_to_symbol( $emoji ) {
+		if($emoji > 0x10000) {
+			$first = (($emoji - 0x10000) >> 10) + 0xD800;
+			$second = (($emoji - 0x10000) % 0x400) + 0xDC00;
+			return json_decode('"' . sprintf("\\u%X\\u%X", $first, $second) . '"');
+		} else {
+			return json_decode('"' . sprintf("\\u%X", $emoji) . '"');
+		}
+	}
+
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21212
+	 * @group charset
+	 * @group emoji
+	 * @group mayfail
 	 */
 	function test_utf8mb3_post_saves_with_emoji() {
 		global $wpdb;
 		$_wpdb = new wpdb_exposed_methods_for_testing();
 
-		if ( 'utf8' !== $_wpdb->get_col_charset( $wpdb->posts, 'post_title' ) ) {
-			$this->markTestSkipped( 'This test is only useful with the utf8 character set' );
+		$current_charset = $_wpdb->get_col_charset( $wpdb->posts, 'post_title' );
+		if ( ! stristr( $current_charset, 'utf8' ) ) {
+			$this->markTestSkipped( "This test is only useful with the utf8 character set. Current charset: $current_charset " );
 		}
 
 		require_once( ABSPATH . '/wp-admin/includes/post.php' );
@@ -974,17 +990,32 @@ class Tests_Post extends WP_UnitTestCase {
 		);
 
 		$expected = array(
-			'post_title'   => "foo&#x1f608;bar",
-			'post_content' => "foo&#x1f60e;baz",
-			'post_excerpt' => "foo&#x1f610;bat"
+			//'post_title'   => "foo&#x1f608;bar",
+			//'post_content' => "foo&#x1f60e;baz",
+			//'post_excerpt' => "foo&#x1f610;bat"
+			'post_title'   => "foo" . $this->code_to_symbol(0x1f608) . "bar",
+			'post_content' => "foo" . $this->code_to_symbol(0x1f60e) . "baz",
+			'post_excerpt' => "foo" . $this->code_to_symbol(0x1f610) . "bat"
 		);
 
 		edit_post( $data );
 
 		$post = get_post( $post_id );
 
+		$fails = array();
 		foreach ( $expected as $field => $value ) {
-			$this->assertSame( $value, $post->$field );
+			try {
+				$actual = $post->$field;
+				$this->assertSame( $value, $actual, " expected: $value, actual: $actual" );
+  		} catch(PHPUnit_Framework_ExpectationFailedException $e) {
+				$fails[] = $e->getMessage();
+			}
+		}
+
+		if ( ! empty( $fails ) ){
+			throw new PHPUnit_Framework_ExpectationFailedException (
+				"\n" . count( $fails ) . " assertions failed:\n\n" . implode( "\n\n", $fails )
+			);
 		}
 	}
 

@@ -10,6 +10,7 @@
  * Test wp-includes/widgets/class-wp-widget-text.php
  *
  * @group widgets
+ * @group kses
  */
 class Test_WP_Widget_Text extends WP_UnitTestCase {
 	/**

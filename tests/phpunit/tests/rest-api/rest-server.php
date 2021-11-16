@@ -8,6 +8,8 @@
 
 /**
  * @group restapi
+ * @group restapiserver
+ * @group mayfail
  */
 class Tests_REST_Server extends WP_Test_REST_TestCase {
 	public function set_up() {
@@ -65,6 +67,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'  => array( 'GET' ),
 			'callback' => '__return_null',
+			'permission_callback' => '__return_true',
 			'args'     => array(
 				'foo'  => array(
 					'default'  => 'bar',
@@ -83,6 +86,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'  => array( 'GET' ),
 			'callback' => '__return_null',
+			'permission_callback' => '__return_true',
 			'args'     => array(
 				'foo'  => array(
 					'default'  => 'bar',
@@ -101,6 +105,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		register_rest_route( 'optional', '/test', array(
 			'methods'  => array( 'GET' ),
 			'callback' => '__return_null',
+			'permission_callback' => '__return_true',
 			'args'     => array(
 				'foo'  => array(),
 			),
@@ -118,6 +123,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		register_rest_route( 'no-zero', '/test', array(
 			'methods'  => array( 'GET' ),
 			'callback' => '__return_null',
+			'permission_callback' => '__return_true',
 			'args'     => array(
 				'foo'  => array(
 					'default'    => 'bar',
@@ -133,6 +139,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		register_rest_route( 'head-request', '/test', array(
 			'methods'  => array( 'GET' ),
 			'callback' => '__return_true',
+			'permission_callback' => '__return_true',
 		) );
 		$request = new WP_REST_Request( 'HEAD', '/head-request/test' );
 		$response = $this->server->dispatch( $request );
@@ -150,6 +157,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 			array(
 				'methods' => array( 'HEAD' ),
 				'callback' => '__return_true',
+				'permission_callback' => '__return_true',
 			),
 			array(
 				'methods' => array( 'GET' ),
@@ -230,6 +238,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 			'methods'      => 'GET',
 			'callback'     => '__return_null',
 			'should_exist' => false,
+			'permission_callback' => '__return_true',
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/test-ns/test', array() );
@@ -253,12 +262,14 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 			'methods'      => 'GET',
 			'callback'     => '__return_null',
 			'should_exist' => false,
+			'permission_callback' => '__return_true',
 		) );
 
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'      => 'POST',
 			'callback'     => '__return_null',
 			'should_exist' => false,
+			'permission_callback' => '__return_true',
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/test-ns/test', array() );
@@ -290,6 +301,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 			'methods'      => 'POST',
 			'callback'     => '__return_null',
 			'should_exist' => false,
+			'permission_callback' => '__return_true',
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/test-ns/test', array() );
@@ -308,6 +320,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 			array(
 				'methods'  => array( 'GET' ),
 				'callback' => '__return_null',
+				'permission_callback' => '__return_true',
 			),
 			array(
 				'methods'  => array( 'POST' ),
@@ -990,6 +1003,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'  => array( 'GET' ),
 			'callback' => '__return_null',
+			'permission_callback' => '__return_true',
 			'args' => array(
 				'someinteger' => array(
 					'validate_callback' => array( $this, '_validate_as_integer_123' ),

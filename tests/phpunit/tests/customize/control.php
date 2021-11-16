@@ -141,7 +141,7 @@ class Test_WP_Customize_Control extends WP_UnitTestCase {
 	/**
 	 * Tear down.
 	 */
-	function tear_down() {
+	public function tear_down() {
 		$this->wp_customize = null;
 		unset( $GLOBALS['wp_customize'] );
 		parent::tear_down();

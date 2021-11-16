@@ -7,7 +7,7 @@ class Tests_Comment_GetCommentLink extends WP_UnitTestCase {
 	protected static $p;
 	protected static $comments = array();
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		$now = time();
 		self::$p = self::factory()->post->create();
 

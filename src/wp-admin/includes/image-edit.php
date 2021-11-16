@@ -476,7 +476,15 @@ function _crop_image_resource( $img, $x, $y, $w, $h ) {
 function image_edit_apply_changes( $image, $changes ) {
 	if ( is_gd_image( $image ) ) {
 		/* translators: 1: $image, 2: WP_Image_Editor */
-		_deprecated_argument( __FUNCTION__, 'WP-3.5.0', sprintf( __( '%1$s needs to be a %2$s object.' ), '$image', 'WP_Image_Editor' ) );
+		deprecated_argument( 
+				__FUNCTION__, 
+					'WP-3.5.0', 
+					sprintf(
+						 __( '%1$s needs to be a %2$s object.' ), 
+						'$image', 
+						'WP_Image_Editor'
+					) 
+		);
 	}
 
 	if ( !is_array($changes) )

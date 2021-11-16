@@ -1,32 +1,27 @@
 <?php
 
 class TestFactoryFor extends WP_UnitTestCase {
-	function set_up() {
-		parent::set_up();
-		$this->category_factory = new WP_UnitTest_Factory_For_Term( null, 'category' );
-	}
 
 	function test_create_creates_a_category() {
-		$id = $this->category_factory->create();
-		$this->assertTrue( (bool)get_term_by( 'id', $id, 'category' ) );
+		$id = self::factory()->category->create_object( array( 'name' => 'BooBoo1') );
+		$this->assertTrue( (bool) get_term_by( 'id', $id, 'category' ) );
 	}
 
 	function test_get_object_by_id_gets_an_object() {
-		$id = $this->category_factory->create();
-		$this->assertTrue( (bool)$this->category_factory->get_object_by_id( $id ) );
+		$id = self::factory()->category->create_object( array( 'name' => 'BooBoo2') );
+		$this->assertTrue( (bool) self::factory()->category->get_object_by_id( $id ) );
 	}
 
 	function test_get_object_by_id_gets_an_object_with_the_same_name() {
-		$id = $this->category_factory->create( array( 'name' => 'Boo') );
-		$object = $this->category_factory->get_object_by_id( $id );
+		$id = self::factory()->category->create_object( array( 'name' => 'Boo') );
+		$object = self::factory()->category->get_object_by_id( $id );
 		$this->assertSame( 'Boo', $object->name );
 	}
 
 	function test_the_taxonomy_argument_overrules_the_factory_taxonomy() {
-		$term_factory = new WP_UnitTest_Factory_For_term( null, 'category' );
-		$id = $term_factory->create( array( 'taxonomy' => 'post_tag' ) );
+		$id = self::factory()->term->create_and_get( array( 'taxonomy' => 'post_tag' ) );
 		$term = get_term( $id, 'post_tag' );
-		$this->assertSame( $id, $term->term_id );
+		$this->assertSame( $id->term_id, $term->term_id );
 	}
 
 	/**

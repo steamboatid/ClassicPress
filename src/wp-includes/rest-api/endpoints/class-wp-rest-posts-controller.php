@@ -35,7 +35,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	/**
 	 * Passwordless post access permitted.
 	 *
-	 * @since WP-5.7.1
+	 * @since 5.7.1
 	 * @var int[]
 	 */
 	protected $password_check_passed = array();

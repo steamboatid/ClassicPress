@@ -3,6 +3,7 @@
 /**
  * @group oembed
  * @group restapi
+ * @group mayfail
  */
 class Test_oEmbed_Controller extends WP_UnitTestCase {
 	/**
@@ -15,7 +16,7 @@ class Test_oEmbed_Controller extends WP_UnitTestCase {
 	const YOUTUBE_VIDEO_ID = 'OQSNhk5ICTI';
 	const INVALID_OEMBED_URL = 'https://www.notreallyanoembedprovider.com/watch?v=awesome-cat-video';
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$subscriber = $factory->user->create( array(
 			'role' => 'subscriber',
 		) );

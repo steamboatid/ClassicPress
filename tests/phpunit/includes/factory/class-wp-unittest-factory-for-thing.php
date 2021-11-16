@@ -16,7 +16,7 @@ abstract class WP_UnitTest_Factory_For_Thing {
 	 * can be generators -- an object with next() method. There are some default generators: {@link WP_UnitTest_Generator_Sequence},
 	 * {@link WP_UnitTest_Generator_Locale_Name}, {@link WP_UnitTest_Factory_Callback_After_Create}.
 	 */
-	function __construct( $factory, $default_generation_definitions = array() ) {
+	function __construct( WP_UnitTest_Factory $factory, $default_generation_definitions = array() ) {
 		$this->factory = $factory;
 		$this->default_generation_definitions = $default_generation_definitions;
 	}

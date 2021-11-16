@@ -197,3 +197,89 @@ function _upload_dir_https( $uploads ) {
 // Skip `setcookie` calls in auth_cookie functions due to warning:
 // Cannot modify header information - headers already sent by ...
 tests_add_filter( 'send_auth_cookies', '__return_false' );
+
+
+
+function get_caller_func(int $max=1): array {
+	$arr=		debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3*$max + 3);
+	$lines=	array();
+	foreach ($arr as $trace){
+		$str=	implode(' ', $trace);
+		if (stristr($trace['function'], 'print_rr')) continue;
+		if (stristr($trace['function'], 'print_rdie')) continue;
+		if (stristr($str, 'swo.php') || stristr($str, 'load.php') || stristr($str, 'amp.php')) continue;
+
+		if (empty($trace['file']) || empty($trace['line'])) continue;
+		if (empty($aline)) $lines[]=	$trace['file'] . ' -- ' . $trace['line'];
+
+		if (!empty($lines) && count($lines)>=$max) break;
+	}
+
+	return $lines;
+}
+
+function print_rr($var){
+
+	$obs=		0;
+	$buff=	array();
+	while (ob_get_level()) {
+		$obs++;
+		$buff[]=	ob_get_contents();
+		ob_end_clean();
+		flush();
+	}
+
+	echo "\n\n-- ";
+	echo	rtrim(print_r($var, true), "\n");
+	echo " --\n";
+	flush();
+
+	$arr=		debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
+	$strs=	array("\n\nCALLER-print_rr: ");
+	foreach ($arr as $trc){
+		if ($trc['file'] && $trc['line'])
+			$strs[]=	$trc['file']." -- ".$trc['line'];
+		if (count($strs) > 5) break;
+	}
+	echo implode("\n", $strs) .  (empty($buff)? "\n\n" : "\n\n\n" . implode("\n\n", $buff) . "\n\n\n");
+}
+
+function print_rdie($var='', $msg=''){
+
+	$obs=		0;
+	$buff=	array();
+	while (ob_get_level()>0) {
+		$obs++;
+		$buff[]=	ob_get_contents();
+		ob_end_clean();
+		flush();
+	}
+
+	echo "\n\n";
+	echo is_null($var)? rtrim(var_export($var, true)) : rtrim(print_r($var, true))."\n\t$msg \n";
+	flush();
+
+	// print caller
+	$arr=		debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10);
+	$strs=	array("\n\nCALLER-print_rdie: ");
+	foreach ($arr as $trc){
+		if ($trc['file'] && $trc['line'])
+			$strs[]=	$trc['file']." -- ".$trc['line'];
+		if (count($strs) > 5) break;
+	}
+
+	$strs[]=	"\n".date('c');
+	$strs[]=	time();
+	echo implode("\n", $strs) .  (empty($buff)? "\n\n" : "\n\n\n" . implode("\n\n", $buff) . "\n\n\n");
+	flush();
+	die();
+}
+
+function print_rdiefile(){
+
+	$arr=	debug_backtrace();
+	$arr=	array_shift($arr);
+	$arr=	array($arr['file'], $arr['line']);
+	$str=	implode(" ", $arr);
+	print_rdie($str);
+}

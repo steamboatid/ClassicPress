@@ -15,7 +15,7 @@ class WP_Canonical_UnitTestCase extends WP_UnitTestCase {
 	 */
 	public $structure = '/%year%/%monthnum%/%day%/%postname%/';
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::generate_shared_fixtures( $factory );
 	}
 
@@ -41,7 +41,7 @@ class WP_Canonical_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.1.0
 	 */
-	public static function generate_shared_fixtures( $factory ) {
+	public static function generate_shared_fixtures( WP_UnitTest_Factory $factory ) {
 		self::$old_current_user = get_current_user_id();
 		self::$author_id = $factory->user->create( array( 'user_login' => 'canonical-author' ) );
 

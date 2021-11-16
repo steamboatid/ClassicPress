@@ -16,7 +16,7 @@ class WP_Test_REST_Tags_Controller extends WP_Test_REST_Controller_Testcase {
 	protected static $contributor;
 	protected static $subscriber;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$superadmin    = $factory->user->create(
 			array(
 				'role'       => 'administrator',

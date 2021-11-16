@@ -7,7 +7,8 @@
  * @group oembed-headers
  */
 class Tests_oEmbed_HTTP_Headers extends WP_UnitTestCase {
-	function test_rest_pre_serve_request_headers() {
+	
+	public function test_rest_pre_serve_request_headers() {
 		if ( ! function_exists( 'xdebug_get_headers' ) ) {
 			$this->markTestSkipped( 'xdebug is required for this test' );
 		}

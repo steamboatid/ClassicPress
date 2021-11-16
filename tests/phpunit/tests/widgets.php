@@ -3,13 +3,22 @@
 /**
  * Test functions and classes for widgets and sidebars.
  *
+ * this test case may fail when executed with ALL test,
+ * but run OK while running by group, filter or chunk
+ * 
+ * @runInSeparateProcess
+ * @preserveGlobalState disabled
+ * @backupGlobals disabled
+ * 
  * @group widgets
+ * @group mayfail
+ * @group mayerror
  */
 class Tests_Widgets extends WP_UnitTestCase {
 	public $sidebar_index;
 	public $valid_sidebar;
 
-	function clean_up_global_scope() {
+	public function clean_up_global_scope() {
 		global $wp_widget_factory, $wp_registered_sidebars, $wp_registered_widgets, $wp_registered_widget_controls, $wp_registered_widget_updates;
 
 		$wp_registered_sidebars = array();
@@ -21,8 +30,9 @@ class Tests_Widgets extends WP_UnitTestCase {
 		parent::clean_up_global_scope();
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		global $wp_customize;
+
 		$wp_customize = null;
 
 		parent::tear_down();
@@ -32,10 +42,11 @@ class Tests_Widgets extends WP_UnitTestCase {
 	 * @see register_widget()
 	 * @see unregister_widget()
 	 */
-	function test_register_and_unregister_widget_core_widget() {
+	public function test_register_and_unregister_widget_core_widget() {
 		global $wp_widget_factory;
 
 		$widget_class = 'WP_Widget_Search';
+
 		register_widget( $widget_class );
 		$this->assertArrayHasKey( $widget_class, $wp_widget_factory->widgets );
 
@@ -50,42 +61,52 @@ class Tests_Widgets extends WP_UnitTestCase {
 	 * @see unregister_widget()
 	 * @see https://core.trac.wordpress.org/ticket/28216
 	 */
-	function test_register_and_unregister_widget_instance() {
+	public function test_register_and_unregister_widget_instance() {
 		global $wp_widget_factory, $wp_registered_widgets;
+
 		$this->assertEmpty( $wp_widget_factory->widgets );
 		$this->assertEmpty( $wp_registered_widgets );
 
-		update_option( 'widget_search', array(
-			2 => array( 'title' => '' ),
-			'_multiwidget' => 1,
-		) );
-		update_option( 'widget_better_search', array(
-			3 => array( 'title' => '' ),
-			'_multiwidget' => 1,
-		) );
-		update_option( 'widget_best_search', array(
-			4 => array( 'title' => '' ),
-			'_multiwidget' => 1,
-		) );
+		update_option(
+			'widget_search',
+			array(
+				2              => array( 'title' => '' ),
+				'_multiwidget' => 1,
+			)
+		);
+		update_option(
+			'widget_better_search',
+			array(
+				3              => array( 'title' => '' ),
+				'_multiwidget' => 1,
+			)
+		);
+		update_option(
+			'widget_best_search',
+			array(
+				4              => array( 'title' => '' ),
+				'_multiwidget' => 1,
+			)
+		);
 
 		register_widget( 'WP_Widget_Search' );
 		$this->assertArrayHasKey( 'WP_Widget_Search', $wp_widget_factory->widgets );
 
-		$widget_better_search = new WP_Widget_Search();
-		$widget_better_search->id_base = 'better_search';
-		$widget_better_search->name = 'Better Search';
-		$widget_better_search->option_name = 'widget_' . $widget_better_search->id_base;
+		$widget_better_search                              = new WP_Widget_Search();
+		$widget_better_search->id_base                     = 'better_search';
+		$widget_better_search->name                        = 'Better Search';
+		$widget_better_search->option_name                 = 'widget_' . $widget_better_search->id_base;
 		$widget_better_search->widget_options['classname'] = 'widget_' . $widget_better_search->id_base;
-		$widget_better_search->control_options['id_base'] = $widget_better_search->id_base;
+		$widget_better_search->control_options['id_base']  = $widget_better_search->id_base;
 		register_widget( $widget_better_search );
 		$this->assertContains( $widget_better_search, $wp_widget_factory->widgets );
 
-		$widget_best_search = new WP_Widget_Search();
-		$widget_best_search->id_base = 'best_search';
-		$widget_best_search->name = 'Best Search';
-		$widget_best_search->option_name = 'widget_' . $widget_best_search->id_base;
+		$widget_best_search                              = new WP_Widget_Search();
+		$widget_best_search->id_base                     = 'best_search';
+		$widget_best_search->name                        = 'Best Search';
+		$widget_best_search->option_name                 = 'widget_' . $widget_best_search->id_base;
 		$widget_best_search->widget_options['classname'] = 'widget_' . $widget_best_search->id_base;
-		$widget_best_search->control_options['id_base'] = $widget_best_search->id_base;
+		$widget_best_search->control_options['id_base']  = $widget_best_search->id_base;
 		register_widget( $widget_best_search );
 		$this->assertContains( $widget_best_search, $wp_widget_factory->widgets );
 
@@ -117,43 +138,41 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_register_sidebars_single() {
-
+	public function test_register_sidebars_single() {
 		global $wp_registered_sidebars;
 
 		register_sidebars( 1, array( 'id' => 'wp-unit-test' ) );
 
-		$this->assertTrue( isset( $wp_registered_sidebars['wp-unit-test'] ) );
+		$this->assertArrayHasKey( 'wp-unit-test', $wp_registered_sidebars );
 
 	}
 
 	/**
 	 * @group sidebar
 	 */
-	function test_register_sidebars_multiple() {
-
+	public function test_register_sidebars_multiple() {
 		global $wp_registered_sidebars;
 
-		$result = array();
-		$num = 3;
+		$result  = array();
+		$num     = 3;
 		$id_base = 'WP Unit Test';
 		register_sidebars( $num, array( 'name' => $id_base . ' %d' ) );
 
 		$names = wp_list_pluck( $wp_registered_sidebars, 'name' );
 		for ( $i = 1; $i <= $num; $i++ ) {
-			if ( in_array( "$id_base $i", $names ) ) {
+			if ( in_array( "$id_base $i", $names, true ) ) {
 				$result[] = true;
 			}
 		}
 
-		$this->assertSame( $num, count( $result ) );
+		$this->assertCount( $num, $result );
 
 	}
 
 	/**
 	 * @group sidebar
 	 */
-	function test_register_sidebar_with_no_id() {
+	public function test_register_sidebar_with_no_id() {
 		global $wp_registered_sidebars;
 
 		$this->setExpectedIncorrectUsage( 'register_sidebar' );
@@ -162,7 +181,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 		register_sidebar();
 		register_sidebar();
 
-		$derived_sidebar_id = "sidebar-2"; // Number of sidebars in the global + 1.
+		$derived_sidebar_id = 'sidebar-2'; // Number of sidebars in the global + 1.
 
 		$this->assertArrayHasKey( $derived_sidebar_id, $wp_registered_sidebars );
 	}
@@ -170,7 +189,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_unregister_sidebar_registered_with_no_id() {
+	public function test_unregister_sidebar_registered_with_no_id() {
 		global $wp_registered_sidebars;
 
 		$this->setExpectedIncorrectUsage( 'register_sidebar' );
@@ -179,7 +198,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 		register_sidebar();
 		register_sidebar();
 
-		$derived_sidebar_id = "sidebar-2"; // Number of sidebars in the global + 1.
+		$derived_sidebar_id = 'sidebar-2'; // Number of sidebars in the global + 1.
 
 		unregister_sidebar( $derived_sidebar_id );
 
@@ -189,8 +208,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_register_sidebar_with_string_id() {
-
+	public function test_register_sidebar_with_string_id() {
 		global $wp_registered_sidebars;
 
 		$sidebar_id = 'wp-unit-test';
@@ -202,7 +220,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_unregister_sidebar_with_string_id() {
+	public function test_unregister_sidebar_with_string_id() {
 		global $wp_registered_sidebars;
 
 		$sidebar_id = 'wp-unit-tests';
@@ -215,7 +233,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_register_sidebar_with_numeric_id() {
+	public function test_register_sidebar_with_numeric_id() {
 		global $wp_registered_sidebars;
 
 		$sidebar_id = 2;
@@ -227,7 +245,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_unregister_sidebar_with_numeric_id() {
+	public function test_unregister_sidebar_with_numeric_id() {
 		global $wp_registered_sidebars;
 
 		$sidebar_id = 2;
@@ -240,7 +258,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Utility hook callback used to store a sidebar ID mid-function.
 	 */
-	function retrieve_sidebar_id( $index, $valid_sidebar ) {
+	public function retrieve_sidebar_id( $index, $valid_sidebar ) {
 		$this->sidebar_index = $index;
 		$this->valid_sidebar = $valid_sidebar;
 	}
@@ -248,14 +266,14 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_dynamic_sidebar_using_sidebar_registered_with_no_id() {
+	public function test_dynamic_sidebar_using_sidebar_registered_with_no_id() {
 		$this->setExpectedIncorrectUsage( 'register_sidebar' );
 
 		// Incorrectly register a couple of sidebars for fun.
 		register_sidebar();
 		register_sidebar();
 
-		$derived_sidebar_id = "sidebar-2"; // Number of sidebars in the global + 1.
+		$derived_sidebar_id = 'sidebar-2'; // Number of sidebars in the global + 1.
 
 		add_action( 'dynamic_sidebar_before', array( $this, 'retrieve_sidebar_id' ), 10, 2 );
 
@@ -267,7 +285,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_dynamic_sidebar_using_invalid_sidebar_id() {
+	public function test_dynamic_sidebar_using_invalid_sidebar_id() {
 		register_sidebar( array( 'id' => 'wp-unit-text' ) );
 
 		add_action( 'dynamic_sidebar_before', array( $this, 'retrieve_sidebar_id' ), 10, 2 );
@@ -285,7 +303,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_dynamic_sidebar_numeric_id() {
+	public function test_dynamic_sidebar_numeric_id() {
 		$sidebar_id = 2;
 		register_sidebar( array( 'id' => $sidebar_id ) );
 
@@ -299,7 +317,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @group sidebar
 	 */
-	function test_dynamic_sidebar_string_id() {
+	public function test_dynamic_sidebar_string_id() {
 		$sidebar_id = 'wp-unit-tests';
 		register_sidebar( array( 'id' => $sidebar_id ) );
 
@@ -313,14 +331,14 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget_Search::form()
 	 */
-	function test_wp_widget_search_form() {
+	public function test_wp_widget_search_form() {
 		$widget = new WP_Widget_Search( 'foo', 'Foo' );
 		ob_start();
-		$args = array(
+		$args     = array(
 			'before_widget' => '<section>',
-			'after_widget' => "</section>\n",
-			'before_title' => '<h2>',
-			'after_title' => "</h2>\n",
+			'after_widget'  => "</section>\n",
+			'before_title'  => '<h2>',
+			'after_title'   => "</h2>\n",
 		);
 		$instance = array( 'title' => 'Buscar' );
 		$widget->_set( 2 );
@@ -335,7 +353,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::form()
 	 */
-	function test_wp_widget_form() {
+	public function test_wp_widget_form() {
 		$widget = new WP_Widget( 'foo', 'Foo' );
 		ob_start();
 		$retval = $widget->form( array() );
@@ -347,9 +365,9 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::__construct()
 	 */
-	function test_wp_widget_constructor() {
-		$id_base = 'foo';
-		$name = 'Foo';
+	public function test_wp_widget_constructor() {
+		$id_base    = 'foo';
+		$name       = 'Foo';
 		$foo_widget = new WP_Widget( $id_base, $name );
 
 		$this->assertSame( $id_base, $foo_widget->id_base );
@@ -360,15 +378,15 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'id_base', $foo_widget->control_options );
 		$this->assertSame( $id_base, $foo_widget->control_options['id_base'] );
 
-		$id_base = 'bar';
-		$name = 'Bar';
-		$widget_options = array(
+		$id_base         = 'bar';
+		$name            = 'Bar';
+		$widget_options  = array(
 			'classname' => 'bar_classname',
 		);
 		$control_options = array(
 			'id_base' => 'bar_id_base',
 		);
-		$bar_widget = new WP_Widget( $id_base, $name, $widget_options, $control_options );
+		$bar_widget      = new WP_Widget( $id_base, $name, $widget_options, $control_options );
 		$this->assertSame( $widget_options['classname'], $bar_widget->widget_options['classname'] );
 		$this->assertSame( $control_options['id_base'], $bar_widget->control_options['id_base'] );
 	}
@@ -376,9 +394,8 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::get_field_name()
 	 * @dataProvider data_wp_widget_get_field_name
-	 *
 	 */
-	function test_wp_widget_get_field_name( $expected, $value_to_test ) {
+	public function test_wp_widget_get_field_name( $expected, $value_to_test ) {
 		$widget = new WP_Widget( 'foo', 'Foo' );
 		$widget->_set( 2 );
 		$this->assertSame( $expected, $widget->get_field_name( $value_to_test ) );
@@ -393,13 +410,12 @@ class Tests_Widgets extends WP_UnitTestCase {
 	 *
 	 * @return array {
 	 *     @type array {
-	 *         @type string $expected      The expected field id to be returned.
+	 *         @type string $expected      The expected field name to be returned.
 	 *         @type string $value_to_test The value being passed to the get_field_name method.
 	 *     }
 	 * }
 	 */
-	function data_wp_widget_get_field_name( ) {
-
+	public function data_wp_widget_get_field_name() {
 		return array(
 			array(
 				'widget-foo[2][title]',
@@ -427,9 +443,8 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::get_field_id()
 	 * @dataProvider data_wp_widget_get_field_id
-	 *
 	 */
-	function test_wp_widget_get_field_id( $expected, $value_to_test ) {
+	public function test_wp_widget_get_field_id( $expected, $value_to_test ) {
 		$widget = new WP_Widget( 'foo', 'Foo' );
 		$widget->_set( 2 );
 		$this->assertSame( $expected, $widget->get_field_id( $value_to_test ) );
@@ -450,7 +465,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	 *     }
 	 * }
 	 */
-	function data_wp_widget_get_field_id() {
+	public function data_wp_widget_get_field_id() {
 		return array(
 			array(
 				'widget-foo-2-title',
@@ -478,7 +493,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::_register()
 	 */
-	function test_wp_widget__register() {
+	public function test_wp_widget__register() {
 		global $wp_registered_widgets;
 
 		$settings = get_option( 'widget_search' );
@@ -495,12 +510,12 @@ class Tests_Widgets extends WP_UnitTestCase {
 		}
 	}
 
-	// @todo test WP_Widget::display_callback()
+	// @todo Test WP_Widget::display_callback()
 
 	/**
 	 * @see WP_Widget::is_preview()
 	 */
-	function test_wp_widget_is_preview() {
+	public function test_wp_widget_is_preview() {
 		global $wp_customize;
 
 		$widget = new WP_Widget( 'foo', 'Foo' );
@@ -516,14 +531,14 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$this->assertTrue( $widget->is_preview() );
 	}
 
-	// @todo test WP_Widget::update_callback()
-	// @todo test WP_Widget::form_callback()
-	// @todo test WP_Widget::_register_one()
+	// @todo Test WP_Widget::update_callback()
+	// @todo Test WP_Widget::form_callback()
+	// @todo Test WP_Widget::_register_one()
 
 	/**
 	 * @see WP_Widget::get_settings()
 	 */
-	function test_wp_widget_get_settings() {
+	public function test_wp_widget_get_settings() {
 		global $wp_registered_widgets;
 
 		$option_value = get_option( 'widget_search' );
@@ -560,7 +575,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::save_settings()
 	 */
-	function test_wp_widget_save_settings() {
+	public function test_wp_widget_save_settings() {
 		global $wp_registered_widgets;
 
 		wp_widgets_init();
@@ -591,7 +606,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see WP_Widget::save_settings()
 	 */
-	function test_wp_widget_save_settings_delete() {
+	public function test_wp_widget_save_settings_delete() {
 		global $wp_registered_widgets;
 
 		wp_widgets_init();
@@ -608,15 +623,15 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * @see wp_widget_control()
 	 */
-	function test_wp_widget_control() {
+	public function test_wp_widget_control() {
 		global $wp_registered_widgets;
 
 		wp_widgets_init();
 		require_once ABSPATH . '/wp-admin/includes/widgets.php';
-		$widget_id = 'search-2';
-		$widget = $wp_registered_widgets[ $widget_id ];
-		$params = array(
-			'widget_id' => $widget['id'],
+		$widget_id    = 'search-2';
+		$widget       = $wp_registered_widgets[ $widget_id ];
+		$params       = array(
+			'widget_id'   => $widget['id'],
 			'widget_name' => $widget['name'],
 		);
 		$args = wp_list_widget_controls_dynamic_sidebar( array( 0 => $params, 1 => $widget['params'][0] ) );
@@ -641,10 +656,10 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$this->assertStringContainsString( '<input type="submit" name="savewidget"', $control );
 
 		$param_overrides = array(
-			'before_form' => '<!-- before_form -->',
-			'after_form' => '<!-- after_form -->',
+			'before_form'           => '<!-- before_form -->',
+			'after_form'            => '<!-- after_form -->',
 			'before_widget_content' => '<!-- before_widget_content -->',
-			'after_widget_content' => '<!-- after_widget_content -->',
+			'after_widget_content'  => '<!-- after_widget_content -->',
 		);
 		$params = array_merge( $params, $param_overrides );
 		$args = wp_list_widget_controls_dynamic_sidebar( array( 0 => $params, 1 => $widget['params'][0] ) );
@@ -661,14 +676,20 @@ class Tests_Widgets extends WP_UnitTestCase {
 		}
 	}
 
-	function test_the_widget_custom_before_title_arg() {
+	public function test_the_widget_custom_before_title_arg() {
 		register_widget( 'WP_Widget_Text' );
 
 		ob_start();
 		the_widget(
 			'WP_Widget_Text',
-			array( 'title' => 'Notes', 'text' => 'Sample text' ),
-			array( 'before_widget' => '<span class="special %s">', 'after_widget' => '</span>' )
+			array(
+				'title' => 'Notes',
+				'text'  => 'Sample text',
+			),
+			array(
+				'before_widget' => '<span class="special %s">',
+				'after_widget'  => '</span>',
+			)
 		);
 		$actual = ob_get_clean();
 
@@ -684,7 +705,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	 *
 	 * @see \the_widget()
 	 */
-	function test_the_widget_with_unregistered_widget() {
+	public function test_the_widget_with_unregistered_widget() {
 		$this->setExpectedIncorrectUsage( 'the_widget' );
 		the_widget( 'Widget_Class' );
 	}
@@ -694,7 +715,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	 *
 	 * @param array $sidebars Sidebar slugs.
 	 */
-	function register_sidebars( $sidebars ) {
+	private function register_sidebars( $sidebars ) {
 		foreach ( $sidebars as $sidebar ) {
 			register_sidebar( array( 'id' => $sidebar ) );
 		}
@@ -703,30 +724,33 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Tests for when 'sidebars_widgets' theme mod is populated.
 	 *
-	 * @covers retrieve_widgets()
+	 * @covers ::retrieve_widgets
 	 */
-	function test_retrieve_widgets_with_theme_mod() {
+	public function test_retrieve_widgets_with_theme_mod() {
 		global $sidebars_widgets, $_wp_sidebars_widgets;
 
 		wp_widgets_init();
 		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2', 'sidebar-3', 'sidebar-4', 'wp_inactive_widgets' ) );
 
 		// Test restoring sidebars widgets when previously activated.
-		set_theme_mod( 'sidebars_widgets', array(
-			'time' => time(),
-			'data' => array(
-				'sidebar-1' => array( 'tag_cloud-1' ),
-				'sidebar-2' => array(),
-				'sidebar-3' => array( 'unregistered_widget-1', 'text-1', 'media_image-1' ),
-				'sidebar-4' => null, // Should be converted to array.
-				'orphaned_widgets_1' => array( 'media_video-2' ),
-			),
-		) );
+		set_theme_mod(
+			'sidebars_widgets',
+			array(
+				'time' => time(),
+				'data' => array(
+					'sidebar-1'          => array( 'tag_cloud-1' ),
+					'sidebar-2'          => array(),
+					'sidebar-3'          => array( 'unregistered_widget-1', 'text-1', 'media_image-1' ),
+					'sidebar-4'          => null, // Should be converted to array.
+					'orphaned_widgets_1' => array( 'media_video-2' ),
+				),
+			)
+		);
 
 		$sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
-			'fantasy'   => array( 'archives-2' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
+			'fantasy'             => array( 'archives-2' ),
 			'wp_inactive_widgets' => array(),
 		);
 
@@ -764,18 +788,18 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Tests for when sidebars widgets matches registered sidebars.
 	 *
-	 * @covers retrieve_widgets()
+	 * @covers ::retrieve_widgets
 	 */
-	function test_retrieve_widgets_with_sidebars_widgets_matching_registered_sidebars() {
+	public function test_retrieve_widgets_with_sidebars_widgets_matching_registered_sidebars() {
 		global $sidebars_widgets;
 
 		wp_widgets_init();
-		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2','sidebar-3', 'wp_inactive_widgets' ) );
+		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2', 'sidebar-3', 'wp_inactive_widgets' ) );
 
 		$sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
-			'sidebar-3' => array( 'custom_widget-1' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
+			'sidebar-3'           => array( 'custom_widget-1' ),
 			'wp_inactive_widgets' => array(),
 		);
 
@@ -802,18 +826,18 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Tests for when sidebars widgets doesn't match registered sidebars.
 	 *
-	 * @covers retrieve_widgets()
+	 * @covers ::retrieve_widgets
 	 */
-	function test_retrieve_widgets_with_sidebars_widgets_not_matching_registered_sidebars() {
+	public function test_retrieve_widgets_with_sidebars_widgets_not_matching_registered_sidebars() {
 		global $sidebars_widgets, $_wp_sidebars_widgets;
 
 		wp_widgets_init();
-		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2','sidebar-3', 'wp_inactive_widgets' ) );
+		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2', 'sidebar-3', 'wp_inactive_widgets' ) );
 
 		$sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
-			'fantasy'   => array( 'unregistered_widget-1' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
+			'fantasy'             => array( 'unregistered_widget-1' ),
 			'wp_inactive_widgets' => array(),
 		);
 
@@ -854,9 +878,9 @@ class Tests_Widgets extends WP_UnitTestCase {
 
 		// Reset.
 		$sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
-			'fantasy'   => array( 'archives-2' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
+			'fantasy'             => array( 'archives-2' ),
 			'wp_inactive_widgets' => array(),
 		);
 
@@ -896,19 +920,19 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Tests for Customizer mode.
 	 *
-	 * @covers retrieve_widgets()
+	 * @covers ::retrieve_widgets
 	 */
-	function test_retrieve_widgets_for_customizer() {
+	public function test_retrieve_widgets_for_customizer() {
 		global $sidebars_widgets, $_wp_sidebars_widgets;
 
 		wp_widgets_init();
-		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2','sidebar-3', 'wp_inactive_widgets' ) );
+		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2', 'sidebar-3', 'wp_inactive_widgets' ) );
 
 		$old_sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
-			'sidebar-3' => array( 'unregistered_widget-1' ),
-			'fantasy'   => array( 'archives-2' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
+			'sidebar-3'           => array( 'unregistered_widget-1' ),
+			'fantasy'             => array( 'archives-2' ),
 			'wp_inactive_widgets' => array(),
 		);
 		set_theme_mod( 'sidebars_widgets', $old_sidebars_widgets );
@@ -943,7 +967,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$this->assertNotEquals( $sidebars_widgets, wp_get_sidebars_widgets() );
 	}
 
-	function test_retreive_widgets_with_single_widget() {
+	public function test_retrieve_widgets_with_single_widget() {
 		global $sidebars_widgets;
 
 		wp_widgets_init();
@@ -955,7 +979,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2', 'wp_inactive_widgets' ) );
 
 		$sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
 			'wp_inactive_widgets' => array(),
 		);
 
@@ -968,17 +992,17 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Tests for orphaned widgets being moved into inactive widgets.
 	 *
-	 * @covers retrieve_widgets()
+	 * @covers ::retrieve_widgets
 	 */
-	function test_retrieve_widgets_move_orphaned_widgets_to_inactive() {
+	public function test_retrieve_widgets_move_orphaned_widgets_to_inactive() {
 		global $sidebars_widgets;
 
 		wp_widgets_init();
 		$this->register_sidebars( array( 'sidebar-1', 'sidebar-2', 'sidebar-3', 'wp_inactive_widgets' ) );
 
 		$sidebars_widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
 			'wp_inactive_widgets' => array( 'search-2', 'archives-2' ),
 			'orphaned_widgets_1'  => array( 'calendar-1' ),
 		);
@@ -1003,20 +1027,20 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Test _wp_remove_unregistered_widgets.
 	 *
-	 * @covers _wp_remove_unregistered_widgets()
+	 * @covers ::_wp_remove_unregistered_widgets
 	 */
 	public function test__wp_remove_unregistered_widgets() {
 		$widgets = array(
-			'sidebar-1' => array( 'tag_cloud-1' ),
-			'sidebar-2' => array( 'text-1' ),
-			'fantasy'   => array( 'archives-2' ),
+			'sidebar-1'           => array( 'tag_cloud-1' ),
+			'sidebar-2'           => array( 'text-1' ),
+			'fantasy'             => array( 'archives-2' ),
 			'wp_inactive_widgets' => array(),
-			'array_version' => 3,
+			'array_version'       => 3,
 		);
 
-		$whitelist = array( 'tag_cloud-1', 'text-1' );
+		$allowed_widgets = array( 'tag_cloud-1', 'text-1' );
 
-		$filtered_widgets = _wp_remove_unregistered_widgets( $widgets, $whitelist );
+		$filtered_widgets = _wp_remove_unregistered_widgets( $widgets, $allowed_widgets );
 
 		$this->assertIsArray( $filtered_widgets );
 		$this->assertArrayHasKey( 'fantasy', $filtered_widgets );
@@ -1033,7 +1057,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Two themes with one sidebar each should just map, switching to a theme not previously-active.
 	 *
-	 * @covers wp_map_sidebars_widgets()
+	 * @covers ::wp_map_sidebars_widgets
 	 */
 	public function test_one_sidebar_each() {
 		$this->register_sidebars( array( 'primary' ) );
@@ -1044,7 +1068,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$new_next_theme_sidebars = wp_map_sidebars_widgets( $prev_theme_sidebars );
 
 		$expected_sidebars = array(
-			'primary' => 1,
+			'primary'             => 1,
 			'wp_inactive_widgets' => array(),
 		);
 		$this->assertEquals( $expected_sidebars, $new_next_theme_sidebars );
@@ -1053,13 +1077,13 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Sidebars with the same name should map, switching to a theme not previously-active.
 	 *
-	 * @covers wp_map_sidebars_widgets()
+	 * @covers ::wp_map_sidebars_widgets
 	 */
 	public function test_sidebars_with_same_slug() {
 		$this->register_sidebars( array( 'primary', 'secondary' ) );
 		$prev_theme_sidebars = array(
-			'primary' => 1,
-			'secondary' => 2,
+			'primary'             => 1,
+			'secondary'           => 2,
 			'wp_inactive_widgets' => array(),
 		);
 
@@ -1071,7 +1095,7 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Make educated guesses on theme sidebars.
 	 *
-	 * @covers wp_map_sidebars_widgets()
+	 * @covers ::wp_map_sidebars_widgets
 	 */
 	public function test_sidebar_guessing() {
 		$this->register_sidebars( array( 'primary', 'secondary' ) );
@@ -1084,8 +1108,8 @@ class Tests_Widgets extends WP_UnitTestCase {
 		$new_next_theme_sidebars = wp_map_sidebars_widgets( $prev_theme_sidebars );
 
 		$expected_sidebars = array(
-			'primary' => array(),
-			'secondary' => array(),
+			'primary'             => array(),
+			'secondary'           => array(),
 			'wp_inactive_widgets' => array(),
 		);
 		$this->assertEquals( $expected_sidebars, $new_next_theme_sidebars );
@@ -1094,19 +1118,19 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Make sure two sidebars that fall in the same group don't get the same menu assigned.
 	 *
-	 * @covers wp_map_sidebars_widgets()
+	 * @covers ::wp_map_sidebars_widgets
 	 */
 	public function test_sidebar_guessing_one_menu_per_group() {
 		$this->register_sidebars( array( 'primary' ) );
 		$prev_theme_sidebars = array(
-			'top-menu' => array(),
+			'top-menu'  => array(),
 			'secondary' => array(),
 		);
 
 		$new_next_theme_sidebars = wp_map_sidebars_widgets( $prev_theme_sidebars );
 
 		$expected_sidebars = array(
-			'main' => array(),
+			'main'                => array(),
 			'wp_inactive_widgets' => array(),
 		);
 		$this->assertSameSets( $expected_sidebars, $new_next_theme_sidebars );
@@ -1115,21 +1139,21 @@ class Tests_Widgets extends WP_UnitTestCase {
 	/**
 	 * Make sure two sidebars that fall in the same group get menus assigned from the same group.
 	 *
-	 * @covers wp_map_sidebars_widgets()
+	 * @covers ::wp_map_sidebars_widgets
 	 */
 	public function test_sidebar_guessing_one_menu_per_sidebar() {
 		$this->register_sidebars( array( 'primary', 'main' ) );
 
 		$prev_theme_sidebars = array(
 			'navigation-menu' => array(),
-			'top-menu' => array(),
+			'top-menu'        => array(),
 		);
 
 		$new_next_theme_sidebars = wp_map_sidebars_widgets( $prev_theme_sidebars );
 
 		$expected_sidebars = array(
-			'main' => array(),
-			'primary' => array(),
+			'main'                => array(),
+			'primary'             => array(),
 			'wp_inactive_widgets' => array(),
 		);
 		$this->assertEquals( $expected_sidebars, $new_next_theme_sidebars );

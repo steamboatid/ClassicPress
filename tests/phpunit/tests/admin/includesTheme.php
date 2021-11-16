@@ -4,7 +4,7 @@
  */
 class Tests_Admin_includesTheme extends WP_UnitTestCase {
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->theme_root = DIR_TESTDATA . '/themedir1';
 
@@ -20,7 +20,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 		unset( $GLOBALS['wp_themes'] );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$GLOBALS['wp_theme_directories'] = $this->orig_theme_dir;
 		remove_filter('theme_root', array($this, '_theme_root'));
 		remove_filter( 'stylesheet_root', array($this, '_theme_root') );

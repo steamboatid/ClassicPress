@@ -37,25 +37,6 @@ class Tests_DB_Charset extends WP_UnitTestCase {
 	}
 
 	/**
-	 * remove auto append temporary table on CREATE TABLE and DROP TABLE,
-	 * because we need actual table charset and collation
-	 */
-	public function set_up() {
-		remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
-		remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-	}
-
-	/**
-	 * revert back temporary table filter
-	 */
-	public function tear_down() {
-		add_filter( 'query', array( $this, '_create_temporary_tables' ) );
-		add_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-	}
-
-	
-
-	/**
 	 * @see https://core.trac.wordpress.org/ticket/21212
 	 */
 	function data_strip_invalid_text() {

@@ -18,7 +18,7 @@ class Tests_Query_CommentCount extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		$post_id = self::factory()->post->create( array( 'post_content' => 1 . rand_str() . ' about', 'post_type' => self::$post_type ) );
 		self::$post_ids[1][] = $post_id;
 		self::factory()->comment->create( array( 'comment_post_ID' => $post_id ) );

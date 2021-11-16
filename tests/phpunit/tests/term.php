@@ -7,7 +7,7 @@ class Tests_Term extends WP_UnitTestCase {
 	protected $taxonomy = 'category';
 	protected static $post_ids = array();
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$post_ids = $factory->post->create_many( 5 );
 	}
 
@@ -92,7 +92,7 @@ class Tests_Term extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group category.php
+	 * @group category
 	 */
 	function test_term_is_ancestor_of( ) {
 		$term = rand_str();

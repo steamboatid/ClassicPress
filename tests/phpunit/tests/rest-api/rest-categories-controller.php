@@ -15,7 +15,7 @@ class WP_Test_REST_Categories_Controller extends WP_Test_REST_Controller_Testcas
 	protected static $contributor;
 	protected static $subscriber;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$administrator = $factory->user->create(
 			array(
 				'role' => 'administrator',

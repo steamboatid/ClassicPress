@@ -11,7 +11,7 @@ class Tests_Multisite_Get_Blog_Details extends WP_UnitTestCase {
 	protected static $network_ids;
 	protected static $site_ids;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$site_ids = array(
 			WP_TESTS_DOMAIN . '/foo/'      => array( 'domain' => WP_TESTS_DOMAIN,          'path' => '/foo/'),
 			'foo.' . WP_TESTS_DOMAIN . '/' => array( 'domain' => 'foo.' . WP_TESTS_DOMAIN, 'path' => '/' ),

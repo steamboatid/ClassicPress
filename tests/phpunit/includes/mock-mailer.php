@@ -1,5 +1,10 @@
 <?php
-require_once( ABSPATH . '/wp-includes/class-phpmailer.php' );
+//require_once( ABSPATH . '/wp-includes/class-phpmailer.php' );
+require_once ABSPATH . '/wp-includes/PHPMailer/PHPMailer.php';
+require_once ABSPATH . '/wp-includes/PHPMailer/Exception.php';
+
+class_alias( PHPMailer\PHPMailer\PHPMailer::class, 'PHPMailer' );
+class_alias( PHPMailer\PHPMailer\Exception::class, 'phpmailerException' );
 
 class MockPHPMailer extends PHPMailer {
 	var $mock_sent = array();
@@ -95,7 +100,12 @@ function tests_retrieve_phpmailer_instance() {
 function reset_phpmailer_instance() {
 	$mailer = tests_retrieve_phpmailer_instance();
 	if ( $mailer ) {
-		$GLOBALS['phpmailer'] = new MockPHPMailer( true );
+		$mailer               = new MockPHPMailer( true );
+		$mailer::$validator   = static function ( $email ) {
+			return is_email( $email ) !== false;
+		};
+		$GLOBALS['phpmailer'] = $mailer;
+		
 		return true;
 	}
 

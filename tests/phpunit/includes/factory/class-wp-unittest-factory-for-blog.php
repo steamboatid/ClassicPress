@@ -12,7 +12,7 @@
  */
 class WP_UnitTest_Factory_For_Blog extends WP_UnitTest_Factory_For_Thing {
 
-	function __construct( $factory = null ) {
+	function __construct( WP_UnitTest_Factory $factory = null ) {
 		global $current_site, $base;
 		parent::__construct( $factory );
 		$this->default_generation_definitions = array(

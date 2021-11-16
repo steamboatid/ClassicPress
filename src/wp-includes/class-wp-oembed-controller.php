@@ -33,8 +33,9 @@ final class WP_oEmbed_Controller {
 
 		register_rest_route( 'oembed/1.0', '/embed', array(
 			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'get_item' ),
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_item' ),
+				'permission_callback' => '__return_true',
 				'args'     => array(
 					'url'      => array(
 						'required'          => true,

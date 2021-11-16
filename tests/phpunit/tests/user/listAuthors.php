@@ -23,7 +23,7 @@ class Tests_User_ListAuthors extends WP_UnitTestCase {
 		'style'         => 'list',
 		'html'          => true );
 		*/
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$user_ids[] = $factory->user->create( array( 'user_login' => 'zack', 'display_name' => 'zack', 'role' => 'author', 'first_name' => 'zack', 'last_name' => 'moon' ) );
 		self::$user_ids[] = $factory->user->create( array( 'user_login' => 'bob', 'display_name' => 'bob', 'role' => 'author', 'first_name' => 'bob', 'last_name' => 'reno' ) );
 		self::$user_ids[] = $factory->user->create( array( 'user_login' => 'paul', 'display_name' => 'paul', 'role' => 'author', 'first_name' => 'paul', 'last_name' => 'norris' ) );

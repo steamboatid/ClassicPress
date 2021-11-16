@@ -15,7 +15,7 @@ class WP_UnitTest_Factory_For_Term extends WP_UnitTest_Factory_For_Thing {
 	private $taxonomy;
 	const DEFAULT_TAXONOMY = 'post_tag';
 
-	function __construct( $factory = null, $taxonomy = null ) {
+	function __construct( WP_UnitTest_Factory $factory, $taxonomy = null ) {
 		parent::__construct( $factory );
 		$this->taxonomy = $taxonomy ? $taxonomy : self::DEFAULT_TAXONOMY;
 		$this->default_generation_definitions = array(

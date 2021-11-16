@@ -727,7 +727,6 @@ class WP_Query {
 		$qv['year'] = absint($qv['year']);
 		$qv['monthnum'] = absint($qv['monthnum']);
 		$qv['day'] = absint($qv['day']);
-		$qv['w'] = absint($qv['w']);
 		$qv['m'] = is_scalar( $qv['m'] ) ? preg_replace( '|[^0-9]|', '', $qv['m'] ) : '';
 		$qv['paged'] = absint($qv['paged']);
 		$qv['cat'] = preg_replace( '|[^0-9,-]|', '', $qv['cat'] ); // comma separated list of positive or negative integers
@@ -735,6 +734,7 @@ class WP_Query {
 		$qv['pagename'] = trim( $qv['pagename'] );
 		$qv['name'] = trim( $qv['name'] );
 		$qv['title'] = trim( $qv['title'] );
+		if ( '' !== $qv['w'] ) $qv['w'] = absint($qv['w']);
 		if ( '' !== $qv['hour'] ) $qv['hour'] = absint($qv['hour']);
 		if ( '' !== $qv['minute'] ) $qv['minute'] = absint($qv['minute']);
 		if ( '' !== $qv['second'] ) $qv['second'] = absint($qv['second']);
@@ -828,7 +828,7 @@ class WP_Query {
 				}
 			}
 
-			if ( '' != $qv['w'] ) {
+			if ( '' !== $qv['w'] ) {
 				$this->is_date = true;
 			}
 

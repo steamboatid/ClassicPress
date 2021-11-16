@@ -25,7 +25,7 @@ class Tests_Multisite_Site extends WP_UnitTestCase {
 			parent::tear_down();
 	}
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$network_ids = array(
 			'make.wordpress.org/' => array( 'domain' => 'make.wordpress.org', 'path' => '/' ),
 		);

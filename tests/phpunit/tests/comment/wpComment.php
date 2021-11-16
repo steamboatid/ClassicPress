@@ -6,7 +6,7 @@
 class Tests_Term_WpComment extends WP_UnitTestCase {
 	protected static $comment_id;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		global $wpdb;
 
 		// Ensure that there is a comment with ID 1.

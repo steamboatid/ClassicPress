@@ -17,7 +17,7 @@ class WP_Test_REST_Attachments_Controller extends WP_Test_REST_Post_Type_Control
 	protected static $contributor_id;
 	protected static $uploader_id;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$superadmin_id = $factory->user->create( array(
 			'role'       => 'administrator',
 			'user_login' => 'superadmin',

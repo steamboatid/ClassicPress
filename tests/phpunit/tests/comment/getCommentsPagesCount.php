@@ -12,7 +12,7 @@ class Tests_Comment_GetCommentsPagesCount extends WP_UnitTestCase {
 	/**
 	 * set_up options
 	 */
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->option_page_comments = get_option( 'page_comments' );
 		$this->option_page_comments = get_option( 'comments_per_page' );
@@ -25,7 +25,7 @@ class Tests_Comment_GetCommentsPagesCount extends WP_UnitTestCase {
 	/**
 	 * tear_down options
 	 */
-	function tear_down() {
+	public function tear_down() {
 		update_option( 'page_comments', $this->option_page_comments );
 		update_option( 'comments_per_page', $this->option_page_comments );
 		update_option( 'thread_comments', $this->option_page_comments );

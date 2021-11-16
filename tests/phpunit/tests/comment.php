@@ -12,7 +12,7 @@ class Tests_Comment extends WP_UnitTestCase {
 		reset_phpmailer_instance();
 	}
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$user_id = $factory->user->create( array(
 			'role'       => 'author',
 			'user_login' => 'test_wp_user_get',

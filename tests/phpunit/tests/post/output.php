@@ -5,6 +5,7 @@
 /**
  * @group post
  * @group formatting
+ * @group kses
  */
 class Tests_Post_Output extends WP_UnitTestCase {
 

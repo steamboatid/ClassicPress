@@ -4,7 +4,7 @@
  * @group admin
  */
 class Tests_Admin_includesPlugin extends WP_UnitTestCase {
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::_back_up_mu_plugins();
 	}
 

@@ -28,17 +28,39 @@ define( 'REST_API_VERSION', '2.0' );
  * @return bool True on success, false on error.
  */
 function register_rest_route( $namespace, $route, $args = array(), $override = false ) {
+	/**
+	 * additional information about the error must be added to $function name
+	 * (argument of _doing_it_wrong) because phpunit does NOT show additional infos
+	 */
 	if ( empty( $namespace ) ) {
 		/*
 		 * Non-namespaced routes are not allowed, with the exception of the main
 		 * and namespace indexes. If you really need to register a
 		 * non-namespaced route, call `WP_REST_Server::register_route` directly.
 		 */
-		_doing_it_wrong( 'register_rest_route', __( 'Routes must be namespaced with plugin or theme name and version.' ), 'WP-4.4.0' );
+		_doing_it_wrong( 'register_rest_route::route_must_namespaced', __( 'Routes must be namespaced with plugin or theme name and version.' ), 'WP-4.4.0' );
 		return false;
-	} else if ( empty( $route ) ) {
-		_doing_it_wrong( 'register_rest_route', __( 'Route must be specified.' ), 'WP-4.4.0' );
+	} elseif ( empty( $route ) ) {
+		_doing_it_wrong( 'register_rest_route::noroute', __( 'Route must be specified.' ), 'WP-4.4.0' );
 		return false;
+	}
+
+	$clean_namespace = trim( $namespace, '/' );
+
+	if ( $clean_namespace !== $namespace ) {
+		_doing_it_wrong( __FUNCTION__, __( 'Namespace must not start or end with a slash.' ), '5.4.2' );
+	}
+
+	if ( ! did_action( 'rest_api_init' ) ) {
+		_doing_it_wrong(
+			'register_rest_route::rest_api_init',
+			sprintf(
+				/* translators: %s: rest_api_init */
+				__( 'REST API routes must be registered on the %s action.' ),
+				'<code>rest_api_init</code>'
+			),
+			'5.1.0'
+		);
 	}
 
 	if ( isset( $args['args'] ) ) {
@@ -54,22 +76,40 @@ function register_rest_route( $namespace, $route, $args = array(), $override = f
 	}
 
 	$defaults = array(
-		'methods'         => 'GET',
-		'callback'        => null,
-		'args'            => array(),
+		'methods'  => 'GET',
+		'callback' => null,
+		'args'     => array(),
 	);
+
 	foreach ( $args as $key => &$arg_group ) {
 		if ( ! is_numeric( $key ) ) {
 			// Route option, skip here.
 			continue;
 		}
 
-		$arg_group = array_merge( $defaults, $arg_group );
+		$arg_group         = array_merge( $defaults, $arg_group );
 		$arg_group['args'] = array_merge( $common_args, $arg_group['args'] );
+
+		if ( ! isset( $arg_group['permission_callback'] ) ) {
+			_doing_it_wrong(
+				__FUNCTION__ . '::permission_callback',
+				sprintf(
+					/* translators:
+					 * 1: The REST API route being registered,
+					 * 2: The argument name,
+					 * 3: The suggested function name. */
+					__( 'The REST API route definition for %1$s is missing the required %2$s argument. For REST API routes that are intended to be public, use %3$s as the permission callback.' ),
+					'<code>' . $clean_namespace . '/' . trim( $route, '/' ) . '</code>',
+					'<code>permission_callback</code>',
+					'<code>__return_true</code>'
+				),
+				'5.5.0'
+			);
+		}
 	}
 
-	$full_route = '/' . trim( $namespace, '/' ) . '/' . trim( $route, '/' );
-	rest_get_server()->register_route( $namespace, $full_route, $args, $override );
+	$full_route = '/' . $clean_namespace . '/' . trim( $route, '/' );
+	rest_get_server()->register_route( $clean_namespace, $full_route, $args, $override );
 	return true;
 }
 

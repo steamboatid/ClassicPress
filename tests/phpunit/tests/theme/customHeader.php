@@ -8,7 +8,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 
 	protected static $header_video_id;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$post = self::factory()->post->create( array(
 			'post_status' => 'publish',
 		) );
@@ -228,14 +228,20 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/38738
 	 */
 	function test_video_header_callback_front_page_from_front_page() {
+		global $wp_query;
+
 		$this->_add_theme_support( array(
 			'video' => true,
 		) );
+		set_theme_mod( 'header_video', self::$header_video_id );
 
 		$this->go_to( home_url() );
+//		$wp_query->parse_query('paged=2');
+//		$wp_query->parse_query('page=2');
+//		$wp_query->parse_query('page=1');
+		$this->assertTrue( is_home() );
 
 		$result = is_header_video_active();
-
 		$this->assertTrue( $result );
 	}
 

@@ -4,6 +4,7 @@
  * Tests for the WP_Customize_Widgets class.
  *
  * @group customize
+ * @group kses
  */
 class Tests_WP_Customize_Widgets extends WP_UnitTestCase {
 

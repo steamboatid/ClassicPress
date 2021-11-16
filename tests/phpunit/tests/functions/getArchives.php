@@ -19,7 +19,7 @@ class Tests_Get_Archives extends WP_UnitTestCase {
 		$this->year_url = get_year_link( date( 'Y' ) );
 	}
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$post_ids = $factory->post->create_many( 8, array( 'post_type' => 'post', 'post_author' => '1' ) );
 	}
 

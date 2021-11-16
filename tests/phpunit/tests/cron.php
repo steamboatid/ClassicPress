@@ -6,13 +6,13 @@
  * @group cron
  */
 class Tests_Cron extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		// Make sure the schedule is clear.
 		_set_cron_array( array() );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		// Make sure the schedule is clear.
 		_set_cron_array( array() );
 		parent::tear_down();

@@ -5,6 +5,7 @@
  *
  * @group upgrade
  * @group dbdelta
+ * @group mayfail
  */
 class Tests_dbDelta extends WP_UnitTestCase {
 

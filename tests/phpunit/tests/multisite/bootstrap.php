@@ -12,7 +12,7 @@ class Tests_Multisite_Bootstrap extends WP_UnitTestCase {
 	protected static $network_ids;
 	protected static $site_ids;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$network_ids = array(
 			'wordpress.org/'         => array( 'domain' => 'wordpress.org', 'path' => '/' ),
 			'make.wordpress.org/'    => array( 'domain' => 'make.wordpress.org', 'path' => '/' ),

@@ -62,7 +62,7 @@ class Tests_Privacy_WpPrivacySendPersonalDataExportEmail extends WP_UnitTestCase
 	 *
 	 * @param WP_UnitTest_Factory $factory Factory.
 	 */
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$requester_email = 'requester@example.com';
 		self::$request_id      = wp_create_user_request( self::$requester_email, 'export_personal_data' );
 

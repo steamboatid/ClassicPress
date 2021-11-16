@@ -12,7 +12,7 @@ class Tests_Multisite_Get_Main_Site_ID extends WP_UnitTestCase {
 	protected static $network_ids;
 	protected static $site_ids;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$network_ids = array(
 			'wordpress.org/' => array( 'domain' => 'wordpress.org', 'path' => '/' ),
 			'wp.org/'        => array( 'domain' => 'wp.org',        'path' => '/' ), // A network with no sites.

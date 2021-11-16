@@ -20,7 +20,7 @@ class Tests_AdminBar extends WP_UnitTestCase {
 		require_once ABSPATH . WPINC . '/class-wp-admin-bar.php';
 	}
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$user_ids[] = self::$editor_id = $factory->user->create( array( 'role' => 'editor' ) );
 		self::$user_ids[] = self::$admin_id = $factory->user->create( array( 'role' => 'administrator' ) );
 		self::$user_ids[] = self::$no_role_id = $factory->user->create( array( 'role' => '' ) );

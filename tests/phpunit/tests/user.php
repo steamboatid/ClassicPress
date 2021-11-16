@@ -17,7 +17,7 @@ class Tests_User extends WP_UnitTestCase {
 	protected $author;
 	protected $user_data;
 
-	public static function wpSetUpBeforeClass( $factory ) {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$user_ids[] = self::$contrib_id = $factory->user->create( array(
 			'user_login' => 'user1',
 			'user_nicename' => 'userone',

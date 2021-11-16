@@ -9,7 +9,7 @@
  */
 class Tests_Category extends WP_UnitTestCase {
 
-	function tear_down() {
+	public function tear_down() {
 		_unregister_taxonomy( 'test_tax_cat' );
 		parent::tear_down();
 	}

@@ -6,6 +6,7 @@
 /**
  * @group post
  * @group formatting
+ * @group kses
  */
 class Tests_Post_Filtering extends WP_UnitTestCase {
 	function set_up() {

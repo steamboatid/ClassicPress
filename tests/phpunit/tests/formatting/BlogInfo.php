@@ -9,7 +9,7 @@ class Tests_Formatting_BlogInfo extends WP_UnitTestCase {
 	 * @dataProvider locales
 	 * @see https://core.trac.wordpress.org/ticket/28303
 	 */
-	function test_get_bloginfo_language( $test_locale, $expected ) {
+	public function test_get_bloginfo_language( $test_locale, $expected ) {
 		global $locale;
 
 		$old_locale = $locale;
@@ -35,7 +35,7 @@ class Tests_Formatting_BlogInfo extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/27942
 	 */
-	function test_bloginfo_sanitize_option() {
+	public function test_bloginfo_sanitize_option() {
 		$old_values = array(
 			'blogname'        => get_option( 'blogname' ),
 			'blogdescription' => get_option( 'blogdescription' ),

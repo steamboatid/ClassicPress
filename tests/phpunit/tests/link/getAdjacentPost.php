@@ -81,7 +81,7 @@ class Tests_Link_GetAdjacentPost extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22112
 	 */
-	function test_get_adjacent_post_exclude_self_term() {
+	public function test_get_adjacent_post_exclude_self_term() {
 		// Bump term_taxonomy to mimic shared term offsets.
 		global $wpdb;
 		$wpdb->insert( $wpdb->term_taxonomy, array( 'taxonomy' => 'foo', 'term_id' => 12345, 'description' => '' ) );

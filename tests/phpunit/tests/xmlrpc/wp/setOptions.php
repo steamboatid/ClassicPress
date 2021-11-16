@@ -7,7 +7,7 @@ class Tests_XMLRPC_wp_setOptions extends WP_XMLRPC_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22936
 	 */
-	function test_set_option_no_escape_strings() {
+	public function test_set_option_no_escape_strings() {
 		$this->make_user_by_role( 'administrator' );
 		$string_with_quote = "Mary's Lamb Shop";
 		$escaped_string_with_quote = esc_html( $string_with_quote ); // title is passed through esc_html()

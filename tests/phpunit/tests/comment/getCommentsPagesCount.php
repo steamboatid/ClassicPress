@@ -36,7 +36,7 @@ class Tests_Comment_GetCommentsPagesCount extends WP_UnitTestCase {
 	/**
 	 * Validate get_comments_pages_count for empty comments
 	 */
-	function test_empty() {
+	public function test_empty() {
 		//setup post and comments
 		$post_id = self::factory()->post->create( array( 'post_title' => 'comment--post', 'post_type' => 'post' ) );
 		$this->go_to( '/?p=' . $post_id );
@@ -58,7 +58,7 @@ class Tests_Comment_GetCommentsPagesCount extends WP_UnitTestCase {
 	/**
 	 * Validate get_comments_pages_count for treaded comments
 	 */
-	function test_threaded_comments( ) {
+	public function test_threaded_comments( ) {
 		//setup post and comments
 		$post = self::factory()->post->create_and_get( array( 'post_title' => 'comment--post', 'post_type' => 'post' ) );
 		$comments = self::factory()->comment->create_post_comments( $post->ID, 15 );
@@ -73,7 +73,7 @@ class Tests_Comment_GetCommentsPagesCount extends WP_UnitTestCase {
 	/**
 	 * Validate get_comments_pages_count for option tread_comments
 	 */
-	function test_option_thread_comments() {
+	public function test_option_thread_comments() {
 
 		//setup post and comments
 		$post = self::factory()->post->create_and_get( array( 'post_title' => 'comment--post', 'post_type' => 'post' ) );
@@ -99,7 +99,7 @@ class Tests_Comment_GetCommentsPagesCount extends WP_UnitTestCase {
 	/**
 	 * Validate $wp_query logic of get_comment_pages_count
 	 */
-	function test_wp_query_comments_per_page() {
+	public function test_wp_query_comments_per_page() {
 		global $wp_query;
 
 		update_option( 'posts_per_rss', 100 );

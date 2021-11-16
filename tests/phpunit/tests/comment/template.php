@@ -4,7 +4,7 @@
  */
 class Tests_Comment_Template extends WP_UnitTestCase {
 
-	function test_get_comments_number() {
+	public function test_get_comments_number() {
 		$post_id = self::factory()->post->create();
 
 		$this->assertSame( 0, get_comments_number( 0 ) );
@@ -17,7 +17,7 @@ class Tests_Comment_Template extends WP_UnitTestCase {
 		$this->assertSame( '12', get_comments_number( get_post( $post_id ) ) );
 	}
 
-	function test_get_comments_number_without_arg() {
+	public function test_get_comments_number_without_arg() {
 		$post_id = self::factory()->post->create();
 		$permalink = get_permalink( $post_id );
 		$this->go_to( $permalink );
@@ -33,7 +33,7 @@ class Tests_Comment_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/13651
 	 */
-	function test_get_comments_number_text_declension_with_default_args() {
+	public function test_get_comments_number_text_declension_with_default_args() {
 		$post_id = $this->factory->post->create();
 		$permalink = get_permalink( $post_id );
 		$this->go_to( $permalink );
@@ -56,7 +56,7 @@ class Tests_Comment_Template extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/13651
 	 * @dataProvider data_get_comments_number_text_declension
 	 */
-	function test_get_comments_number_text_declension_with_custom_args( $number, $input, $output ) {
+	public function test_get_comments_number_text_declension_with_custom_args( $number, $input, $output ) {
 		$post_id = $this->factory->post->create();
 		$permalink = get_permalink( $post_id );
 

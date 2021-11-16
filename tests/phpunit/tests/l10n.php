@@ -9,7 +9,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35961
 	 */
-	function test_n_noop() {
+	public function test_n_noop() {
 		$text_domain   = 'text-domain';
 		$nooped_plural = _n_noop( '%s post', '%s posts', $text_domain );
 
@@ -22,7 +22,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35961
 	 */
-	function test_nx_noop() {
+	public function test_nx_noop() {
 		$text_domain   = 'text-domain';
 		$nooped_plural = _nx_noop( '%s post', '%s posts', 'my-context', $text_domain );
 
@@ -36,7 +36,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35073
 	 */
-	function test_before_last_bar() {
+	public function test_before_last_bar() {
 		$this->assertSame( 'no-bar-at-all', before_last_bar( 'no-bar-at-all' ) );
 		$this->assertSame( 'before-last-bar', before_last_bar( 'before-last-bar|after-bar' ) );
 		$this->assertSame( 'first-before-bar|second-before-bar', before_last_bar( 'first-before-bar|second-before-bar|after-last-bar' ) );
@@ -45,7 +45,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35950
 	 */
-	function test_get_available_languages() {
+	public function test_get_available_languages() {
 		$array = get_available_languages();
 		$this->assertIsArray( $array );
 
@@ -59,7 +59,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35284
 	 */
-	function test_wp_get_installed_translations_for_core() {
+	public function test_wp_get_installed_translations_for_core() {
 		$installed_translations = wp_get_installed_translations( 'core' );
 		$this->assertIsArray( $installed_translations );
 		$textdomains_expected = array( 'admin', 'admin-network', 'continents-cities', 'default' );
@@ -81,7 +81,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35294
 	 */
-	function test_wp_dropdown_languages() {
+	public function test_wp_dropdown_languages() {
 		$args = array(
 			'id'           => 'foo',
 			'name'         => 'bar',
@@ -102,7 +102,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38632
 	 */
-	function test_wp_dropdown_languages_site_default() {
+	public function test_wp_dropdown_languages_site_default() {
 		$args = array(
 			'id'                       => 'foo',
 			'name'                     => 'bar',
@@ -125,7 +125,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38632
 	 */
-	function test_wp_dropdown_languages_en_US_selected() {
+	public function test_wp_dropdown_languages_en_US_selected() {
 		$args = array(
 			'id'           => 'foo',
 			'name'         => 'bar',
@@ -166,7 +166,7 @@ class Tests_L10n extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35284
 	 */
-	function test_wp_get_pomo_file_data() {
+	public function test_wp_get_pomo_file_data() {
 		$file  = DIR_TESTDATA . '/pomo/empty.po';
 		$array = wp_get_pomo_file_data( $file );
 		$this->assertArrayHasKey( 'POT-Creation-Date', $array );

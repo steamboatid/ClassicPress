@@ -7,7 +7,7 @@
  */
 class Tests_Basic extends WP_UnitTestCase {
 
-	function test_license_wp_copyright_years() {
+	public function test_license_wp_copyright_years() {
 		$license = file_get_contents( ABSPATH . 'license.txt' );
 
 		$this_year = date( 'Y' );
@@ -26,7 +26,7 @@ class Tests_Basic extends WP_UnitTestCase {
 		);
 	}
 
-	function test_license_cp_copyright_years() {
+	public function test_license_cp_copyright_years() {
 		$license = file_get_contents( ABSPATH . 'license.txt' );
 		$this_year = date( 'Y' );
 
@@ -44,7 +44,7 @@ class Tests_Basic extends WP_UnitTestCase {
 		);
 	}
 
-	function test_package_json() {
+	public function test_package_json() {
 		global $cp_version;
 		$package_json = file_get_contents( dirname( ABSPATH ) . '/package.json' );
 		$package_json = json_decode( $package_json, true );
@@ -61,7 +61,7 @@ class Tests_Basic extends WP_UnitTestCase {
 	}
 
 	// two tests for a lame bug in PHPUnit that broke the $GLOBALS reference
-	function test_globals() {
+	public function test_globals() {
 		global $test_foo;
 		$test_foo = array('foo', 'bar', 'baz');
 
@@ -75,7 +75,7 @@ class Tests_Basic extends WP_UnitTestCase {
 		$this->assertEquals($test_foo, $GLOBALS['test_foo']);
 	}
 
-	function test_globals_bar() {
+	public function test_globals_bar() {
 		global $test_bar;
 		$test_bar = array('a', 'b', 'c');
 		$this->assertEquals($test_bar, $GLOBALS['test_bar']);
@@ -83,7 +83,7 @@ class Tests_Basic extends WP_UnitTestCase {
 
 	// test some helper utility functions
 
-	function test_strip_ws() {
+	public function test_strip_ws() {
 		$this->assertSame( '', strip_ws( '' ) );
 		$this->assertSame( 'foo', strip_ws( 'foo' ) );
 		$this->assertSame( '', strip_ws( "\r\n\t  \n\r\t" ) );
@@ -110,7 +110,7 @@ class Tests_Basic extends WP_UnitTestCase {
 
 	}
 
-	function test_mask_input_value() {
+	public function test_mask_input_value() {
 		$in = <<<EOF
 <h2>Assign Authors</h2>
 <p>To make it easier for you to edit and save the imported posts and drafts, you may want to change the name of the author of the posts. For example, you may want to import all the entries as <code>admin</code>s entries.</p>
@@ -130,7 +130,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/17884
 	 */
-	function test_setting_nonexistent_arrays() {
+	public function test_setting_nonexistent_arrays() {
 		$page = 1;
 		$field = 'settings';
 
@@ -141,37 +141,37 @@ EOF;
 		$this->assertFalse( isset( $empty_array[ $page ]['bar']['baz'] ) );
 	}
 
-	function test_magic_getter() {
+	public function test_magic_getter() {
 		$basic = new Basic_Object();
 
 		$this->assertEquals( 'bar', $basic->foo );
 	}
 
-	function test_subclass_magic_getter() {
+	public function test_subclass_magic_getter() {
 		$basic = new Basic_Subclass();
 
 		$this->assertEquals( 'bar', $basic->foo );
 	}
 
-	function test_call_method() {
+	public function test_call_method() {
 		$basic = new Basic_Object();
 
 		$this->assertEquals( 'maybe', $basic->callMe() );
 	}
 
-	function test_subclass_call_method() {
+	public function test_subclass_call_method() {
 		$basic = new Basic_Subclass();
 
 		$this->assertEquals( 'maybe', $basic->callMe() );
 	}
 
-	function test_subclass_isset() {
+	public function test_subclass_isset() {
 		$basic = new Basic_Subclass();
 
 		$this->assertTrue( isset( $basic->foo ) );
 	}
 
-	function test_subclass_unset() {
+	public function test_subclass_unset() {
 		$basic = new Basic_Subclass();
 
 		unset( $basic->foo );
@@ -179,7 +179,7 @@ EOF;
 		$this->assertFalse( isset( $basic->foo ) );
 	}
 
-	function test_switch_order() {
+	public function test_switch_order() {
 		$return = $this->_switch_order_helper( 1 );
 		$this->assertEquals( 'match', $return );
 	}

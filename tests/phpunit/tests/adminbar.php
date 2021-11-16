@@ -29,7 +29,7 @@ class Tests_AdminBar extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21117
 	 */
-	function test_content_post_type() {
+	public function test_content_post_type() {
 		wp_set_current_user( self::$editor_id );
 
 		register_post_type( 'content', array( 'show_in_admin_bar' => true ) );
@@ -48,7 +48,7 @@ class Tests_AdminBar extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21117
 	 */
-	function test_merging_existing_meta_values() {
+	public function test_merging_existing_meta_values() {
 		wp_set_current_user( self::$editor_id );
 
 		$admin_bar = new WP_Admin_Bar;

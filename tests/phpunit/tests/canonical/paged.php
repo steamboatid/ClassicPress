@@ -6,7 +6,7 @@
  */
 class Tests_Canonical_Paged extends WP_Canonical_UnitTestCase {
 
-	function test_nextpage() {
+	public function test_nextpage() {
 		$para = 'This is a paragraph.
 			This is a paragraph.
 			This is a paragraph.';

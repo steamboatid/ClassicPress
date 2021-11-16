@@ -28,18 +28,18 @@ class Tests_User_Author_Template extends WP_UnitTestCase {
 		) );
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		setup_postdata( get_post( self::$post_id ) );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		wp_reset_postdata();
 		parent::tear_down();
 	}
 
-	function test_get_the_author() {
+	public function test_get_the_author() {
 		$author_name = get_the_author();
 		$user = new WP_User( self::$author_id );
 
@@ -47,7 +47,7 @@ class Tests_User_Author_Template extends WP_UnitTestCase {
 		$this->assertSame( 'test_author', $author_name );
 	}
 
-	function test_get_the_author_meta() {
+	public function test_get_the_author_meta() {
 		$this->assertSame( 'test_author', get_the_author_meta( 'login' ) );
 		$this->assertSame( 'test_author', get_the_author_meta( 'user_login' ) );
 		$this->assertSame( 'test_author', get_the_author_meta( 'display_name' ) );
@@ -70,14 +70,14 @@ class Tests_User_Author_Template extends WP_UnitTestCase {
 		$this->assertSame( '', get_the_author_meta( 'does_not_exist' ) );
 	}
 
-	function test_get_the_author_meta_no_authordata() {
+	public function test_get_the_author_meta_no_authordata() {
 		unset( $GLOBALS['authordata'] );
 		$this->assertSame( '', get_the_author_meta( 'id' ) );
 		$this->assertSame( '', get_the_author_meta( 'user_login' ) );
 		$this->assertSame( '', get_the_author_meta( 'does_not_exist' ) );
 	}
 
-	function test_get_the_author_posts() {
+	public function test_get_the_author_posts() {
 		// Test with no global post, result should be 0 because no author is found.
 		$this->assertSame( 0, get_the_author_posts() );
 		$GLOBALS['post'] = self::$post_id;
@@ -87,7 +87,7 @@ class Tests_User_Author_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30904
 	 */
-	function test_get_the_author_posts_with_custom_post_type() {
+	public function test_get_the_author_posts_with_custom_post_type() {
 		register_post_type( 'wptests_pt' );
 
 		$cpt_ids = self::factory()->post->create_many( 2, array(

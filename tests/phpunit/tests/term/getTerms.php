@@ -4,7 +4,7 @@
  * @group taxonomy
  */
 class Tests_Term_getTerms extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		_clean_term_filters();
@@ -190,7 +190,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23506
 	 */
-	function test_get_terms_should_allow_arbitrary_indexed_taxonomies_array() {
+	public function test_get_terms_should_allow_arbitrary_indexed_taxonomies_array() {
 		$term_id = self::factory()->tag->create();
 		$terms = get_terms( array( '111' => 'post_tag' ), array( 'hide_empty' => false ) );
 		$this->assertSame( $term_id, reset( $terms )->term_id );
@@ -199,7 +199,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/13661
 	 */
-	function test_get_terms_fields() {
+	public function test_get_terms_fields() {
 		$term_id1 = self::factory()->tag->create( array( 'slug' => 'woo', 'name' => 'WOO!' ) );
 		$term_id2 = self::factory()->tag->create( array( 'slug' => 'hoo', 'name' => 'HOO!', 'parent' => $term_id1 ) );
 
@@ -243,7 +243,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
  	/**
 	 * @see https://core.trac.wordpress.org/ticket/11823
  	 */
-	function test_get_terms_include_exclude() {
+	public function test_get_terms_include_exclude() {
 		global $wpdb;
 
 		$term_id1 = self::factory()->tag->create();
@@ -302,7 +302,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/25710
 	 */
-	function test_get_terms_exclude_tree() {
+	public function test_get_terms_exclude_tree() {
 
 		$term_id_uncategorized = get_option( 'default_category' );
 
@@ -334,7 +334,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/13992
 	 */
-	function test_get_terms_search() {
+	public function test_get_terms_search() {
 		$term_id1 = self::factory()->tag->create( array( 'slug' => 'burrito' ) );
 		$term_id2 = self::factory()->tag->create( array( 'name' => 'Wilbur' ) );
 		$term_id3 = self::factory()->tag->create( array( 'name' => 'Foo' ) );
@@ -353,7 +353,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/8214
 	 */
-	function test_get_terms_like() {
+	public function test_get_terms_like() {
 		$term_id1 = self::factory()->tag->create( array( 'name' => 'burrito', 'description' => 'This is a burrito.' ) );
 		$term_id2 = self::factory()->tag->create( array( 'name' => 'taco', 'description' => 'Burning man.' ) );
 
@@ -427,7 +427,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26903
 	 */
-	function test_get_terms_parent_zero() {
+	public function test_get_terms_parent_zero() {
 		$tax = 'food';
 		register_taxonomy( $tax, 'post', array( 'hierarchical' => true ) );
 
@@ -483,7 +483,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26903
 	 */
-	function test_get_terms_grandparent_zero() {
+	public function test_get_terms_grandparent_zero() {
 		$tax = 'food';
 		register_taxonomy( $tax, 'post', array( 'hierarchical' => true ) );
 
@@ -511,7 +511,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26903
 	 */
-	function test_get_terms_seven_levels_deep() {
+	public function test_get_terms_seven_levels_deep() {
 		$tax = 'deep';
 		register_taxonomy( $tax, 'post', array( 'hierarchical' => true ) );
 		$parent = 0;
@@ -541,7 +541,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/27123
 	 */
-	function test_get_terms_child_of() {
+	public function test_get_terms_child_of() {
 		$parent = self::factory()->category->create();
 		$child = self::factory()->category->create( array( 'parent' => $parent ) );
 
@@ -599,7 +599,7 @@ class Tests_Term_getTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/27123
 	 */
-	function test_get_term_children_recursion() {
+	public function test_get_term_children_recursion() {
 		// Assume there is a way to insert a term with the parent pointing to itself
 		// See: https://core.trac.wordpress.org/changeset/15806
 		remove_filter( 'wp_update_term_parent', 'wp_check_term_hierarchy_for_loops', 10 );

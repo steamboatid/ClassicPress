@@ -4,7 +4,7 @@
  * @group admin
  */
 class Tests_Admin_includesMisc extends WP_UnitTestCase {
-	function test_shorten_url() {
+	public function test_shorten_url() {
 		$tests = array(
 			'wordpress\.org/about/philosophy'
 				=> 'wordpress\.org/about/philosophy', // no longer strips slashes

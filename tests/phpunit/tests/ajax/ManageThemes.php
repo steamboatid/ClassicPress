@@ -144,7 +144,7 @@ class Tests_Ajax_Manage_Themes extends WP_Ajax_UnitTestCase {
 		$this->assertSameSets( $expected, $response );
 	}
 
-	function test_uppercase_theme_slug() {
+	public function test_uppercase_theme_slug() {
 		$this->_setRole( 'administrator' );
 
 		$_POST['_ajax_nonce'] = wp_create_nonce( 'updates' );

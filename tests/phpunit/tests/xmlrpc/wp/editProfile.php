@@ -6,7 +6,7 @@
  */
 class Tests_XMLRPC_wp_editProfile extends WP_XMLRPC_UnitTestCase {
 
-	function test_invalid_username_password() {
+	public function test_invalid_username_password() {
 		$result = $this->myxmlrpcserver->wp_editProfile( array( 1, 'username', 'password', array() ) );
 		$this->assertIXRError( $result );
 		$this->assertSame( 403, $result->code );

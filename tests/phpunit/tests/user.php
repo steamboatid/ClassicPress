@@ -48,13 +48,13 @@ class Tests_User extends WP_UnitTestCase {
 		self::$_author = get_user_by( 'ID', self::$author_id );
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->author = clone self::$_author;
 	}
 
-	function test_get_users_of_blog() {
+	public function test_get_users_of_blog() {
 		// add one of each user role
 		$nusers = array(
 			self::$contrib_id,
@@ -80,7 +80,7 @@ class Tests_User extends WP_UnitTestCase {
 	}
 
 	// simple get/set tests for user_option functions
-	function test_user_option() {
+	public function test_user_option() {
 		$key = rand_str();
 		$val = rand_str();
 
@@ -98,7 +98,7 @@ class Tests_User extends WP_UnitTestCase {
 	}
 
 	// simple tests for usermeta functions
-	function test_usermeta() {
+	public function test_usermeta() {
 		$key = 'key';
 		$val = 'value1';
 
@@ -130,7 +130,7 @@ class Tests_User extends WP_UnitTestCase {
 	}
 
 	// test usermeta functions in array mode
-	function test_usermeta_array() {
+	public function test_usermeta_array() {
 		// some values to set
 		$vals = array(
 			rand_str() => 'val-'.rand_str(),
@@ -168,7 +168,7 @@ class Tests_User extends WP_UnitTestCase {
 	}
 
 	// Test property magic functions for property get/set/isset.
-	function test_user_properties() {
+	public function test_user_properties() {
 		$user = new WP_User( self::$author_id );
 
 		foreach ( $user->data as $key => $data ) {
@@ -208,7 +208,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @expectedDeprecated WP_User->id
 	 * @see https://core.trac.wordpress.org/ticket/20043
 	 */
-	function test_user_unset_lowercase_id( $user ) {
+	public function test_user_unset_lowercase_id( $user ) {
 		// Test 'id' (lowercase)
 		$id = $user->id;
 		unset( $user->id );
@@ -220,7 +220,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @depends test_user_unset_lowercase_id
 	 * @see https://core.trac.wordpress.org/ticket/20043
 	 */
-	function test_user_unset_uppercase_id( $user ) {
+	public function test_user_unset_uppercase_id( $user ) {
 		// Test 'ID'
 		$this->assertNotEmpty( $user->ID );
 		unset( $user->ID );
@@ -228,7 +228,7 @@ class Tests_User extends WP_UnitTestCase {
 	}
 
 	// Test meta property magic functions for property get/set/isset.
-	function test_user_meta_properties() {
+	public function test_user_meta_properties() {
 		$user = new WP_User( self::$author_id );
 
 		update_user_option( self::$author_id, 'foo', 'foo', true );
@@ -241,7 +241,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @expectedDeprecated WP_User->id
 	 */
-	function test_id_property_back_compat() {
+	public function test_id_property_back_compat() {
 		$user = new WP_User( self::$author_id );
 
 		$this->assertTrue( isset( $user->id ) );
@@ -253,7 +253,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * https://core.trac.wordpress.org/ticket/19265
 	 */
-	function test_user_level_property_back_compat() {
+	public function test_user_level_property_back_compat() {
 		$roles = array(
 			self::$admin_id => 10,
 			self::$editor_id => 7,
@@ -270,7 +270,7 @@ class Tests_User extends WP_UnitTestCase {
 		}
 	}
 
-	function test_construction() {
+	public function test_construction() {
 		$user = new WP_User( self::$author_id );
 		$this->assertInstanceOf( 'WP_User', $user );
 		$this->assertSame( self::$author_id, $user->ID );
@@ -309,7 +309,7 @@ class Tests_User extends WP_UnitTestCase {
 		$this->assertSame( $user->user_login, $user7->user_login );
 	}
 
-	function test_get() {
+	public function test_get() {
 		$user = new WP_User( self::$author_id );
 		$this->assertSame( 'author_login', $user->get( 'user_login' ) );
 		$this->assertSame( 'author@email.com', $user->get( 'user_email' ) );
@@ -320,7 +320,7 @@ class Tests_User extends WP_UnitTestCase {
 		$this->assertSame( 'abcdefg', $user->get( 'dashed-key' ) );
 	}
 
-	function test_has_prop() {
+	public function test_has_prop() {
 		$user = new WP_User( self::$author_id );
 		$this->assertTrue( $user->has_prop( 'user_email') );
 		$this->assertTrue( $user->has_prop( 'use_ssl' ) );
@@ -330,7 +330,7 @@ class Tests_User extends WP_UnitTestCase {
 		$this->assertTrue( $user->has_prop( 'dashed-key' ) );
 	}
 
-	function test_update_user() {
+	public function test_update_user() {
 		$user = new WP_User( self::$author_id );
 
 		update_user_meta( self::$author_id, 'description', 'about me' );
@@ -375,7 +375,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * https://core.trac.wordpress.org/ticket/19595
 	 */
-	function test_global_userdata() {
+	public function test_global_userdata() {
 		global $userdata, $wpdb;
 
 		wp_set_current_user( self::$sub_id );
@@ -391,13 +391,13 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * https://core.trac.wordpress.org/ticket/19769
 	 */
-	function test_global_userdata_is_null_when_logged_out() {
+	public function test_global_userdata_is_null_when_logged_out() {
 		global $userdata;
 		wp_set_current_user( 0 );
 		$this->assertNull( $userdata );
 	}
 
-	function test_exists() {
+	public function test_exists() {
 		$user = new WP_User( self::$author_id );
 
 		$this->assertTrue( $user->exists() );
@@ -411,7 +411,7 @@ class Tests_User extends WP_UnitTestCase {
 		$this->assertFalse( $user->exists() );
 	}
 
-	function test_global_authordata() {
+	public function test_global_authordata() {
 		global $authordata, $id;
 
 		$old_post_id = $id;
@@ -444,14 +444,14 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/13317
 	 */
-	function test_get_userdata() {
+	public function test_get_userdata() {
 		$this->assertFalse( get_userdata( 0 ) );
 		$this->assertFalse( get_userdata( '0' ) );
 		$this->assertFalse( get_userdata( 'string' ) );
 		$this->assertFalse( get_userdata( array( 'array' ) ) );
 	}
 
-	function test_user_get_data_by_id() {
+	public function test_user_get_data_by_id() {
 		$user = WP_User::get_data_by( 'id', self::$author_id );
 		$this->assertInstanceOf( 'stdClass', $user );
 		$this->assertEquals( self::$author_id, $user->ID );
@@ -490,7 +490,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21431
 	 */
-	function test_count_many_users_posts() {
+	public function test_count_many_users_posts() {
 		$user_id_b = self::factory()->user->create( array( 'role' => 'author' ) );
 		$post_id_a = self::factory()->post->create( array( 'post_author' => self::$author_id ) );
 		$post_id_b = self::factory()->post->create( array( 'post_author' => $user_id_b ) );
@@ -518,7 +518,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22858
 	 */
-	function test_wp_update_user_on_nonexistent_users() {
+	public function test_wp_update_user_on_nonexistent_users() {
 		$user_id = 1;
 		// Find me a non-existent user ID.
 		while ( get_userdata( $user_id ) )
@@ -531,7 +531,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28435
 	 */
-	function test_wp_update_user_should_not_change_password_when_passed_WP_User_instance() {
+	public function test_wp_update_user_should_not_change_password_when_passed_WP_User_instance() {
 		$testuserid = 1;
 		$user = get_userdata( $testuserid );
 		$pwd_before = $user->user_pass;
@@ -545,7 +545,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28315
 	 */
-	function test_user_meta_error() {
+	public function test_user_meta_error() {
 		$id1 = wp_insert_user(
 			array(
 				'user_login' => rand_str(),
@@ -574,7 +574,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30647
 	 */
-	function test_user_update_email_error() {
+	public function test_user_update_email_error() {
 		$id1 = wp_insert_user(
 			array(
 				'user_login' => 'blackburn',
@@ -617,7 +617,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/27317
 	 * @dataProvider _illegal_user_logins_data
 	 */
-	function test_illegal_user_logins_single( $user_login ) {
+	public function test_illegal_user_logins_single( $user_login ) {
 		$user_data = array(
 			'user_login' => $user_login,
 			'user_email' => 'testuser@example.com',
@@ -641,7 +641,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/27317
 	 * @dataProvider _illegal_user_logins_data
 	 */
-	function test_illegal_user_logins_single_wp_create_user( $user_login ) {
+	public function test_illegal_user_logins_single_wp_create_user( $user_login ) {
 		$user_email = 'testuser-' . $user_login . '@example.com';
 
 		add_filter( 'illegal_user_logins', array( $this, '_illegal_user_logins' ) );
@@ -661,7 +661,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/27317
 	 * @group ms-required
 	 */
-	function test_illegal_user_logins_multisite() {
+	public function test_illegal_user_logins_multisite() {
 		$user_data = array(
 			'user_login' => 'testuser',
 			'user_email' => 'testuser@example.com',
@@ -1010,7 +1010,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/32158
 	 */
-	function test_email_case() {
+	public function test_email_case() {
 		// Alter the case of the email address (which stays the same).
 		$userdata = array(
 			'ID' => self::$editor_id,
@@ -1024,7 +1024,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/32158
 	 */
-	function test_email_change() {
+	public function test_email_change() {
 		// Change the email address.
 		$userdata = array(
 			'ID' => self::$editor_id,
@@ -1047,7 +1047,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/33654
 	 * @see https://core.trac.wordpress.org/ticket/36009
 	 */
-	function test_wp_new_user_notification( $notify, $admin_email_sent_expected, $user_email_sent_expected ) {
+	public function test_wp_new_user_notification( $notify, $admin_email_sent_expected, $user_email_sent_expected ) {
 		reset_phpmailer_instance();
 
 		$was_admin_email_sent = false;
@@ -1123,7 +1123,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/33654
 	 * @expectedDeprecated wp_new_user_notification
 	 */
-	function test_wp_new_user_notification_old_signature_throws_deprecated_warning_but_sends() {
+	public function test_wp_new_user_notification_old_signature_throws_deprecated_warning_but_sends() {
 		reset_phpmailer_instance();
 
 		$was_admin_email_sent = false;
@@ -1148,7 +1148,7 @@ class Tests_User extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/34377
 	 */
-	function test_wp_new_user_notification_old_signature_no_password() {
+	public function test_wp_new_user_notification_old_signature_no_password() {
 		reset_phpmailer_instance();
 
 		$was_admin_email_sent = false;
@@ -1172,7 +1172,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * Ensure blog's admin email change notification emails do not contain encoded HTML entities
 	 * @see https://core.trac.wordpress.org/ticket/40015
 	 */
-	function test_new_admin_email_notification_html_entities_decoded() {
+	public function test_new_admin_email_notification_html_entities_decoded() {
 		reset_phpmailer_instance();
 
 		wp_set_current_user( self::$admin_id );
@@ -1205,7 +1205,7 @@ class Tests_User extends WP_UnitTestCase {
 	 *
 	 * @dataProvider data_user_admin_email_confirmation_emails
 	 */
-	function test_new_admin_email_confirmation_not_sent_when_email_invalid( $email, $message ) {
+	public function test_new_admin_email_confirmation_not_sent_when_email_invalid( $email, $message ) {
 		reset_phpmailer_instance();
 
 		update_option_new_admin_email( get_option( 'admin_email' ), $email );
@@ -1246,7 +1246,7 @@ class Tests_User extends WP_UnitTestCase {
 	 *
 	 * @dataProvider data_user_change_email_confirmation_emails
 	 */
-	function test_profile_email_confirmation_not_sent_invalid_email( $email, $message ) {
+	public function test_profile_email_confirmation_not_sent_invalid_email( $email, $message ) {
 
 		$old_current = get_current_user_id();
 
@@ -1307,7 +1307,7 @@ class Tests_User extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/35715
 	 */
-	function test_edit_user_blank_password() {
+	public function test_edit_user_blank_password() {
 		$_POST                 = array();
 		$_GET                  = array();
 		$_REQUEST              = array();
@@ -1374,7 +1374,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/16470
 	 */
-	function test_send_confirmation_on_profile_email() {
+	public function test_send_confirmation_on_profile_email() {
 		reset_phpmailer_instance();
 		$was_confirmation_email_sent = false;
 
@@ -1407,7 +1407,7 @@ class Tests_User extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/16470
 	 */
-	function test_remove_send_confirmation_on_profile_email() {
+	public function test_remove_send_confirmation_on_profile_email() {
 		remove_action( 'personal_options_update', 'send_confirmation_on_profile_email' );
 
 		reset_phpmailer_instance();
@@ -1445,7 +1445,7 @@ class Tests_User extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/16470
 	 * @see https://core.trac.wordpress.org/ticket/40015
 	 */
-	function test_send_confirmation_on_profile_email_html_entities_decoded() {
+	public function test_send_confirmation_on_profile_email_html_entities_decoded() {
 		$user_id = self::factory()->user->create( array(
 			'role'       => 'subscriber',
 			'user_email' => 'old-email@test.dev',
@@ -1481,7 +1481,7 @@ class Tests_User extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43547
 	 */
-	function test_wp_user_personal_data_exporter_no_user() {
+	public function test_wp_user_personal_data_exporter_no_user() {
 		$actual = wp_user_personal_data_exporter( 'not-a-user-email@test.com' );
 
 		$expected = array(
@@ -1498,7 +1498,7 @@ class Tests_User extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43547
 	 */
-	function test_wp_user_personal_data_exporter() {
+	public function test_wp_user_personal_data_exporter() {
 		$test_user = new WP_User( self::$contrib_id );
 
 		$actual = wp_user_personal_data_exporter( $test_user->user_email );

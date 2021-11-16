@@ -4,7 +4,7 @@
  * @group formatting
  */
 class Tests_Formatting_URLShorten extends WP_UnitTestCase {
-	function test_shorten_url() {
+	public function test_shorten_url() {
 		$tests = array(
 			'wordpress\.org/about/philosophy' => 'wordpress\.org/about/philosophy', // no longer strips slashes
 			'wordpress.org/about/philosophy' => 'wordpress.org/about/philosophy',

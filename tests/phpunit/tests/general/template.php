@@ -16,13 +16,13 @@ class Tests_General_Template extends WP_UnitTestCase {
 	public $custom_logo_id;
 	public $custom_logo_url;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->wp_site_icon = new WP_Site_Icon();
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		global $wp_customize;
 		$this->_remove_custom_logo();
 		$this->_remove_site_icon();
@@ -36,7 +36,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group site_icon
 	 */
-	function test_get_site_icon_url() {
+	public function test_get_site_icon_url() {
 		$this->assertEmpty( get_site_icon_url() );
 
 		$this->_set_site_icon();
@@ -49,7 +49,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group site_icon
 	 */
-	function test_site_icon_url() {
+	public function test_site_icon_url() {
 		$this->expectOutputString( '' );
 		site_icon_url();
 
@@ -61,7 +61,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group site_icon
 	 */
-	function test_has_site_icon() {
+	public function test_has_site_icon() {
 		$this->assertFalse( has_site_icon() );
 
 		$this->_set_site_icon();
@@ -76,7 +76,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_has_site_icon_returns_true_when_called_for_other_site_with_site_icon_set() {
+	public function test_has_site_icon_returns_true_when_called_for_other_site_with_site_icon_set() {
 		$blog_id = $this->factory->blog->create();
 		switch_to_blog( $blog_id );
 		$this->_set_site_icon();
@@ -90,7 +90,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_has_site_icon_returns_false_when_called_for_other_site_without_site_icon_set() {
+	public function test_has_site_icon_returns_false_when_called_for_other_site_without_site_icon_set() {
 		$blog_id = $this->factory->blog->create();
 
 		$this->assertFalse( has_site_icon( $blog_id ) );
@@ -99,7 +99,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group site_icon
 	 */
-	function test_wp_site_icon() {
+	public function test_wp_site_icon() {
 		$this->expectOutputString( '' );
 		wp_site_icon();
 
@@ -120,7 +120,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group site_icon
 	 */
-	function test_wp_site_icon_with_filter() {
+	public function test_wp_site_icon_with_filter() {
 		$this->expectOutputString( '' );
 		wp_site_icon();
 
@@ -145,7 +145,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group site_icon
 	 * @see https://core.trac.wordpress.org/ticket/38377
 	 */
-	function test_customize_preview_wp_site_icon_empty() {
+	public function test_customize_preview_wp_site_icon_empty() {
 		global $wp_customize;
 		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'administrator' ) ) );
 
@@ -162,7 +162,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group site_icon
 	 * @see https://core.trac.wordpress.org/ticket/38377
 	 */
-	function test_customize_preview_wp_site_icon_dirty() {
+	public function test_customize_preview_wp_site_icon_dirty() {
 		global $wp_customize;
 		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'administrator' ) ) );
 
@@ -247,7 +247,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.5.0
 	 */
-	function test_has_custom_logo() {
+	public function test_has_custom_logo() {
 		$this->assertFalse( has_custom_logo() );
 
 		$this->_set_custom_logo();
@@ -262,7 +262,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_has_custom_logo_returns_true_when_called_for_other_site_with_custom_logo_set() {
+	public function test_has_custom_logo_returns_true_when_called_for_other_site_with_custom_logo_set() {
 		$blog_id = $this->factory->blog->create();
 		switch_to_blog( $blog_id );
 		$this->_set_custom_logo();
@@ -276,7 +276,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_has_custom_logo_returns_false_when_called_for_other_site_without_custom_logo_set() {
+	public function test_has_custom_logo_returns_false_when_called_for_other_site_without_custom_logo_set() {
 		$blog_id = $this->factory->blog->create();
 
 		$this->assertFalse( has_custom_logo( $blog_id ) );
@@ -287,7 +287,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.5.0
 	 */
-	function test_get_custom_logo() {
+	public function test_get_custom_logo() {
 		$this->assertEmpty( get_custom_logo() );
 
 		$this->_set_custom_logo();
@@ -304,7 +304,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_get_custom_logo_returns_logo_when_called_for_other_site_with_custom_logo_set() {
+	public function test_get_custom_logo_returns_logo_when_called_for_other_site_with_custom_logo_set() {
 		$blog_id = $this->factory->blog->create();
 		switch_to_blog( $blog_id );
 
@@ -334,7 +334,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.5.0
 	 */
-	function test_the_custom_logo() {
+	public function test_the_custom_logo() {
 		$this->expectOutputString( '' );
 		the_custom_logo();
 
@@ -361,7 +361,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @group custom_logo
 	 * @see https://core.trac.wordpress.org/ticket/38768
 	 */
-	function test_the_custom_logo_with_alt() {
+	public function test_the_custom_logo_with_alt() {
 		$this->_set_custom_logo();
 
 		$image_alt = 'My alt attribute';
@@ -422,7 +422,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.6.0
 	 */
-	function test_get_the_modified_time_default() {
+	public function test_get_the_modified_time_default() {
 		$details = array(
 				'post_date' => '2016-01-21 15:34:36',
 				'post_date_gmt' => '2016-01-21 15:34:36',
@@ -445,7 +445,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.6.0
 	 */
-	function test_get_the_modified_time_failures_are_filtered() {
+	public function test_get_the_modified_time_failures_are_filtered() {
 		// Remove global post objet
 		$GLOBALS['post'] = null;
 
@@ -474,7 +474,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.6.0
 	 */
-	function test_get_the_modified_date_with_post_id() {
+	public function test_get_the_modified_date_with_post_id() {
 		$details = array(
 				'post_date' => '2016-01-21 15:34:36',
 				'post_date_gmt' => '2016-01-21 15:34:36',
@@ -493,7 +493,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.6.0
 	 */
-	function test_get_the_modified_date_default() {
+	public function test_get_the_modified_date_default() {
 		$details = array(
 				'post_date' => '2016-01-21 15:34:36',
 				'post_date_gmt' => '2016-01-21 15:34:36',
@@ -516,7 +516,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.6.0
 	 */
-	function test_get_the_modified_date_failures_are_filtered() {
+	public function test_get_the_modified_date_failures_are_filtered() {
 		// Remove global post objet
 		$GLOBALS['post'] = null;
 
@@ -545,7 +545,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 *
 	 * @since WP-4.6.0
 	 */
-	function test_get_the_modified_time_with_post_id() {
+	public function test_get_the_modified_time_with_post_id() {
 		$details = array(
 				'post_date' => '2016-01-21 15:34:36',
 				'post_date_gmt' => '2016-01-21 15:34:36',
@@ -561,7 +561,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/38253
 	 * @group ms-required
 	 */
-	function test_get_site_icon_url_preserves_switched_state() {
+	public function test_get_site_icon_url_preserves_switched_state() {
 		$blog_id = $this->factory->blog->create();
 		switch_to_blog( $blog_id );
 
@@ -580,7 +580,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/38253
 	 * @group ms-required
 	 */
-	function test_has_custom_logo_preserves_switched_state() {
+	public function test_has_custom_logo_preserves_switched_state() {
 		$blog_id = $this->factory->blog->create();
 		switch_to_blog( $blog_id );
 
@@ -599,7 +599,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/38253
 	 * @group ms-required
 	 */
-	function test_get_custom_logo_preserves_switched_state() {
+	public function test_get_custom_logo_preserves_switched_state() {
 		$blog_id = $this->factory->blog->create();
 		switch_to_blog( $blog_id );
 
@@ -617,7 +617,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/43590
 	 */
-	function test_wp_no_robots() {
+	public function test_wp_no_robots() {
 		// Simulate private site (search engines discouraged).
 		update_option( 'blog_public', '0' );
 		$actual_private = get_echo( 'wp_no_robots' );
@@ -632,7 +632,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/*
 	 * @group login
 	 */
-	function test_login_html_default() {
+	public function test_login_html_default() {
 		if ( is_multisite() ) {
 			$expected_login_html = (
 				'<h1><a href="'
@@ -658,7 +658,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group login
 	 */
-	function test_login_html_option_disabled_with_image_set() {
+	public function test_login_html_option_disabled_with_image_set() {
 		update_option( 'login_custom_image_state', '0' );
 		update_option( 'login_custom_image_id', (string) $this->_insert_attachment() );
 
@@ -687,7 +687,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group login
 	 */
-	function test_login_html_option_enabled_without_custom_image() {
+	public function test_login_html_option_enabled_without_custom_image() {
 		update_option( 'login_custom_image_state', '1' );
 		update_option( 'login_custom_image_id', '' );
 
@@ -716,7 +716,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group login
 	 */
-	function test_login_html_option_enabled_with_custom_image() {
+	public function test_login_html_option_enabled_with_custom_image() {
 		update_option( 'login_custom_image_state', '1' );
 		update_option( 'login_custom_image_id', (string) $this->_insert_attachment() );
 
@@ -749,7 +749,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group login
 	 */
-	function test_login_html_option_enabled_with_custom_image_banner() {
+	public function test_login_html_option_enabled_with_custom_image_banner() {
 		update_option( 'login_custom_image_state', '2' );
 		update_option( 'login_custom_image_id', (string) $this->_insert_attachment() );
 
@@ -782,7 +782,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group login
 	 */
-	function test_login_html_default_with_filters() {
+	public function test_login_html_default_with_filters() {
 		add_filter( 'login_headerurl', function() {
 			return 'https://example.com?"a&b"';
 		} );
@@ -826,7 +826,7 @@ class Tests_General_Template extends WP_UnitTestCase {
 	/**
 	 * @group login
 	 */
-	function test_login_html_option_enabled_with_custom_logo_and_filters() {
+	public function test_login_html_option_enabled_with_custom_logo_and_filters() {
 		update_option( 'login_custom_image_state', '1' );
 		update_option( 'login_custom_image_id', (string) $this->_insert_attachment() );
 

@@ -7,7 +7,7 @@ class Tests_Upload extends WP_UnitTestCase {
 
 	var $siteurl;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->_reset_options();
 		parent::set_up();
@@ -20,7 +20,7 @@ class Tests_Upload extends WP_UnitTestCase {
 		update_option( 'uploads_use_yearmonth_folders', 1 );
 	}
 
-	function test_upload_dir_default() {
+	public function test_upload_dir_default() {
 		// wp_upload_dir() with default parameters
 		$info = wp_upload_dir();
 		$subdir = gmstrftime('/%Y/%m');
@@ -31,7 +31,7 @@ class Tests_Upload extends WP_UnitTestCase {
 		$this->assertFalse( $info['error'] );
 	}
 
-	function test_upload_dir_relative() {
+	public function test_upload_dir_relative() {
 		// wp_upload_dir() with a relative upload path that is not 'wp-content/uploads'
 		update_option( 'upload_path', 'foo/bar' );
 		$info = _wp_upload_dir();
@@ -46,7 +46,7 @@ class Tests_Upload extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/5953
 	 */
-	function test_upload_dir_absolute() {
+	public function test_upload_dir_absolute() {
 		$path = get_temp_dir() . 'wp-unit-test';
 
 		// wp_upload_dir() with an absolute upload path
@@ -66,7 +66,7 @@ class Tests_Upload extends WP_UnitTestCase {
 		$this->assertFalse( $info['error'] );
 	}
 
-	function test_upload_dir_no_yearnum() {
+	public function test_upload_dir_no_yearnum() {
 		update_option( 'uploads_use_yearmonth_folders', 0 );
 
 		// Use `_wp_upload_dir()` directly to bypass caching and work with the changed options.
@@ -78,7 +78,7 @@ class Tests_Upload extends WP_UnitTestCase {
 		$this->assertFalse( $info['error'] );
 	}
 
-	function test_upload_path_absolute() {
+	public function test_upload_path_absolute() {
 		update_option( 'upload_url_path', 'http://' . WP_TESTS_DOMAIN . '/asdf' );
 
 		// Use `_wp_upload_dir()` directly to bypass caching and work with the changed options.
@@ -92,7 +92,7 @@ class Tests_Upload extends WP_UnitTestCase {
 		$this->assertFalse( $info['error'] );
 	}
 
-	function test_upload_dir_empty() {
+	public function test_upload_dir_empty() {
 		// upload path setting is empty - it should default to 'wp-content/uploads'
 		update_option('upload_path', '');
 

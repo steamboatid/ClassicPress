@@ -24,13 +24,13 @@ class Tests_XMLRPC_wp_getPages extends WP_XMLRPC_UnitTestCase {
 		) );
 	}
 
-	function test_invalid_username_password() {
+	public function test_invalid_username_password() {
 		$result = $this->myxmlrpcserver->wp_getPages( array( 1, 'username', 'password' ) );
 		$this->assertIXRError( $result );
 		$this->assertSame( 403, $result->code );
 	}
 
-	function test_incapable_user() {
+	public function test_incapable_user() {
 		$this->make_user_by_role( 'contributor' );
 
 		$result = $this->myxmlrpcserver->wp_getPages( array( 1, 'contributor', 'contributor' ) );
@@ -38,7 +38,7 @@ class Tests_XMLRPC_wp_getPages extends WP_XMLRPC_UnitTestCase {
 		$this->assertSame( 401, $result->code );
 	}
 
-	function test_capable_user() {
+	public function test_capable_user() {
 		$results = $this->myxmlrpcserver->wp_getPages( array( 1, 'administrator', 'administrator' ) );
 		$this->assertNotIXRError( $results );
 
@@ -61,7 +61,7 @@ class Tests_XMLRPC_wp_getPages extends WP_XMLRPC_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20629
 	 */
-	function test_semi_capable_user() {
+	public function test_semi_capable_user() {
 		add_filter( 'map_meta_cap', array( $this, 'remove_editor_edit_page_cap') , 10, 4 );
 
 		$results = $this->myxmlrpcserver->wp_getPages( array( 1, 'editor', 'editor' ) );

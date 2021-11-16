@@ -9,7 +9,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 		return 'foo';
 	}
 
-	function test_the_basics() {
+	public function test_the_basics() {
 		$key = 'key1';
 		$key2 = 'key2';
 		$value = 'value1';
@@ -34,7 +34,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 		$this->assertFalse( get_option( $key2 ) );
 	}
 
-	function test_default_filter() {
+	public function test_default_filter() {
 		$value = 'value';
 
 		$this->assertFalse( get_option( 'doesnotexist' ) );
@@ -71,7 +71,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 		$this->assertSame( 'bar', get_option( 'doesnotexist' ) );
 	}
 
-	function test_serialized_data() {
+	public function test_serialized_data() {
 		$key = __FUNCTION__;
 		$value = array( 'foo' => true, 'bar' => true );
 
@@ -87,7 +87,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23289
 	 */
-	function test_bad_option_names() {
+	public function test_bad_option_names() {
 		foreach ( array( '', '0', ' ', 0, false, null ) as $empty ) {
 			$this->assertFalse( get_option( $empty ) );
 			$this->assertFalse( add_option( $empty, '' ) );
@@ -100,7 +100,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/23289
 	 * @ticket 23289
 	 */
-	function test_special_option_name_alloption() {
+	public function test_special_option_name_alloption() {
 		$this->expectException( 'WPDieException' );
 		delete_option( 'alloptions' );
 	}
@@ -108,7 +108,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23289
 	 */
-	function test_special_option_name_notoptions() {
+	public function test_special_option_name_notoptions() {
 		$this->expectException( 'WPDieException' );
 		delete_option( 'notoptions' );
 	}
@@ -130,7 +130,7 @@ class Tests_Option_Option extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/31119
 	 * @dataProvider data_option_autoloading
 	 */
-	function test_option_autoloading( $name, $autoload_value, $expected ) {
+	public function test_option_autoloading( $name, $autoload_value, $expected ) {
 		global $wpdb;
 		$added = add_option( $name, 'Autoload test', '', $autoload_value );
 		$this->assertTrue( $added );

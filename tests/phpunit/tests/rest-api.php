@@ -41,7 +41,7 @@ class Tests_REST_API extends WP_UnitTestCase {
 	/**
 	 * Checks that the main classes are loaded.
 	 */
-	function test_rest_api_active() {
+	public function test_rest_api_active() {
 		$this->assertTrue( class_exists( 'WP_REST_Server' ) );
 		$this->assertTrue( class_exists( 'WP_REST_Request' ) );
 		$this->assertTrue( class_exists( 'WP_REST_Response' ) );
@@ -52,7 +52,7 @@ class Tests_REST_API extends WP_UnitTestCase {
 	 * The rest_api_init hook should have been registered with init, and should
 	 * have a default priority of 10.
 	 */
-	function test_init_action_added() {
+	public function test_init_action_added() {
 		$this->assertSame( 10, has_action( 'init', 'rest_api_init' ) );
 	}
 
@@ -247,7 +247,7 @@ class Tests_REST_API extends WP_UnitTestCase {
 	/**
 	 * The rest_route query variable should be registered.
 	 */
-	function test_rest_route_query_var() {
+	public function test_rest_route_query_var() {
 		rest_api_init();
 		$this->assertTrue( in_array( 'rest_route', $GLOBALS['wp']->public_query_vars ) );
 	}

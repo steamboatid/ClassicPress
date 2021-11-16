@@ -17,13 +17,13 @@ class Tests_XMLRPC_mw_getPost extends WP_XMLRPC_UnitTestCase {
 		) );
 	}
 
-	function test_invalid_username_password() {
+	public function test_invalid_username_password() {
 		$result = $this->myxmlrpcserver->mw_getPost( array( self::$post_id, 'username', 'password' ) );
 		$this->assertIXRError( $result );
 		$this->assertSame( 403, $result->code );
 	}
 
-	function test_incapable_user() {
+	public function test_incapable_user() {
 		$this->make_user_by_role( 'subscriber' );
 
 		$result = $this->myxmlrpcserver->mw_getPost( array( self::$post_id, 'subscriber', 'subscriber' ) );
@@ -34,13 +34,13 @@ class Tests_XMLRPC_mw_getPost extends WP_XMLRPC_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20336
 	 */
-	function test_invalid_postid() {
+	public function test_invalid_postid() {
 		$result = $this->myxmlrpcserver->mw_getPost( array( 9999, 'author', 'author' ) );
 		$this->assertIXRError( $result );
 		$this->assertSame( 404, $result->code );
 	}
 
-	function test_valid_post() {
+	public function test_valid_post() {
 		add_theme_support( 'post-thumbnails' );
 
 		$fields = array( 'post' );
@@ -85,7 +85,7 @@ class Tests_XMLRPC_mw_getPost extends WP_XMLRPC_UnitTestCase {
 		remove_theme_support( 'post-thumbnails' );
 	}
 
-	function test_post_thumbnail() {
+	public function test_post_thumbnail() {
 		add_theme_support( 'post-thumbnails' );
 
 		// create attachment
@@ -104,7 +104,7 @@ class Tests_XMLRPC_mw_getPost extends WP_XMLRPC_UnitTestCase {
 		remove_theme_support( 'post-thumbnails' );
 	}
 
-	function test_date() {
+	public function test_date() {
 		$fields = array( 'post' );
 		$result = $this->myxmlrpcserver->mw_getPost( array( self::$post_id, 'author', 'author' ) );
 		$this->assertNotIXRError( $result );

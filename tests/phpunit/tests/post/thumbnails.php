@@ -27,7 +27,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 		parent::tear_down_after_class();
 	}
 
-	function test_has_post_thumbnail() {
+	public function test_has_post_thumbnail() {
 		$this->assertFalse( has_post_thumbnail( self::$post ) );
 		$this->assertFalse( has_post_thumbnail( self::$post->ID ) );
 		$this->assertFalse( has_post_thumbnail() );
@@ -49,7 +49,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 		$this->assertTrue( has_post_thumbnail() );
 	}
 
-	function test_get_post_thumbnail_id() {
+	public function test_get_post_thumbnail_id() {
 		$this->assertEmpty( get_post_thumbnail_id( self::$post ) );
 		$this->assertEmpty( get_post_thumbnail_id( self::$post->ID ) );
 		$this->assertEmpty( get_post_thumbnail_id() );
@@ -64,7 +64,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 		$this->assertSame( self::$attachment_id, get_post_thumbnail_id() );
 	}
 
-	function test_update_post_thumbnail_cache() {
+	public function test_update_post_thumbnail_cache() {
 		set_post_thumbnail( self::$post, self::$attachment_id );
 
 		$WP_Query = new WP_Query( array(
@@ -83,7 +83,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12235
 	 */
-	function test_get_the_post_thumbnail_caption() {
+	public function test_get_the_post_thumbnail_caption() {
 		$this->assertSame( '', get_the_post_thumbnail_caption() );
 
 		$caption = 'This is a caption.';
@@ -103,7 +103,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12235
 	 */
-	function test_get_the_post_thumbnail_caption_empty() {
+	public function test_get_the_post_thumbnail_caption_empty() {
 		$post_id = self::factory()->post->create();
 		$attachment_id = self::factory()->attachment->create_object( 'image.jpg', $post_id, array(
 			'post_mime_type' => 'image/jpeg',
@@ -119,7 +119,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12235
 	 */
-	function test_the_post_thumbnail_caption() {
+	public function test_the_post_thumbnail_caption() {
 		$caption = 'This is a caption.';
 
 		$post_id = self::factory()->post->create();
@@ -137,7 +137,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 		$this->assertEquals( $caption, ob_get_clean() );
 	}
 
-	function test_get_the_post_thumbnail() {
+	public function test_get_the_post_thumbnail() {
 		$this->assertSame( '', get_the_post_thumbnail() );
 		$this->assertSame( '', get_the_post_thumbnail( self::$post ) );
 		set_post_thumbnail( self::$post, self::$attachment_id );
@@ -153,7 +153,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 		$this->assertSame( $expected, get_the_post_thumbnail() );
 	}
 
-	function test_the_post_thumbnail() {
+	public function test_the_post_thumbnail() {
 		ob_start();
 		the_post_thumbnail();
 		$actual = ob_get_clean();
@@ -184,7 +184,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33070
 	 */
-	function test_get_the_post_thumbnail_url() {
+	public function test_get_the_post_thumbnail_url() {
 		$this->assertFalse( has_post_thumbnail( self::$post ) );
 		$this->assertFalse( get_the_post_thumbnail_url() );
 		$this->assertFalse( get_the_post_thumbnail_url( self::$post ) );
@@ -202,7 +202,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33070
 	 */
-	function test_get_the_post_thumbnail_url_with_invalid_post() {
+	public function test_get_the_post_thumbnail_url_with_invalid_post() {
 		set_post_thumbnail( self::$post, self::$attachment_id );
 
 		$this->assertNotFalse( get_the_post_thumbnail_url( self::$post->ID ) );
@@ -216,7 +216,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33070
 	 */
-	function test_the_post_thumbnail_url() {
+	public function test_the_post_thumbnail_url() {
 		$GLOBALS['post'] = self::$post;
 
 		ob_start();
@@ -243,7 +243,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12922
 	 */
-	function test__wp_preview_post_thumbnail_filter() {
+	public function test__wp_preview_post_thumbnail_filter() {
 		$old_post = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
 
 		$GLOBALS['post'] = self::$post;
@@ -263,7 +263,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37697
 	 */
-	function test__wp_preview_post_thumbnail_filter_secondary_post() {
+	public function test__wp_preview_post_thumbnail_filter_secondary_post() {
 		$old_post = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
 
 		$secondary_post = self::factory()->post->create( array(
@@ -288,7 +288,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12922
 	 */
-	function test_insert_post_with_post_thumbnail() {
+	public function test_insert_post_with_post_thumbnail() {
 		$post_id = wp_insert_post( array(
 			'ID'            => self::$post->ID,
 			'post_status'   => 'publish',
@@ -315,7 +315,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37658
 	 */
-	function test_insert_attachment_with_post_thumbnail() {
+	public function test_insert_attachment_with_post_thumbnail() {
 		// Audio files support featured images.
 		$post_id = wp_insert_post( array(
 			'post_type'      => 'attachment',
@@ -350,7 +350,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/39030
 	 */
-	function test_post_thumbnail_size_filter_simple() {
+	public function test_post_thumbnail_size_filter_simple() {
 		$this->current_size_filter_data = 'medium';
 
 		add_filter( 'post_thumbnail_size', array( $this, 'filter_post_thumbnail_size' ), 10, 2 );
@@ -371,7 +371,7 @@ class Tests_Post_Thumbnail_Template extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/39030
 	 * @dataProvider data_post_thumbnail_size_filter_complex
 	 */
-	function test_post_thumbnail_size_filter_complex( $which_post, $expected ) {
+	public function test_post_thumbnail_size_filter_complex( $which_post, $expected ) {
 		$this->current_size_filter_data = array(
 			self::$post->ID           => 'medium',
 			self::$different_post->ID => 'thumbnail',

@@ -9,7 +9,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	 */
 	public $menu_id;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->menu_id = wp_create_nav_menu( rand_str() );
@@ -37,7 +37,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 		$this->assertSame( 0, strpos( $menu, '<ul' ) );
 	}
 
-	function test_wp_get_associated_nav_menu_items() {
+	public function test_wp_get_associated_nav_menu_items() {
 		$tag_id = self::factory()->tag->create();
 		$cat_id = self::factory()->category->create();
 		$post_id = self::factory()->post->create();
@@ -114,7 +114,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/27113
 	 */
-	function test_orphan_nav_menu_item() {
+	public function test_orphan_nav_menu_item() {
 
 		// Create an orphan nav menu item
 		$custom_item_id = wp_update_nav_menu_item( 0, 0, array(
@@ -161,7 +161,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/13910
 	 */
-	function test_wp_get_nav_menu_name() {
+	public function test_wp_get_nav_menu_name() {
 		// Register a nav menu location.
 		register_nav_menu( 'primary', 'Primary Navigation' );
 
@@ -180,7 +180,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/29460
 	 */
-	function test_orderby_name_by_default() {
+	public function test_orderby_name_by_default() {
 		// We are going to create a random number of menus (min 2, max 10)
 		$menus_no = rand( 2, 10 );
 
@@ -203,7 +203,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35324
 	 */
-	function test_wp_setup_nav_menu_item_for_post_type_archive() {
+	public function test_wp_setup_nav_menu_item_for_post_type_archive() {
 
 		$post_type_slug = rand_str( 12 );
 		$post_type_description = rand_str();
@@ -229,7 +229,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35324
 	 */
-	function test_wp_setup_nav_menu_item_for_post_type_archive_no_description() {
+	public function test_wp_setup_nav_menu_item_for_post_type_archive_no_description() {
 
 		$post_type_slug = rand_str( 12 );
 		$post_type_description = '';
@@ -253,7 +253,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35324
 	 */
-	function test_wp_setup_nav_menu_item_for_post_type_archive_custom_description() {
+	public function test_wp_setup_nav_menu_item_for_post_type_archive_custom_description() {
 
 		$post_type_slug = rand_str( 12 );
 		$post_type_description = rand_str();
@@ -281,7 +281,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35324
 	 */
-	function test_wp_setup_nav_menu_item_for_unknown_post_type_archive_no_description() {
+	public function test_wp_setup_nav_menu_item_for_unknown_post_type_archive_no_description() {
 
 		$post_type_slug = rand_str( 12 );
 
@@ -298,7 +298,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/19038
 	 */
-	function test_wp_setup_nav_menu_item_for_trashed_post() {
+	public function test_wp_setup_nav_menu_item_for_trashed_post() {
 		$post_id = self::factory()->post->create( array(
 			'post_status' => 'trash',
 		) );
@@ -318,7 +318,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35206
 	 */
-	function test_wp_nav_menu_whitespace_options() {
+	public function test_wp_nav_menu_whitespace_options() {
 		$post_id1 = self::factory()->post->create();
 		$post_id2 = self::factory()->post->create();
 		$post_id3 = self::factory()->post->create();
@@ -386,7 +386,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/24587
 	 */
-	function test_wp_nav_menu_filters_are_passed_args_object() {
+	public function test_wp_nav_menu_filters_are_passed_args_object() {
 		$tag_id = self::factory()->tag->create();
 
 		$tag_insert = wp_update_nav_menu_item( $this->menu_id, 0, array(
@@ -468,7 +468,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35272
 	 */
-	function test_no_front_page_class_applied() {
+	public function test_no_front_page_class_applied() {
 		$page_id = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Home Page' ) );
 
 		wp_update_nav_menu_item( $this->menu_id, 0, array(
@@ -490,7 +490,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35272
 	 */
-	function test_class_applied_to_front_page_item() {
+	public function test_class_applied_to_front_page_item() {
 		$page_id = self::factory()->post->create( array( 'post_type' => 'page', 'post_title' => 'Home Page' ) );
 		update_option( 'page_on_front', $page_id );
 
@@ -514,7 +514,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35272
 	 */
-	function test_class_not_applied_to_taxonomies_with_same_id_as_front_page_item() {
+	public function test_class_not_applied_to_taxonomies_with_same_id_as_front_page_item() {
 		global $wpdb;
 
 		$new_id = 35272;
@@ -548,7 +548,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	 *
 	 * @covers _wp_delete_customize_changeset_dependent_auto_drafts()
 	 */
-	function test_wp_delete_customize_changeset_dependent_auto_drafts() {
+	public function test_wp_delete_customize_changeset_dependent_auto_drafts() {
 		$auto_draft_post_id = $this->factory()->post->create( array(
 			'post_status' => 'auto-draft',
 		) );
@@ -592,7 +592,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/39800
 	 */
-	function test_parent_ancestor_for_post_archive() {
+	public function test_parent_ancestor_for_post_archive() {
 
 		register_post_type( 'books', array( 'label' => 'Books', 'public' => true, 'has_archive' => true ) );
 
@@ -651,7 +651,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/44005
 	 * @group privacy
 	 */
-	function test_no_privacy_policy_class_applied() {
+	public function test_no_privacy_policy_class_applied() {
 		$page_id = self::factory()->post->create(
 			array(
 				'post_type'  => 'page',
@@ -682,7 +682,7 @@ class Test_Nav_Menus extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/44005
 	 * @group privacy
 	 */
-	function test_class_applied_to_privacy_policy_page_item() {
+	public function test_class_applied_to_privacy_policy_page_item() {
 		$page_id = self::factory()->post->create(
 			array(
 				'post_type'  => 'page',

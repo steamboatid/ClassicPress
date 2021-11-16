@@ -7,7 +7,7 @@ class Tests_Formatting_StripSlashesDeep extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/18026
 	 */
-	function test_preserves_original_datatype() {
+	public function test_preserves_original_datatype() {
 
 		$this->assertTrue( stripslashes_deep( true ) );
 		$this->assertFalse( stripslashes_deep( false ) );
@@ -30,7 +30,7 @@ class Tests_Formatting_StripSlashesDeep extends WP_UnitTestCase {
 		$this->assertSame( $obj, stripslashes_deep( $obj ) );
 	}
 
-	function test_strips_slashes() {
+	public function test_strips_slashes() {
 		$old = "I can\'t see, isn\'t that it?";
 		$new = "I can't see, isn't that it?";
 		$this->assertSame( $new, stripslashes_deep( $old ) );
@@ -45,7 +45,7 @@ class Tests_Formatting_StripSlashesDeep extends WP_UnitTestCase {
 		$this->assertEquals( $obj_new, stripslashes_deep( $obj_old ) );
 	}
 
-	function test_permits_escaped_slash() {
+	public function test_permits_escaped_slash() {
 		$txt = "I can't see, isn\'t that it?";
 		$this->assertSame( $txt, stripslashes_deep( "I can\'t see, isn\\\'t that it?" ) );
 		$this->assertSame( $txt, stripslashes_deep( "I can\'t see, isn\\\\\'t that it?" ) );

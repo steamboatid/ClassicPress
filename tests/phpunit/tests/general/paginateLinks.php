@@ -4,13 +4,13 @@ class Tests_Paginate_Links extends WP_UnitTestCase {
 
 	private $i18n_count = 0;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->go_to( home_url( '/' ) );
 	}
 
-	function test_defaults() {
+	public function test_defaults() {
 		$page2 = get_pagenum_link( 2 );
 		$page3 = get_pagenum_link( 3 );
 		$page50 = get_pagenum_link( 50 );
@@ -28,7 +28,7 @@ EXPECTED;
 		$this->assertSameIgnoreEOL( $expected, $links );
 	}
 
-	function test_format() {
+	public function test_format() {
 		$page2 = home_url( '/page/2/' );
 		$page3 = home_url( '/page/3/' );
 		$page50 = home_url( '/page/50/' );
@@ -51,7 +51,7 @@ EXPECTED;
 		$this->assertSameIgnoreEOL( $expected, $links );
 	}
 
-	function test_prev_next_false() {
+	public function test_prev_next_false() {
 		$home = home_url( '/' );
 		$page3 = get_pagenum_link( 3 );
 		$page4 = get_pagenum_link( 4 );
@@ -76,7 +76,7 @@ EXPECTED;
 		$this->assertSameIgnoreEOL( $expected, $links );
 	}
 
-	function test_prev_next_true() {
+	public function test_prev_next_true() {
 		$home = home_url( '/' );
 		$page3 = get_pagenum_link( 3 );
 		$page4 = get_pagenum_link( 4 );
@@ -110,7 +110,7 @@ EXPECTED;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/25735
 	 */
-	function test_paginate_links_number_format() {
+	public function test_paginate_links_number_format() {
 		$this->i18n_count = 0;
 		add_filter( 'number_format_i18n', array( $this, 'increment_i18n_count' ) );
 		paginate_links( array(
@@ -130,7 +130,7 @@ EXPECTED;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/24606
 	 */
-	function test_paginate_links_base_value() {
+	public function test_paginate_links_base_value() {
 
 		// Current page: 2
 		$links = paginate_links( array(
@@ -204,7 +204,7 @@ EXPECTED;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/29636
 	 */
-	function test_paginate_links_query_args() {
+	public function test_paginate_links_query_args() {
 		add_filter( 'get_pagenum_link', array( $this, 'add_query_arg' ) );
 		$links = paginate_links( array(
 			'current'  => 2,
@@ -240,7 +240,7 @@ EXPECTED;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30831
 	 */
-	function test_paginate_links_with_custom_query_args() {
+	public function test_paginate_links_with_custom_query_args() {
 		add_filter( 'get_pagenum_link', array( $this, 'add_query_arg' ) );
 		$links = paginate_links( array(
 			'current'  => 2,

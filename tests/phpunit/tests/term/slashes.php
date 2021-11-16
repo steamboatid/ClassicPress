@@ -12,7 +12,7 @@ class Tests_Term_Slashes extends WP_UnitTestCase {
 		self::$author_id = $factory->user->create( array( 'role' => 'administrator' ) );
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		wp_set_current_user( self::$author_id );
@@ -30,7 +30,7 @@ class Tests_Term_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_insert_term() {
+	public function test_wp_insert_term() {
 		$taxonomies = array(
 			'category',
 			'post_tag'
@@ -78,7 +78,7 @@ class Tests_Term_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_update_term() {
+	public function test_wp_update_term() {
 		$taxonomies = array(
 			'category',
 			'post_tag'

@@ -7,13 +7,13 @@
  */
 class Tests_Post_Attachments extends WP_UnitTestCase {
 
-	function tear_down() {
+	public function tear_down() {
 		// Remove all uploads.
 		$this->remove_added_uploads();
 		parent::tear_down();
 	}
 
-	function test_insert_bogus_image() {
+	public function test_insert_bogus_image() {
 		$filename = rand_str() . '.jpg';
 		$contents = rand_str();
 
@@ -21,7 +21,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 		$this->assertTrue( empty($upload['error']) );
 	}
 
-	function test_insert_image_no_thumb() {
+	public function test_insert_image_no_thumb() {
 
 		// this image is smaller than the thumbnail size so it won't have one
 		$filename = ( DIR_TESTDATA.'/images/test-image.jpg' );
@@ -54,7 +54,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 		$this->assertSame( 50, $downsize[2] );
 	}
 
-	function test_insert_image_thumb_only() {
+	public function test_insert_image_thumb_only() {
 		if ( !function_exists( 'imagejpeg' ) )
 			$this->fail( 'jpeg support unavailable' );
 
@@ -105,7 +105,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 		$this->assertSame( 300, $downsize[2] );
 	}
 
-	function test_insert_image_medium_sizes() {
+	public function test_insert_image_medium_sizes() {
 		if ( !function_exists( 'imagejpeg' ) )
 			$this->fail( 'jpeg support unavailable' );
 
@@ -163,7 +163,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 	}
 
 
-	function test_insert_image_delete() {
+	public function test_insert_image_delete() {
 		if ( !function_exists( 'imagejpeg' ) )
 			$this->fail( 'jpeg support unavailable' );
 
@@ -213,7 +213,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/18310
 	 * @see https://core.trac.wordpress.org/ticket/21963
 	 */
-	function test_insert_image_without_guid() {
+	public function test_insert_image_without_guid() {
 		// this image is smaller than the thumbnail size so it won't have one
 		$filename = ( DIR_TESTDATA.'/images/test-image.jpg' );
 		$contents = file_get_contents($filename);
@@ -231,7 +231,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21963
 	 */
-	function test_update_attachment_fields() {
+	public function test_update_attachment_fields() {
 		$filename = ( DIR_TESTDATA . '/images/test-image.jpg' );
 		$contents = file_get_contents($filename);
 
@@ -257,7 +257,7 @@ class Tests_Post_Attachments extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/29646
 	 */
-	function test_update_orphan_attachment_parent() {
+	public function test_update_orphan_attachment_parent() {
 		$filename = ( DIR_TESTDATA . '/images/test-image.jpg' );
 		$contents = file_get_contents( $filename );
 

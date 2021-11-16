@@ -25,7 +25,7 @@ class Tests_Media extends WP_UnitTestCase {
 		parent::tear_down_after_class();
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->caption = 'A simple caption.';
 		$this->alternate_caption = 'Alternate caption.';
@@ -41,13 +41,13 @@ CAP;
 		$this->img_meta = array( 'width' => 100, 'height' => 100, 'sizes' => '' );
 	}
 
-	function test_img_caption_shortcode_added() {
+	public function test_img_caption_shortcode_added() {
 		global $shortcode_tags;
 		$this->assertSame( 'img_caption_shortcode', $shortcode_tags['caption'] );
 		$this->assertSame( 'img_caption_shortcode', $shortcode_tags['wp_caption'] );
 	}
 
-	function test_img_caption_shortcode_with_empty_params() {
+	public function test_img_caption_shortcode_with_empty_params() {
 		$result = img_caption_shortcode( array() );
 		$this->assertNull( $result );
 	}
@@ -55,7 +55,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33981
 	 */
-	function test_img_caption_shortcode_with_empty_params_but_content() {
+	public function test_img_caption_shortcode_with_empty_params_but_content() {
 		$result = img_caption_shortcode( array(), $this->caption );
 		$this->assertSame( $this->caption, $result );
 	}
@@ -63,7 +63,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33981
 	 */
-	function test_img_caption_shortcode_short_circuit_filter() {
+	public function test_img_caption_shortcode_short_circuit_filter() {
 		add_filter( 'img_caption_shortcode', array( $this, '_return_alt_caption' ) );
 
 		$result = img_caption_shortcode( array(), $this->caption );
@@ -80,7 +80,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33981
 	 */
-	function test_img_caption_shortcode_empty_width() {
+	public function test_img_caption_shortcode_empty_width() {
 		$result = img_caption_shortcode(
 			array(
 				'width' => 0,
@@ -93,7 +93,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33981
 	 */
-	function test_img_caption_shortcode_empty_caption() {
+	public function test_img_caption_shortcode_empty_caption() {
 		$result = img_caption_shortcode(
 			array(
 				'caption' => '',
@@ -105,7 +105,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33981
 	 */
-	function test_img_caption_shortcode_empty_caption_and_content() {
+	public function test_img_caption_shortcode_empty_caption_and_content() {
 		$result = img_caption_shortcode(
 			array(
 				'caption' => '',
@@ -115,7 +115,7 @@ CAP;
 		$this->assertSame( $this->caption, $result );
 	}
 
-	function test_img_caption_shortcode_with_old_format() {
+	public function test_img_caption_shortcode_with_old_format() {
 		$result = img_caption_shortcode(
 			array( 'width' => 20, 'caption' => $this->caption )
 		);
@@ -131,7 +131,7 @@ CAP;
 		}
 	}
 
-	function test_img_caption_shortcode_with_old_format_id_and_align() {
+	public function test_img_caption_shortcode_with_old_format_id_and_align() {
 		$result = img_caption_shortcode(
 			array(
 				'width' => 20,
@@ -145,7 +145,7 @@ CAP;
 		$this->assertSame( 1, preg_match_all( "/{$this->caption}/", $result, $_r ) );
 	}
 
-	function test_img_caption_shortcode_with_old_format_and_class() {
+	public function test_img_caption_shortcode_with_old_format_and_class() {
 		$result = img_caption_shortcode(
 			array(
 				'width' => 20,
@@ -157,7 +157,7 @@ CAP;
 
 	}
 
-	function test_new_img_caption_shortcode_with_html_caption() {
+	public function test_new_img_caption_shortcode_with_html_caption() {
 		$result = img_caption_shortcode(
 			array( 'width' => 20, 'caption' => $this->html_content )
 		);
@@ -166,7 +166,7 @@ CAP;
 		$this->assertSame( 1, preg_match_all( "~{$our_preg}~", $result, $_r ) );
 	}
 
-	function test_new_img_caption_shortcode_new_format() {
+	public function test_new_img_caption_shortcode_new_format() {
 		$result = img_caption_shortcode(
 			array( 'width' => 20 ),
 			$this->img_content . $this->html_content
@@ -178,7 +178,7 @@ CAP;
 		$this->assertSame( 1, preg_match_all( "~wp-caption-text.*{$content_preg}~", $result, $_r ) );
 	}
 
-	function test_new_img_caption_shortcode_new_format_and_linked_image() {
+	public function test_new_img_caption_shortcode_new_format_and_linked_image() {
 		$linked_image = "<a href='#'>{$this->img_content}</a>";
 		$result = img_caption_shortcode(
 			array( 'width' => 20 ),
@@ -191,7 +191,7 @@ CAP;
 		$this->assertSame( 1, preg_match_all( "~wp-caption-text.*{$content_preg}~", $result, $_r ) );
 	}
 
-	function test_new_img_caption_shortcode_new_format_and_linked_image_with_newline() {
+	public function test_new_img_caption_shortcode_new_format_and_linked_image_with_newline() {
 		$linked_image = "<a href='#'>{$this->img_content}</a>";
 		$result = img_caption_shortcode(
 			array( 'width' => 20 ),
@@ -204,7 +204,7 @@ CAP;
 		$this->assertSame( 1, preg_match_all( "~wp-caption-text.*{$content_preg}~", $result, $_r ) );
 	}
 
-	function test_add_remove_oembed_provider() {
+	public function test_add_remove_oembed_provider() {
 		wp_oembed_add_provider( 'http://foo.bar/*', 'http://foo.bar/oembed' );
 		$this->assertTrue( wp_oembed_remove_provider( 'http://foo.bar/*' ) );
 		$this->assertFalse( wp_oembed_remove_provider( 'http://foo.bar/*' ) );
@@ -213,7 +213,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23776
 	 */
-	function test_autoembed_empty() {
+	public function test_autoembed_empty() {
 		global $wp_embed;
 
 		$content = '';
@@ -225,7 +225,7 @@ CAP;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23776
 	 */
-	function test_autoembed_no_paragraphs_around_urls() {
+	public function test_autoembed_no_paragraphs_around_urls() {
 		global $wp_embed;
 
 		$content = <<<EOF
@@ -304,13 +304,13 @@ https://w.org</a>'
 	/**
 	 * @dataProvider data_autoembed
 	 */
-	function test_autoembed( $content, $result = null ) {
+	public function test_autoembed( $content, $result = null ) {
 		$wp_embed = new Test_Autoembed;
 
 		$this->assertSame( $wp_embed->autoembed( $content ), $result ? $result : $content );
 	}
 
-	function test_wp_prepare_attachment_for_js() {
+	public function test_wp_prepare_attachment_for_js() {
 		// Attachment without media
 		$id = wp_insert_attachment(array(
 			'post_status' => 'publish',
@@ -360,7 +360,7 @@ https://w.org</a>'
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38965
 	 */
-	function test_wp_prepare_attachment_for_js_without_image_sizes() {
+	public function test_wp_prepare_attachment_for_js_without_image_sizes() {
 		// Create the attachement post.
 		$id = wp_insert_attachment( array(
 			'post_title' => 'Attachment Title',
@@ -386,7 +386,7 @@ https://w.org</a>'
 	 * @see https://core.trac.wordpress.org/ticket/19067
 	 * @expectedDeprecated wp_convert_bytes_to_hr
 	 */
-	function test_wp_convert_bytes_to_hr() {
+	public function test_wp_convert_bytes_to_hr() {
 		$kb = 1024;
 		$mb = $kb * 1024;
 		$gb = $mb * 1024;
@@ -424,7 +424,7 @@ https://w.org</a>'
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22960
 	 */
-	function test_get_attached_images() {
+	public function test_get_attached_images() {
 		$post_id = self::factory()->post->create();
 		$attachment_id = self::factory()->attachment->create_object( $this->img_name, $post_id, array(
 			'post_mime_type' => 'image/jpeg',
@@ -438,7 +438,7 @@ https://w.org</a>'
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22960
 	 */
-	function test_post_galleries_images() {
+	public function test_post_galleries_images() {
 		$ids1 = array();
 		$ids1_srcs = array();
 		foreach ( range( 1, 3 ) as $i ) {
@@ -481,7 +481,7 @@ BLOB;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/39304
 	 */
-	function test_post_galleries_images_without_global_post() {
+	public function test_post_galleries_images_without_global_post() {
 		// Set up an unattached image.
 		$this->factory->attachment->create_object( array(
 			'file' => 'test.jpg',
@@ -502,7 +502,7 @@ BLOB;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/39304
 	 */
-	function test_post_galleries_ignores_global_post() {
+	public function test_post_galleries_ignores_global_post() {
 		$global_post_id = $this->factory->post->create( array(
 			'post_content' => 'Global Post',
 		) );
@@ -531,7 +531,7 @@ BLOB;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/39304
 	 */
-	function test_post_galleries_respects_id_attrs() {
+	public function test_post_galleries_respects_id_attrs() {
 		$post_id = $this->factory->post->create( array(
 			'post_content' => 'No gallery defined',
 		) );
@@ -564,7 +564,7 @@ BLOB;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22960
 	 */
-	function test_post_gallery_images() {
+	public function test_post_gallery_images() {
 		$ids1 = array();
 		$ids1_srcs = array();
 		foreach ( range( 1, 3 ) as $i ) {
@@ -604,7 +604,7 @@ BLOB;
 		$this->assertSame( $srcs, $ids1_srcs );
 	}
 
-	function test_get_media_embedded_in_content() {
+	public function test_get_media_embedded_in_content() {
 		$object =<<<OBJ
 <object src="this" data="that">
 	<param name="value"/>
@@ -668,7 +668,7 @@ CONTENT;
 		$this->assertSame( $contents, $matches );
 	}
 
-	function test_get_media_embedded_in_content_order() {
+	public function test_get_media_embedded_in_content_order() {
 		$audio =<<<AUDIO
 <audio preload="none">
 	<source />
@@ -692,14 +692,14 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35367
 	 */
-	function test_wp_audio_shortcode_with_empty_params() {
+	public function test_wp_audio_shortcode_with_empty_params() {
 		$this->assertNull( wp_audio_shortcode( array() ) );
 	}
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35367
 	 */
-	function test_wp_audio_shortcode_with_bad_attr() {
+	public function test_wp_audio_shortcode_with_bad_attr() {
 		$this->assertSame(
 			'<a class="wp-embedded-audio" href="https://example.com/foo.php">https://example.com/foo.php</a>',
 			wp_audio_shortcode( array(
@@ -711,7 +711,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35367
 	 */
-	function test_wp_audio_shortcode_attributes() {
+	public function test_wp_audio_shortcode_attributes() {
 		$actual = wp_audio_shortcode( array(
 			'src' => 'https://example.com/foo.mp3',
 		) );
@@ -748,7 +748,7 @@ VIDEO;
 	 * @group mayskip
 	 * @backupStaticAttributes enabled
 	 */
-	function test_video_shortcode_body() {
+	public function test_video_shortcode_body() {
 		$width = 720;
 		$height = 480;
 
@@ -797,7 +797,7 @@ VIDEO;
 	 * @depends test_video_shortcode_body
 	 * @group video
 	 */
-	function test_wp_video_shortcode_with_empty_params() {
+	public function test_wp_video_shortcode_with_empty_params() {
 		$this->assertNull( wp_video_shortcode( array() ) );
 	}
 
@@ -807,7 +807,7 @@ VIDEO;
 	 * @covers ::wp_video_shortcode
 	 * @group video
 	 */
-	function test_wp_video_shortcode_with_bad_attr() {
+	public function test_wp_video_shortcode_with_bad_attr() {
 		$this->assertSame(
 			'<a class="wp-embedded-video" href="https://example.com/foo.php">https://example.com/foo.php</a>',
 			wp_video_shortcode( array(
@@ -822,7 +822,7 @@ VIDEO;
 	 * @covers ::wp_video_shortcode
 	 * @group video
 	 */
-	function test_wp_video_shortcode_attributes() {
+	public function test_wp_video_shortcode_attributes() {
 		$actual = wp_video_shortcode( array(
 			'src' => 'https://example.com/foo.mp4',
 		) );
@@ -861,7 +861,7 @@ VIDEO;
 	 * @depends test_video_shortcode_body
 	 * @covers ::wp_video_shortcode
 	 */
-	function test_wp_video_shortcode_youtube_remove_feature() {
+	public function test_wp_video_shortcode_youtube_remove_feature() {
 		$actual = wp_video_shortcode( array(
 			'src' => 'https://www.youtube.com/watch?v=i_cVJgIz_Cs&feature=youtu.be',
 		) );
@@ -879,7 +879,7 @@ VIDEO;
 	 * @group mayskip
 	 * @backupStaticAttributes enabled
 	 */
-	function test_wp_video_shortcode_youtube_force_ssl() {
+	public function test_wp_video_shortcode_youtube_force_ssl() {
 		$actual = wp_video_shortcode( array(
 			'src' => 'http://www.youtube.com/watch?v=i_cVJgIz_Cs',
 		) );
@@ -897,7 +897,7 @@ VIDEO;
 	 * @group mayskip
 	 * @backupStaticAttributes enabled
 	 */
-	function test_wp_video_shortcode_vimeo_force_ssl_remove_query_args() {
+	public function test_wp_video_shortcode_vimeo_force_ssl_remove_query_args() {
 		$actual = wp_video_shortcode( array(
 			'src' => 'http://vimeo.com/190372437?blah=meh',
 		) );
@@ -912,7 +912,7 @@ VIDEO;
 	 * @depends test_video_shortcode_body
 	 * @group video
 	 */
-	function test_wp_video_shortcode_vimeo_adds_loop() {
+	public function test_wp_video_shortcode_vimeo_adds_loop() {
 		$actual = wp_video_shortcode( array(
 			'src' => 'http://vimeo.com/190372437',
 		) );
@@ -926,7 +926,7 @@ VIDEO;
 	 * @depends test_video_shortcode_body
 	 * @group video
 	 */
-	function test_wp_video_shortcode_vimeo_force_adds_loop_true() {
+	public function test_wp_video_shortcode_vimeo_force_adds_loop_true() {
 		$actual = wp_video_shortcode( array(
 			'src' => 'http://vimeo.com/190372437',
 			'loop' => true,
@@ -938,7 +938,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26768
 	 */
-	function test_add_image_size() {
+	public function test_add_image_size() {
 		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
 
 		remove_image_size( 'test-size' );
@@ -959,7 +959,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26768
 	 */
-	function test_remove_image_size() {
+	public function test_remove_image_size() {
 		add_image_size( 'test-size', 200, 600 );
 		$this->assertTrue( has_image_size( 'test-size' ) );
 		remove_image_size( 'test-size' );
@@ -969,7 +969,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26951
 	 */
-	function test_has_image_size() {
+	public function test_has_image_size() {
 		add_image_size( 'test-size', 200, 600 );
 		$this->assertTrue( has_image_size( 'test-size' ) );
 
@@ -980,7 +980,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30346
 	 */
-	function test_attachment_url_to_postid() {
+	public function test_attachment_url_to_postid() {
 		$image_path = '2014/11/' . $this->img_name;
 		$attachment_id = self::factory()->attachment->create_object( $image_path, 0, array(
 			'post_mime_type' => 'image/jpeg',
@@ -991,7 +991,7 @@ VIDEO;
 		$this->assertSame( $attachment_id, attachment_url_to_postid( $image_url ) );
 	}
 
-	function test_attachment_url_to_postid_schemes() {
+	public function test_attachment_url_to_postid_schemes() {
 		$image_path = '2014/11/' . $this->img_name;
 		$attachment_id = self::factory()->attachment->create_object( $image_path, 0, array(
 			'post_mime_type' => 'image/jpeg',
@@ -1006,7 +1006,7 @@ VIDEO;
 		$this->assertSame( $attachment_id, attachment_url_to_postid( $image_url ) );
 	}
 
-	function test_attachment_url_to_postid_filtered() {
+	public function test_attachment_url_to_postid_filtered() {
 		$image_path = '2014/11/' . $this->img_name;
 		$attachment_id = self::factory()->attachment->create_object( $image_path, 0, array(
 			'post_mime_type' => 'image/jpeg',
@@ -1027,7 +1027,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/31044
 	 */
-	function test_attachment_url_to_postid_with_empty_url() {
+	public function test_attachment_url_to_postid_with_empty_url() {
 		$post_id = attachment_url_to_postid( '' );
 		$this->assertIsInt( $post_id );
 		$this->assertSame( 0, $post_id );
@@ -1098,7 +1098,7 @@ VIDEO;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33016
 	 */
-	function test_multiline_cdata() {
+	public function test_multiline_cdata() {
 		global $wp_embed;
 
 		$content = <<<EOF
@@ -1115,7 +1115,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33016
 	 */
-	function test_multiline_comment() {
+	public function test_multiline_comment() {
 		global $wp_embed;
 
 		$content = <<<EOF
@@ -1132,7 +1132,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33016
 	 */
-	function test_multiline_comment_with_embeds() {
+	public function test_multiline_comment_with_embeds() {
 		$content = <<<EOF
 Start.
 [embed]http://www.youtube.com/embed/TEST01YRHA0[/embed]
@@ -1175,7 +1175,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33016
 	 */
-	function test_oembed_explicit_media_link() {
+	public function test_oembed_explicit_media_link() {
 		global $wp_embed;
 		add_filter( 'embed_maybe_make_link', array( $this, 'filter_wp_embed_shortcode_custom' ), 10, 2 );
 
@@ -1211,7 +1211,7 @@ EOF;
 	 * Tests the default output of `wp_get_attachment_image()`.
 	 * @see https://core.trac.wordpress.org/ticket/34635
 	 */
-	function test_wp_get_attachment_image_defaults() {
+	public function test_wp_get_attachment_image_defaults() {
 		$image = image_downsize( self::$large_id, 'thumbnail' );
 		$expected = sprintf( '<img width="%1$d" height="%2$d" src="%3$s" class="attachment-thumbnail size-thumbnail" alt="" />', $image[1], $image[2], $image[0] );
 
@@ -1222,7 +1222,7 @@ EOF;
 	 * Test that `wp_get_attachment_image()` returns a proper alt value.
 	 * @see https://core.trac.wordpress.org/ticket/34635
 	 */
-	function test_wp_get_attachment_image_with_alt() {
+	public function test_wp_get_attachment_image_with_alt() {
 		// Add test alt metadata.
 		update_post_meta( self::$large_id, '_wp_attachment_image_alt', 'Some very clever alt text', true );
 
@@ -1238,7 +1238,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33878
 	 */
-	function test_wp_get_attachment_image_url() {
+	public function test_wp_get_attachment_image_url() {
 		$this->assertFalse( wp_get_attachment_image_url( 0 ) );
 
 		$post_id = self::factory()->post->create();
@@ -1255,7 +1255,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12235
 	 */
-	function test_wp_get_attachment_caption() {
+	public function test_wp_get_attachment_caption() {
 		$this->assertFalse( wp_get_attachment_caption( 0 ) );
 
 		$caption = 'This is a caption.';
@@ -1275,7 +1275,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/12235
 	 */
-	function test_wp_get_attachment_caption_empty() {
+	public function test_wp_get_attachment_caption_empty() {
 		$post_id = self::factory()->post->create();
 		$attachment_id = self::factory()->attachment->create_object( $this->img_name, $post_id, array(
 			'post_mime_type' => 'image/jpeg',
@@ -1325,7 +1325,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset() {
+	public function test_wp_calculate_image_srcset() {
 		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
 
 		$year_month = date('Y/m');
@@ -1366,7 +1366,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_no_date_uploads() {
+	public function test_wp_calculate_image_srcset_no_date_uploads() {
 		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
 
 		// Disable date organized uploads
@@ -1416,7 +1416,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_with_edits() {
+	public function test_wp_calculate_image_srcset_with_edits() {
 		// For this test we're going to mock metadata changes from an edit.
 		// Start by getting the attachment metadata.
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
@@ -1450,7 +1450,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35106
 	 */
-	function test_wp_calculate_image_srcset_with_absolute_path_in_meta() {
+	public function test_wp_calculate_image_srcset_with_absolute_path_in_meta() {
 		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
 
 		$year_month = date('Y/m');
@@ -1494,7 +1494,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_false() {
+	public function test_wp_calculate_image_srcset_false() {
 		$sizes = wp_calculate_image_srcset( array( 400, 300 ), 'file.png', array() );
 
 		// For canola.jpg we should return
@@ -1504,7 +1504,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_no_width() {
+	public function test_wp_calculate_image_srcset_no_width() {
 		$file = get_attached_file( self::$large_id );
 		$image_url = wp_get_attachment_image_url( self::$large_id, 'medium' );
 		$image_meta = wp_generate_attachment_metadata( self::$large_id, $file );
@@ -1521,7 +1521,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/34955
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_ratio_variance() {
+	public function test_wp_calculate_image_srcset_ratio_variance() {
 		// Mock data for this test.
 		$size_array = array( 218, 300 );
 		$image_src = 'http://' . WP_TESTS_DOMAIN . '/wp-content/uploads/2015/12/test-768x1055-218x300.png';
@@ -1566,7 +1566,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/35108
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_include_src() {
+	public function test_wp_calculate_image_srcset_include_src() {
 		// Mock data for this test.
 		$size_array = array( 2000, 1000 );
 		$image_src = 'http://' . WP_TESTS_DOMAIN . '/wp-content/uploads/2015/12/test.png';
@@ -1610,7 +1610,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35480
 	 */
-	function test_wp_calculate_image_srcset_corrupted_image_meta() {
+	public function test_wp_calculate_image_srcset_corrupted_image_meta() {
 		$size_array = array( 300, 150 );
 		$image_src = 'http://' . WP_TESTS_DOMAIN . '/wp-content/uploads/2015/12/test-300x150.png';
 		$image_meta = array(
@@ -1684,7 +1684,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/36549
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_srcset_with_spaces_in_filenames() {
+	public function test_wp_calculate_image_srcset_with_spaces_in_filenames() {
 		// Mock data for this test.
 		$image_src = 'http://' . WP_TESTS_DOMAIN . '/wp-content/uploads/2015/12/test image-300x150.png';
 		$image_meta = array(
@@ -1727,7 +1727,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_get_attachment_image_srcset() {
+	public function test_wp_get_attachment_image_srcset() {
 		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
 
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
@@ -1767,7 +1767,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_get_attachment_image_srcset_single_srcset() {
+	public function test_wp_get_attachment_image_srcset_single_srcset() {
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
 		$size_array = array( 150, 150 );
 		/*
@@ -1782,7 +1782,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_get_attachment_image_srcset_invalidsize() {
+	public function test_wp_get_attachment_image_srcset_invalidsize() {
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
 		$invalid_size = 'nailthumb';
 		$original_size = array( 1600, 1200 );
@@ -1798,7 +1798,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_get_attachment_image_sizes() {
+	public function test_wp_get_attachment_image_sizes() {
 		// Test sizes against the default WP sizes.
 		$intermediates = array('thumbnail', 'medium', 'medium_large', 'large');
 
@@ -1818,7 +1818,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_calculate_image_sizes() {
+	public function test_wp_calculate_image_sizes() {
 		// Test sizes against the default WP sizes.
 		$intermediates = array( 'thumbnail', 'medium', 'medium_large', 'large' );
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
@@ -1842,7 +1842,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_make_content_images_responsive() {
+	public function test_wp_make_content_images_responsive() {
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
 		$this->assertAttachmentMetaHasSizes( $image_meta );
 		$size_array = $this->_get_image_size_array_from_meta( $image_meta, 'medium' );
@@ -1907,7 +1907,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/34898
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_make_content_images_responsive_wrong() {
+	public function test_wp_make_content_images_responsive_wrong() {
 		$image = get_image_tag( self::$large_id, '', '', '', 'medium' );
 
 		// Replace the src URL
@@ -1919,7 +1919,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_make_content_images_responsive_with_preexisting_srcset() {
+	public function test_wp_make_content_images_responsive_with_preexisting_srcset() {
 		// Generate HTML and add a dummy srcset attribute.
 		$image_html = get_image_tag( self::$large_id, '', '', '', 'medium' );
 		$image_html = preg_replace('|<img ([^>]+) />|', '<img $1 ' . 'srcset="image2x.jpg 2x" />', $image_html );
@@ -1932,7 +1932,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 * @see https://core.trac.wordpress.org/ticket/34528
 	 */
-	function test_wp_calculate_image_srcset_animated_gifs() {
+	public function test_wp_calculate_image_srcset_animated_gifs() {
 		// Mock meta for an animated gif.
 		$image_meta = array(
 			'width' => 1200,
@@ -1976,7 +1976,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/35045
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_make_content_images_responsive_schemes() {
+	public function test_wp_make_content_images_responsive_schemes() {
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
 		$this->assertAttachmentMetaHasSizes( $image_meta );
 		$size_array = $this->_get_image_size_array_from_meta( $image_meta, 'medium' );
@@ -2015,7 +2015,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/34945
 	 * @see https://core.trac.wordpress.org/ticket/33641
 	 */
-	function test_wp_get_attachment_image_with_https_on() {
+	public function test_wp_get_attachment_image_with_https_on() {
 		// Mock meta for the image.
 		$image_meta = array(
 			'width'  => 1200,
@@ -2055,7 +2055,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/36084
 	 */
-	function test_get_image_send_to_editor_defaults() {
+	public function test_get_image_send_to_editor_defaults() {
 		$id      = self::$large_id;
 		$caption = '';
 		$title   = 'A test title value.';
@@ -2075,7 +2075,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/36084
 	 */
-	function test_get_image_send_to_editor_defaults_with_optional_params() {
+	public function test_get_image_send_to_editor_defaults_with_optional_params() {
 		$id      = self::$large_id;
 		$caption = 'A test caption.';
 		$title   = 'A test title value.';
@@ -2099,7 +2099,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/36084
 	 */
-	function test_get_image_send_to_editor_defaults_no_caption_no_rel() {
+	public function test_get_image_send_to_editor_defaults_no_caption_no_rel() {
 		$id      = self::$large_id;
 		$caption = '';
 		$title   = 'A test title value.';
@@ -2130,7 +2130,7 @@ EOF;
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/36246
 	 */
-	function test_wp_get_attachment_image_should_use_wp_get_attachment_metadata() {
+	public function test_wp_get_attachment_image_should_use_wp_get_attachment_metadata() {
 		// Do this check before the filter which will add $meta['sizes']['testsize']
 		$image_meta = wp_get_attachment_metadata( self::$large_id );
 		$this->assertAttachmentMetaHasSizes( $image_meta );
@@ -2186,7 +2186,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_get_media_creation_timestamp_video_asf() {
+	public function test_wp_get_media_creation_timestamp_video_asf() {
 		$metadata = array(
 			'fileformat' => 'asf',
 			'asf'        => array(
@@ -2202,7 +2202,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_get_media_creation_timestamp_video_matroska() {
+	public function test_wp_get_media_creation_timestamp_video_matroska() {
 		$metadata = array(
 			'fileformat' => 'matroska',
 			'matroska'   => array(
@@ -2220,7 +2220,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_get_media_creation_timestamp_video_quicktime() {
+	public function test_wp_get_media_creation_timestamp_video_quicktime() {
 		$metadata = array(
 			'fileformat' => 'quicktime',
 			'quicktime'  => array(
@@ -2240,7 +2240,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_get_media_creation_timestamp_video_webm() {
+	public function test_wp_get_media_creation_timestamp_video_webm() {
 		$metadata = array(
 			'fileformat' => 'webm',
 			'matroska'   => array(
@@ -2258,7 +2258,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_read_video_metadata_adds_creation_date_with_quicktime() {
+	public function test_wp_read_video_metadata_adds_creation_date_with_quicktime() {
 		$video    = DIR_TESTDATA . '/uploads/small-video.mov';
 		$metadata = wp_read_video_metadata( $video );
 
@@ -2268,7 +2268,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_read_video_metadata_adds_creation_date_with_mp4() {
+	public function test_wp_read_video_metadata_adds_creation_date_with_mp4() {
 		$video    = DIR_TESTDATA . '/uploads/small-video.mp4';
 		$metadata = wp_read_video_metadata( $video );
 
@@ -2278,7 +2278,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_read_video_metadata_adds_creation_date_with_mkv() {
+	public function test_wp_read_video_metadata_adds_creation_date_with_mkv() {
 		$video    = DIR_TESTDATA . '/uploads/small-video.mkv';
 		$metadata = wp_read_video_metadata( $video );
 
@@ -2288,7 +2288,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35218
 	 */
-	function test_wp_read_video_metadata_adds_creation_date_with_webm() {
+	public function test_wp_read_video_metadata_adds_creation_date_with_webm() {
 		$video    = DIR_TESTDATA . '/uploads/small-video.webm';
 		$metadata = wp_read_video_metadata( $video );
 

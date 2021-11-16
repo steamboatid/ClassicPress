@@ -42,7 +42,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 	 * @expectedDeprecated get_theme
 	 * @expectedDeprecated get_themes
 	 */
-	function test_page_templates() {
+	public function test_page_templates() {
 		$theme = get_theme( 'Page Template Theme' );
 		$this->assertNotEmpty( $theme );
 
@@ -75,7 +75,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/18375
 	 */
-	function test_page_templates_different_post_types() {
+	public function test_page_templates_different_post_types() {
 		$theme = wp_get_theme( 'page-templates' );
 		$this->assertNotEmpty( $theme );
 
@@ -101,7 +101,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38766
 	 */
-	function test_page_templates_for_post_types_with_trailing_periods() {
+	public function test_page_templates_for_post_types_with_trailing_periods() {
 		$theme = wp_get_theme( 'page-templates' );
 		$this->assertNotEmpty( $theme );
 
@@ -134,7 +134,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38696
 	 */
-	function test_page_templates_child_theme() {
+	public function test_page_templates_child_theme() {
 		$theme = wp_get_theme( 'page-templates-child' );
 		$this->assertNotEmpty( $theme );
 
@@ -217,7 +217,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 	 * @group external-http
 	 * @see https://core.trac.wordpress.org/ticket/28121
 	 */
-	function test_get_theme_featured_list_api() {
+	public function test_get_theme_featured_list_api() {
 		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 		$featured_list_api = get_theme_feature_list( true );
 		$this->assertNonEmptyMultidimensionalArray( $featured_list_api );
@@ -231,7 +231,7 @@ class Tests_Admin_includesTheme extends WP_UnitTestCase {
 	 * @group external-http
 	 * @see https://core.trac.wordpress.org/ticket/28121
 	 */
-	function test_get_theme_featured_list_hardcoded() {
+	public function test_get_theme_featured_list_hardcoded() {
 		$featured_list_hardcoded = get_theme_feature_list( false );
 		$this->assertNonEmptyMultidimensionalArray( $featured_list_hardcoded );
 	}

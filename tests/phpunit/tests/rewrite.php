@@ -8,7 +8,7 @@
 class Tests_Rewrite extends WP_UnitTestCase {
 	private $home_url;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->set_permalink_structure( '/%year%/%monthnum%/%day%/%postname%/' );
@@ -17,7 +17,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->home_url = get_option( 'home' );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		global $wp_rewrite;
 		$wp_rewrite->init();
 
@@ -82,7 +82,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->assertStringContainsString( $redirect, $extra_rules_top[ $pattern ] );
 	}
 
-	function test_url_to_postid() {
+	public function test_url_to_postid() {
 
 		$id = self::factory()->post->create();
 		$this->assertSame( $id, url_to_postid( get_permalink( $id ) ) );
@@ -91,7 +91,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->assertSame( $id, url_to_postid( get_permalink( $id ) ) );
 	}
 
-	function test_url_to_postid_set_url_scheme_https_to_http() {
+	public function test_url_to_postid_set_url_scheme_https_to_http() {
 		$post_id = self::factory()->post->create();
 		$permalink = get_permalink( $post_id );
 		$this->assertSame( $post_id, url_to_postid( set_url_scheme( $permalink, 'https' ) ) );
@@ -101,7 +101,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->assertSame( $post_id, url_to_postid( set_url_scheme( $permalink, 'https' ) ) );
 	}
 
-	function test_url_to_postid_set_url_scheme_http_to_https() {
+	public function test_url_to_postid_set_url_scheme_http_to_https() {
 		$_SERVER['HTTPS'] = 'on';
 
 		$post_id        = self::factory()->post->create();
@@ -121,7 +121,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_url_to_postid_of_http_site_when_current_site_uses_https() {
+	public function test_url_to_postid_of_http_site_when_current_site_uses_https() {
 		$_SERVER['HTTPS'] = 'on';
 
 		$network_home = home_url();
@@ -167,7 +167,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		return $url;
 	}
 
-	function test_url_to_postid_custom_post_type() {
+	public function test_url_to_postid_custom_post_type() {
 		delete_option( 'rewrite_rules' );
 
 		$post_type = rand_str( 12 );
@@ -179,7 +179,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		_unregister_post_type( $post_type );
 	}
 
-	function test_url_to_postid_hierarchical() {
+	public function test_url_to_postid_hierarchical() {
 
 		$parent_id = self::factory()->post->create( array( 'post_title' => 'Parent', 'post_type' => 'page' ) );
 		$child_id = self::factory()->post->create( array( 'post_title' => 'Child', 'post_type' => 'page', 'post_parent' => $parent_id ) );
@@ -188,7 +188,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->assertSame( $child_id, url_to_postid( get_permalink( $child_id ) ) );
 	}
 
-	function test_url_to_postid_hierarchical_with_matching_leaves() {
+	public function test_url_to_postid_hierarchical_with_matching_leaves() {
 
 		$parent_id = self::factory()->post->create( array(
 			'post_name' => 'parent',
@@ -221,7 +221,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->assertSame( $grandchild_id_2, url_to_postid( get_permalink( $grandchild_id_2 ) ) );
 	}
 
-	function test_url_to_postid_home_has_path() {
+	public function test_url_to_postid_home_has_path() {
 
 		update_option( 'home', home_url( '/example/' ) );
 
@@ -247,7 +247,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30438
 	 */
-	function test_parse_request_home_path() {
+	public function test_parse_request_home_path() {
 		$home_url = home_url( '/path/' );
 		update_option( 'home', $home_url );
 
@@ -267,7 +267,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30438
 	 */
-	function test_parse_request_home_path_with_regex_character() {
+	public function test_parse_request_home_path_with_regex_character() {
 		$home_url = home_url( '/ma.ch/' );
 		$not_a_home_url = home_url( '/match/' );
 		update_option( 'home', $home_url );
@@ -304,7 +304,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30018
 	 */
-	function test_parse_request_home_path_non_public_type() {
+	public function test_parse_request_home_path_non_public_type() {
 		register_post_type( 'foo', array( 'public' => false ) );
 
 		$url = add_query_arg( 'foo', '1', home_url() );
@@ -316,7 +316,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 		$this->assertSame( array(), $GLOBALS['wp']->query_vars );
 	}
 
-	function test_url_to_postid_dupe_path() {
+	public function test_url_to_postid_dupe_path() {
 		update_option( 'home', home_url('/example/') );
 
 		$id = self::factory()->post->create( array( 'post_title' => 'Hi', 'post_type' => 'page', 'post_name' => 'example' ) );
@@ -330,7 +330,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * Reveals bug introduced in WP 3.0
 	 */
-	function test_url_to_postid_home_url_collision() {
+	public function test_url_to_postid_home_url_collision() {
 		update_option( 'home', home_url( '/example' ) );
 
 		self::factory()->post->create( array( 'post_title' => 'Collision', 'post_type' => 'page', 'post_name' => 'collision' ) );
@@ -344,7 +344,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	 * Reveals bug introduced in WP 3.0
 	 * @group ms-required
 	 */
-	function test_url_to_postid_ms_home_url_collision() {
+	public function test_url_to_postid_ms_home_url_collision() {
 		$blog_id = self::factory()->blog->create( array( 'path' => '/example' ) );
 		switch_to_blog( $blog_id );
 
@@ -360,7 +360,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21970
 	 */
-	function test_url_to_postid_with_post_slug_that_clashes_with_a_trashed_page() {
+	public function test_url_to_postid_with_post_slug_that_clashes_with_a_trashed_page() {
 		$this->set_permalink_structure( '/%postname%/' );
 
 		$page_id = self::factory()->post->create( array( 'post_type' => 'page', 'post_status' => 'trash' ) );
@@ -372,7 +372,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/34971
 	 */
-	function test_url_to_postid_static_front_page() {
+	public function test_url_to_postid_static_front_page() {
 		$post_id = self::factory()->post->create( array( 'post_type' => 'page' ) );
 
 		$this->assertSame( 0, url_to_postid( home_url() ) );
@@ -406,7 +406,7 @@ class Tests_Rewrite extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21970
 	 */
-	function test_parse_request_with_post_slug_that_clashes_with_a_trashed_page() {
+	public function test_parse_request_with_post_slug_that_clashes_with_a_trashed_page() {
 		$this->set_permalink_structure( '/%postname%/' );
 
 		$page_id = self::factory()->post->create( array( 'post_type' => 'page', 'post_status' => 'trash' ) );

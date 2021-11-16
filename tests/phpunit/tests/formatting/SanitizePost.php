@@ -8,7 +8,7 @@ class Tests_Formatting_SanitizePost extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22324
 	 */
-	function test_int_fields() {
+	public function test_int_fields() {
 		$post = self::factory()->post->create_and_get();
 		$int_fields = array(
 			'ID'            => 'integer',

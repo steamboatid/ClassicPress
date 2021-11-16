@@ -22,7 +22,7 @@ class Tests_Admin_Includes_Post extends WP_UnitTestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	function test__wp_translate_postdata_cap_checks_contributor() {
+	public function test__wp_translate_postdata_cap_checks_contributor() {
 		wp_set_current_user( self::$contributor_id );
 
 		// Create New Draft Post
@@ -72,7 +72,7 @@ class Tests_Admin_Includes_Post extends WP_UnitTestCase {
 		$this->assertSame( 'Sorry, you are not allowed to edit posts as this user.', $_results->get_error_message() );
 	}
 
-	function test__wp_translate_postdata_cap_checks_editor() {
+	public function test__wp_translate_postdata_cap_checks_editor() {
 		wp_set_current_user( self::$editor_id );
 
 		// Create New Draft Post
@@ -127,7 +127,7 @@ class Tests_Admin_Includes_Post extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/25272
 	 */
-	function test_edit_post_auto_draft() {
+	public function test_edit_post_auto_draft() {
 		wp_set_current_user( self::$editor_id );
 		$post = self::factory()->post->create_and_get( array( 'post_status' => 'auto-draft' ) );
 		$this->assertSame( 'auto-draft', $post->post_status );

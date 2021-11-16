@@ -31,7 +31,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Video::get_instance_schema()
 	 */
-	function test_get_instance_schema() {
+	public function test_get_instance_schema() {
 		$widget = new WP_Widget_Media_Video();
 		$schema = $widget->get_instance_schema();
 
@@ -56,7 +56,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Video::__construct()
 	 */
-	function test_constructor() {
+	public function test_constructor() {
 		$widget = new WP_Widget_Media_Video();
 
 		$this->assertArrayHasKey( 'mime_type', $widget->widget_options );
@@ -85,7 +85,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Video::update()
 	 */
-	function test_update() {
+	public function test_update() {
 		$widget = new WP_Widget_Media_Video();
 		$instance = array();
 
@@ -168,7 +168,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 * @covers WP_Widget_Media_Video::render_media()
 	 * @covers WP_Widget_Media_Video::inject_video_max_width_style()
 	 */
-	function test_render_media() {
+	public function test_render_media() {
 		$test_movie_file = __FILE__ . '../../data/uploads/small-video.m4v';
 		$widget = new WP_Widget_Media_Video();
 		$attachment_id = self::factory()->attachment->create_object( array(
@@ -245,7 +245,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 * @global WP_Styles $wp_styles
 	 * @covers WP_Widget_Media_Video::enqueue_preview_scripts()
 	 */
-	function test_enqueue_preview_scripts() {
+	public function test_enqueue_preview_scripts() {
 		global $wp_scripts, $wp_styles;
 		$widget = new WP_Widget_Media_Video();
 
@@ -270,7 +270,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Video::enqueue_admin_scripts()
 	 */
-	function test_enqueue_admin_scripts() {
+	public function test_enqueue_admin_scripts() {
 		set_current_screen( 'widgets.php' );
 		$widget = new WP_Widget_Media_Video();
 		$widget->enqueue_admin_scripts();
@@ -283,7 +283,7 @@ class Test_WP_Widget_Media_Video extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Video::render_control_template_scripts()
 	 */
-	function test_render_control_template_scripts() {
+	public function test_render_control_template_scripts() {
 		$widget = new WP_Widget_Media_Video();
 
 		ob_start();

@@ -17,7 +17,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 */
 	public $undefined;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
 		$GLOBALS['wp_customize'] = new WP_Customize_Manager();
@@ -25,13 +25,13 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 		$this->undefined = new stdClass();
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$this->manager = null;
 		unset( $GLOBALS['wp_customize'] );
 		parent::tear_down();
 	}
 
-	function test_constructor_without_args() {
+	public function test_constructor_without_args() {
 		$setting = new WP_Customize_Setting( $this->manager, 'foo' );
 		$this->assertSame( $this->manager, $setting->manager );
 		$this->assertSame( 'foo', $setting->id );
@@ -88,7 +88,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 		return base64_encode( $value );
 	}
 
-	function test_constructor_with_args() {
+	public function test_constructor_with_args() {
 		$args = array(
 			'type' => 'option',
 			'capability' => 'edit_posts',
@@ -136,7 +136,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 *
 	 * @see WP_Customize_Setting::value()
 	 */
-	function test_preview_standard_types_non_multidimensional() {
+	public function test_preview_standard_types_non_multidimensional() {
 		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'administrator' ) ) );
 		$_POST['customized'] = wp_slash( wp_json_encode( $this->post_data_overrides ) );
 
@@ -215,7 +215,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 * @see WP_Customize_Setting::preview()
 	 * @see WP_Customize_Setting::value()
 	 */
-	function test_preview_standard_types_multidimensional() {
+	public function test_preview_standard_types_multidimensional() {
 		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'administrator' ) ) );
 		$_POST['customized'] = wp_slash( wp_json_encode( $this->post_data_overrides ) );
 
@@ -355,7 +355,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 *
 	 * @see WP_Customize_Setting::preview()
 	 */
-	function test_preview_custom_type() {
+	public function test_preview_custom_type() {
 		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'administrator' ) ) );
 		$type = 'custom_type';
 		$post_data_overrides = array(
@@ -464,7 +464,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/30988
 	 */
-	function test_non_posted_setting_applying_default_value_in_preview() {
+	public function test_non_posted_setting_applying_default_value_in_preview() {
 		$type = 'option';
 		$name = 'unset_option_without_post_value';
 		$default = "default_value_{$name}";
@@ -482,7 +482,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 * @see WP_Customize_Setting::save()
 	 * @see WP_Customize_Setting::update()
 	 */
-	function test_update_custom_type() {
+	public function test_update_custom_type() {
 		$type = 'custom';
 		$name = 'foo';
 		$setting = new WP_Customize_Setting( $this->manager, $name, compact( 'type' ) );
@@ -541,7 +541,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/31428
 	 */
-	function test_is_current_blog_previewed() {
+	public function test_is_current_blog_previewed() {
 		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'administrator' ) ) );
 		$type = 'option';
 		$name = 'blogname';
@@ -563,7 +563,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	 * @group multisite
 	 * @group ms-required
 	 */
-	function test_previewing_with_switch_to_blog() {
+	public function test_previewing_with_switch_to_blog() {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 		$type = 'option';
 		$name = 'blogdescription';
@@ -585,7 +585,7 @@ class Tests_WP_Customize_Setting extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33499
 	 */
-	function test_option_autoloading() {
+	public function test_option_autoloading() {
 		global $wpdb;
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 

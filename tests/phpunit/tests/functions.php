@@ -4,7 +4,7 @@
  * @group functions.php
  */
 class Tests_Functions extends WP_UnitTestCase {
-	function test_wp_parse_args_object() {
+	public function test_wp_parse_args_object() {
 		$x = new MockClass;
 		$x->_baba = 5;
 		$x->yZ    = 'baba'; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -21,7 +21,7 @@ class Tests_Functions extends WP_UnitTestCase {
 		$this->assertSame( array(), wp_parse_args( $y ) );
 	}
 
-	function test_wp_parse_args_array()  {
+	public function test_wp_parse_args_array()  {
 		// arrays
 		$a = array();
 		$this->assertSame( array(), wp_parse_args( $a ) );
@@ -40,7 +40,7 @@ class Tests_Functions extends WP_UnitTestCase {
 		);
 	}
 
-	function test_wp_parse_args_defaults() {
+	public function test_wp_parse_args_defaults() {
 		$x = new MockClass;
 		$x->_baba = 5;
 		$x->yZ    = 'baba'; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -66,7 +66,7 @@ class Tests_Functions extends WP_UnitTestCase {
 		);
 	}
 
-	function test_wp_parse_args_other() {
+	public function test_wp_parse_args_other() {
 		$b = true;
 		wp_parse_str( $b, $s );
 		$this->assertSame( $s, wp_parse_args( $b ) );
@@ -78,7 +78,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30753
 	 */
-	function test_wp_parse_args_boolean_strings() {
+	public function test_wp_parse_args_boolean_strings() {
 		$args = wp_parse_args( 'foo=false&bar=true' );
 		$this->assertIsString( $args['foo'] );
 		$this->assertIsString( $args['bar'] );
@@ -87,13 +87,13 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35972
 	 */
-	function test_bool_from_yn() {
+	public function test_bool_from_yn() {
 		$this->assertTrue( bool_from_yn( 'Y' ) );
 		$this->assertTrue( bool_from_yn( 'y' ) );
 		$this->assertFalse( bool_from_yn( 'n' ) );
 	}
 
-	function test_path_is_absolute() {
+	public function test_path_is_absolute() {
 		$absolute_paths = array(
 			'/',
 			'/foo/',
@@ -110,7 +110,7 @@ class Tests_Functions extends WP_UnitTestCase {
 			$this->assertTrue( path_is_absolute($path), "path_is_absolute('$path') should return true" );
 	}
 
-	function test_path_is_not_absolute() {
+	public function test_path_is_not_absolute() {
 		$relative_paths = array(
 			'',
 			'.',
@@ -133,7 +133,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 *
 	 * @dataProvider data_wp_normalize_path
 	 */
-	function test_wp_normalize_path( $path, $expected ) {
+	public function test_wp_normalize_path( $path, $expected ) {
 		$this->assertSame( $expected, wp_normalize_path( $path ) );
 	}
 	function data_wp_normalize_path() {
@@ -155,7 +155,7 @@ class Tests_Functions extends WP_UnitTestCase {
 		);
 	}
 
-	function test_wp_unique_filename() {
+	public function test_wp_unique_filename() {
 
 		$testdir = DIR_TESTDATA . '/images/';
 
@@ -192,7 +192,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @dataProvider data_is_serialized
 	 * @dataProvider data_is_not_serialized
 	 */
-	function test_is_serialized( $value, $expected ) {
+	public function test_is_serialized( $value, $expected ) {
 		$this->assertSame( $expected, is_serialized( $value ) );
 	}
 
@@ -261,7 +261,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/17375
 	 */
-	function test_no_new_serializable_types() {
+	public function test_no_new_serializable_types() {
 		$this->assertFalse( is_serialized( 'C:16:"Serialized_Class":6:{a:0:{}}' ) );
 	}
 
@@ -307,7 +307,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @group add_query_arg
 	 */
-	function test_add_query_arg() {
+	public function test_add_query_arg() {
 		$old_req_uri = $_SERVER['REQUEST_URI'];
 
 		$urls = array(
@@ -495,7 +495,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/31306
 	 */
-	function test_add_query_arg_numeric_keys() {
+	public function test_add_query_arg_numeric_keys() {
 		$url = add_query_arg( array( 'foo' => 'bar' ), '1=1' );
 		$this->assertSame( '1=1&foo=bar', $url );
 
@@ -515,7 +515,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21594
 	 */
-	function test_get_allowed_mime_types() {
+	public function test_get_allowed_mime_types() {
 		$mimes = get_allowed_mime_types();
 
 		$this->assertIsArray( $mimes );
@@ -535,7 +535,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21594
 	 */
-	function test_wp_get_mime_types() {
+	public function test_wp_get_mime_types() {
 		$mimes = wp_get_mime_types();
 
 		$this->assertIsArray( $mimes );
@@ -567,7 +567,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23688
 	 */
-	function test_canonical_charset() {
+	public function test_canonical_charset() {
 		$orig_blog_charset = get_option( 'blog_charset' );
 
 		update_option( 'blog_charset', 'utf8' );
@@ -604,7 +604,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @dataProvider data_wp_parse_id_list
 	 */
-	function test_wp_parse_id_list( $expected, $actual ) {
+	public function test_wp_parse_id_list( $expected, $actual ) {
 		$this->assertSame( $expected, array_values( wp_parse_id_list( $actual ) ) );
 	}
 
@@ -623,7 +623,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @dataProvider data_wp_parse_slug_list
 	 */
-	function test_wp_parse_slug_list( $expected, $actual ) {
+	public function test_wp_parse_slug_list( $expected, $actual ) {
 		$this->assertSame( $expected, array_values( wp_parse_slug_list( $actual ) ) );
 	}
 
@@ -639,7 +639,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @dataProvider data_device_can_upload
 	 */
-	function test_device_can_upload( $user_agent, $expected ) {
+	public function test_device_can_upload( $user_agent, $expected ) {
 		$_SERVER['HTTP_USER_AGENT'] = $user_agent;
 		$actual = _device_can_upload();
 		unset( $_SERVER['HTTP_USER_AGENT'] );
@@ -699,7 +699,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/9064
 	 */
-	function test_wp_extract_urls() {
+	public function test_wp_extract_urls() {
 		$original_urls = array(
 			'http://woo.com/1,2,3,4,5,6/-1-2-3-4-/woo.html',
 			'http://this.com',
@@ -866,21 +866,21 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode() {
+	public function test_wp_json_encode() {
 		$this->assertSame( wp_json_encode( 'a' ), '"a"' );
 	}
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode_utf8() {
+	public function test_wp_json_encode_utf8() {
 		$this->assertSame( wp_json_encode( '这' ), '"\u8fd9"' );
 	}
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode_non_utf8() {
+	public function test_wp_json_encode_non_utf8() {
 		if ( ! function_exists( 'mb_detect_order' ) ) {
 			$this->markTestSkipped( 'mbstring extension not available.' );
 		}
@@ -904,7 +904,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode_non_utf8_in_array() {
+	public function test_wp_json_encode_non_utf8_in_array() {
 		if ( ! function_exists( 'mb_detect_order' ) ) {
 			$this->markTestSkipped( 'mbstring extension not available.' );
 		}
@@ -928,14 +928,14 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode_array() {
+	public function test_wp_json_encode_array() {
 		$this->assertSame( wp_json_encode( array( 'a' ) ), '["a"]' );
 	}
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode_object() {
+	public function test_wp_json_encode_object() {
 		$object = new stdClass;
 		$object->a = 'b';
 		$this->assertSame( wp_json_encode( $object ), '{"a":"b"}' );
@@ -944,7 +944,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28786
 	 */
-	function test_wp_json_encode_depth() {
+	public function test_wp_json_encode_depth() {
 		$data = array( array( array( 1, 2, 3 ) ) );
 		$json = wp_json_encode( $data, 0, 1 );
 		$this->assertFalse( $json );
@@ -957,7 +957,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/33750
 	 */
-	function test_the_date() {
+	public function test_the_date() {
 		ob_start();
 		the_date();
 		$actual = ob_get_clean();
@@ -996,7 +996,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/36054
 	 * @dataProvider datetime_provider
 	 */
-	function test_mysql_to_rfc3339( $expected, $actual ) {
+	public function test_mysql_to_rfc3339( $expected, $actual ) {
 		$date_return = mysql_to_rfc3339( $actual );
 
 		$this->assertTrue( is_string( $date_return ), 'The date return must be a string' );
@@ -1058,7 +1058,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/32075
 	 */
-	function test_wp_raise_memory_limit() {
+	public function test_wp_raise_memory_limit() {
 		if ( -1 !== WP_MAX_MEMORY_LIMIT ) {
 			$this->markTestSkipped( 'WP_MAX_MEMORY_LIMIT should be set to -1' );
 		}
@@ -1078,7 +1078,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @covers ::wp_generate_uuid4
 	 * @see https://core.trac.wordpress.org/ticket/38164
 	 */
-	function test_wp_generate_uuid4() {
+	public function test_wp_generate_uuid4() {
 		$uuids = array();
 		for ( $i = 0; $i < 20; $i += 1 ) {
 			$uuid = wp_generate_uuid4();
@@ -1096,7 +1096,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @covers ::wp_is_uuid
 	 * @see https://core.trac.wordpress.org/ticket/39778
 	 */
-	function test_wp_is_valid_uuid() {
+	public function test_wp_is_valid_uuid() {
 		$uuids_v4 = array(
 			'27fe2421-780c-44c5-b39b-fff753092b55',
 			'b7c7713a-4ee9-45a1-87ed-944a90390fc7',
@@ -1156,7 +1156,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/39550
 	 * @dataProvider _wp_check_filetype_and_ext_data
 	 */
-	function test_wp_check_filetype_and_ext( $file, $filename, $expected ) {
+	public function test_wp_check_filetype_and_ext( $file, $filename, $expected ) {
 		if ( ! extension_loaded( 'fileinfo' ) ) {
 			$this->markTestSkipped( 'The fileinfo PHP extension is not loaded.' );
 		}
@@ -1168,7 +1168,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/39550
 	 * @group ms-excluded
 	 */
-	function test_wp_check_filetype_and_ext_with_filtered_svg() {
+	public function test_wp_check_filetype_and_ext_with_filtered_svg() {
 		if ( ! extension_loaded( 'fileinfo' ) ) {
 			$this->markTestSkipped( 'The fileinfo PHP extension is not loaded.' );
 		}
@@ -1193,7 +1193,7 @@ class Tests_Functions extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/39550
 	 * @group ms-excluded
 	 */
-	function test_wp_check_filetype_and_ext_with_filtered_woff() {
+	public function test_wp_check_filetype_and_ext_with_filtered_woff() {
 		if ( ! extension_loaded( 'fileinfo' ) ) {
 			$this->markTestSkipped( 'The fileinfo PHP extension is not loaded.' );
 		}

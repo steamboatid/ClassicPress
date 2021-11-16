@@ -6,7 +6,7 @@
  */
 class Tests_Dependencies_jQuery extends WP_UnitTestCase {
 
-	function test_location_of_jquery() {
+	public function test_location_of_jquery() {
 		$scripts = new WP_Scripts;
 		wp_default_scripts( $scripts );
 
@@ -29,7 +29,7 @@ class Tests_Dependencies_jQuery extends WP_UnitTestCase {
         }
 	}
 
-	function test_presence_of_jquery_no_conflict() {
+	public function test_presence_of_jquery_no_conflict() {
 		$contents = trim( file_get_contents( ABSPATH . WPINC . '/js/jquery/jquery.js' ) );
 		$noconflict = 'jQuery.noConflict();';
 		$end = substr( $contents, - strlen( $noconflict ) );
@@ -41,7 +41,7 @@ class Tests_Dependencies_jQuery extends WP_UnitTestCase {
 	 *
 	 * @expectedIncorrectUsage wp_deregister_script
 	 */
-	function test_dont_allow_deregister_core_scripts_in_admin() {
+	public function test_dont_allow_deregister_core_scripts_in_admin() {
 		set_current_screen( 'edit.php' );
 		$this->assertTrue( is_admin() ) ;
 		$libraries = array(
@@ -65,7 +65,7 @@ class Tests_Dependencies_jQuery extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/24994
 	 */
-	function test_exclusion_of_sourcemaps() {
+	public function test_exclusion_of_sourcemaps() {
 		$contents = trim( file_get_contents( ABSPATH . WPINC . '/js/jquery/jquery.js' ) );
 		$this->assertFalse( strpos( $contents, 'sourceMappingURL' ), 'Presence of sourceMappingURL' );
 	}
@@ -73,7 +73,7 @@ class Tests_Dependencies_jQuery extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28404
 	 */
-	function test_wp_script_is_dep_enqueued() {
+	public function test_wp_script_is_dep_enqueued() {
 		wp_enqueue_script( 'jquery-ui-accordion' );
 
 		$this->assertTrue( wp_script_is( 'jquery', 'enqueued' ) );
@@ -87,7 +87,7 @@ class Tests_Dependencies_jQuery extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/25247
 	 */
-	function test_jquery_in_footer() {
+	public function test_jquery_in_footer() {
 		$scripts = new WP_Scripts;
 		$scripts->add( 'jquery', false, array( 'jquery-core', 'jquery-migrate' ) );
 		$scripts->add( 'jquery-core', '/jquery.js', array() );

@@ -7,13 +7,13 @@
  * @group walker
  */
 class Tests_Walker extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->walker = new Walker_Test();
 	}
 
-	function test_single_item() {
+	public function test_single_item() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ) );
 		$output = $this->walker->walk( $items, 0 );
@@ -23,7 +23,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_single_item_flat() {
+	public function test_single_item_flat() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ) );
 		$output = $this->walker->walk( $items, -1 );
@@ -33,7 +33,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_single_item_depth_1() {
+	public function test_single_item_depth_1() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ) );
 		$output = $this->walker->walk( $items, 1 );
@@ -43,7 +43,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_single_level() {
+	public function test_multiple_items_single_level() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ), (object) array( 'id' => 2, 'parent' => 0 ) );
 
@@ -54,7 +54,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_multiple_levels() {
+	public function test_multiple_items_multiple_levels() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ), (object) array( 'id' => 2, 'parent' => 1 ) );
 
@@ -65,7 +65,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_multiple_levels_flat() {
+	public function test_multiple_items_multiple_levels_flat() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ), (object) array( 'id' => 2, 'parent' => 1 ) );
 
@@ -76,7 +76,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_multiple_levels_depth_1() {
+	public function test_multiple_items_multiple_levels_depth_1() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ), (object) array( 'id' => 2, 'parent' => 1 ) );
 
@@ -87,7 +87,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_multiple_levels_depth_2() {
+	public function test_multiple_items_multiple_levels_depth_2() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 0 ), (object) array( 'id' => 2, 'parent' => 1 ), (object) array( 'id' => 3, 'parent' => 2 ) );
 
@@ -98,7 +98,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_recursive() {
+	public function test_multiple_items_recursive() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 2 ), (object) array( 'id' => 2, 'parent' => 1 ) );
 
@@ -109,7 +109,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_single_item_child() {
+	public function test_single_item_child() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 3 ) );
 
@@ -120,7 +120,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_single_item_missing_parent_depth_1() {
+	public function test_single_item_missing_parent_depth_1() {
 
 		$items = array( (object) array( 'id' => 1, 'parent' => 3 ) );
 
@@ -138,7 +138,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_missing_parents() {
+	public function test_multiple_items_missing_parents() {
 
 		$items = array( (object) array( 'id' => 4, 'parent' => 1 ), (object) array( 'id' => 5, 'parent' => 2 ), (object) array( 'id' => 6, 'parent' => 3 ) );
 
@@ -149,7 +149,7 @@ class Tests_Walker extends WP_UnitTestCase {
 
 	}
 
-	function test_multiple_items_missing_parents_depth_1() {
+	public function test_multiple_items_missing_parents_depth_1() {
 
 		$items = array( (object) array( 'id' => 4, 'parent' => 1 ), (object) array( 'id' => 5, 'parent' => 2 ), (object) array( 'id' => 6, 'parent' => 3 ) );
 

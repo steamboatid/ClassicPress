@@ -18,13 +18,13 @@ class Tests_Cron extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
-	function test_wp_get_schedule_empty() {
+	public function test_wp_get_schedule_empty() {
 		// nothing scheduled
 		$hook = __FUNCTION__;
 		$this->assertFalse(wp_get_schedule($hook));
 	}
 
-	function test_schedule_event_single() {
+	public function test_schedule_event_single() {
 		// schedule an event and make sure it's returned by wp_next_scheduled
 		$hook = __FUNCTION__;
 		$timestamp = strtotime('+1 hour');
@@ -37,7 +37,7 @@ class Tests_Cron extends WP_UnitTestCase {
 
 	}
 
-	function test_schedule_event_single_args() {
+	public function test_schedule_event_single_args() {
 		// schedule an event with arguments and make sure it's returned by wp_next_scheduled
 		$hook = 'event';
 		$timestamp = strtotime('+1 hour');
@@ -54,7 +54,7 @@ class Tests_Cron extends WP_UnitTestCase {
 		$this->assertFalse( wp_get_schedule( $hook, $args ) );
 	}
 
-	function test_schedule_event() {
+	public function test_schedule_event() {
 		// schedule an event and make sure it's returned by wp_next_scheduled
 		$hook = __FUNCTION__;
 		$recur = 'hourly';
@@ -67,7 +67,7 @@ class Tests_Cron extends WP_UnitTestCase {
 		$this->assertSame( $recur, wp_get_schedule( $hook ) );
 	}
 
-	function test_schedule_event_args() {
+	public function test_schedule_event_args() {
 		// schedule an event and make sure it's returned by wp_next_scheduled
 		$hook = 'event';
 		$timestamp = strtotime('+1 hour');
@@ -85,7 +85,7 @@ class Tests_Cron extends WP_UnitTestCase {
 
 	}
 
-	function test_unschedule_event() {
+	public function test_unschedule_event() {
 		// schedule an event and make sure it's returned by wp_next_scheduled
 		$hook = __FUNCTION__;
 		$timestamp = strtotime('+1 hour');
@@ -98,7 +98,7 @@ class Tests_Cron extends WP_UnitTestCase {
 		$this->assertFalse( wp_next_scheduled( $hook ) );
 	}
 
-	function test_clear_schedule() {
+	public function test_clear_schedule() {
 		$hook = __FUNCTION__;
 		$args = array( 'arg1' );
 
@@ -124,7 +124,7 @@ class Tests_Cron extends WP_UnitTestCase {
 		$this->assertFalse( wp_next_scheduled($hook, $args) );
 	}
 
-	function test_clear_schedule_multiple_args() {
+	public function test_clear_schedule_multiple_args() {
 		$hook = __FUNCTION__;
 		$args = array( 'arg1', 'arg2' );
 
@@ -153,7 +153,7 @@ class Tests_Cron extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/10468
 	 */
-	function test_clear_schedule_new_args() {
+	public function test_clear_schedule_new_args() {
 		$hook = __FUNCTION__;
 		$args = array( 'arg1' );
 		$multi_hook = __FUNCTION__ . '_multi';
@@ -191,7 +191,7 @@ class Tests_Cron extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/18997
 	 */
-	function test_unschedule_hook() {
+	public function test_unschedule_hook() {
 		$hook = __FUNCTION__;
 		$args = array( rand_str() );
 
@@ -213,7 +213,7 @@ class Tests_Cron extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/6966
 	 */
-	function test_duplicate_event() {
+	public function test_duplicate_event() {
 		// duplicate events close together should be skipped
 		$hook = __FUNCTION__;
 		$args = array( 'arg1' );
@@ -232,7 +232,7 @@ class Tests_Cron extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/6966
 	 */
-	function test_not_duplicate_event() {
+	public function test_not_duplicate_event() {
 		// duplicate events far apart should work normally
 		$hook = __FUNCTION__;
 		$args = array( 'arg1' );
@@ -251,7 +251,7 @@ class Tests_Cron extends WP_UnitTestCase {
 		$this->assertSame( $ts1, wp_next_scheduled( $hook, $args ) );
 	}
 
-	function test_not_duplicate_event_reversed() {
+	public function test_not_duplicate_event_reversed() {
 		// duplicate events far apart should work normally regardless of order
 		$hook = __FUNCTION__;
 		$args = array( 'arg1' );

@@ -3,7 +3,7 @@
  * @group admin
  */
 class Tests_Admin_includesTemplate extends WP_UnitTestCase {
-	function test_equal() {
+	public function test_equal() {
 		$this->assertEquals(' selected=\'selected\'', selected('foo','foo',false));
 		$this->assertEquals(' checked=\'checked\'', checked('foo','foo',false));
 
@@ -35,7 +35,7 @@ class Tests_Admin_includesTemplate extends WP_UnitTestCase {
 		$this->assertEquals(' checked=\'checked\'', checked(false,false,false));
 	}
 
-	function test_notequal() {
+	public function test_notequal() {
 		$this->assertEquals('', selected('0','',false));
 		$this->assertEquals('', checked('0','',false));
 

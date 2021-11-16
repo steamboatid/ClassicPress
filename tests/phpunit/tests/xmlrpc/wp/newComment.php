@@ -5,7 +5,7 @@
  */
 class Tests_XMLRPC_wp_newComment extends WP_XMLRPC_UnitTestCase {
 
-	function test_valid_comment() {
+	public function test_valid_comment() {
 		$this->make_user_by_role( 'administrator' );
 		$post = self::factory()->post->create_and_get();
 
@@ -16,7 +16,7 @@ class Tests_XMLRPC_wp_newComment extends WP_XMLRPC_UnitTestCase {
 		$this->assertNotIXRError( $result );
 	}
 
-	function test_empty_comment() {
+	public function test_empty_comment() {
 		$this->make_user_by_role( 'administrator' );
 		$post = self::factory()->post->create_and_get();
 
@@ -28,7 +28,7 @@ class Tests_XMLRPC_wp_newComment extends WP_XMLRPC_UnitTestCase {
 		$this->assertSame( 403, $result->code );
 	}
 
-	function test_new_comment_post_closed() {
+	public function test_new_comment_post_closed() {
 		$this->make_user_by_role( 'administrator' );
 		$post = self::factory()->post->create_and_get( array(
 			'comment_status' => 'closed'
@@ -44,7 +44,7 @@ class Tests_XMLRPC_wp_newComment extends WP_XMLRPC_UnitTestCase {
 		$this->assertSame( 403, $result->code );
 	}
 
-	function test_new_comment_duplicated() {
+	public function test_new_comment_duplicated() {
 		$this->make_user_by_role( 'administrator' );
 		$post = self::factory()->post->create_and_get();
 

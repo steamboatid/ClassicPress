@@ -12,7 +12,7 @@ class Tests_Admin_includesPlugin extends WP_UnitTestCase {
 		self::_restore_mu_plugins();
 	}
 
-	function test_get_plugin_data() {
+	public function test_get_plugin_data() {
 		$data = get_plugin_data( DIR_TESTDATA . '/plugins/hello.php' );
 
 		$default_headers = array(
@@ -35,7 +35,7 @@ class Tests_Admin_includesPlugin extends WP_UnitTestCase {
 		}
 	}
 
-	function test_menu_page_url() {
+	public function test_menu_page_url() {
 		$current_user = get_current_user_id();
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 		update_option( 'siteurl', 'http://example.com' );
@@ -65,7 +65,7 @@ class Tests_Admin_includesPlugin extends WP_UnitTestCase {
 		wp_set_current_user( $current_user );
 	}
 
-	function test_is_plugin_active_true() {
+	public function test_is_plugin_active_true() {
 		activate_plugin( 'hello.php' );
 		$test = is_plugin_active( 'hello.php' );
 		$this->assertTrue( $test );
@@ -73,19 +73,19 @@ class Tests_Admin_includesPlugin extends WP_UnitTestCase {
 		deactivate_plugins( 'hello.php' );
 	}
 
-	function test_is_plugin_active_false() {
+	public function test_is_plugin_active_false() {
 		deactivate_plugins( 'hello.php' );
 		$test = is_plugin_active( 'hello.php' );
 		$this->assertFalse( $test );
 	}
 
-	function test_is_plugin_inactive_true() {
+	public function test_is_plugin_inactive_true() {
 		deactivate_plugins( 'hello.php' );
 		$test = is_plugin_inactive( 'hello.php' );
 		$this->assertTrue( $test );
 	}
 
-	function test_is_plugin_inactive_false() {
+	public function test_is_plugin_inactive_false() {
 		activate_plugin( 'hello.php' );
 		$test = is_plugin_inactive( 'hello.php' );
 		$this->assertFalse( $test );

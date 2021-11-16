@@ -11,7 +11,7 @@ class Tests_Multisite_Update_Blog_Details extends WP_UnitTestCase {
 	 * If `update_blog_details()` is called with any kind of empty arguments, it
 	 * should return false.
 	 */
-	function test_update_blog_details_with_empty_args() {
+	public function test_update_blog_details_with_empty_args() {
 		$result = update_blog_details( 1, array() );
 		$this->assertFalse( $result );
 	}
@@ -19,12 +19,12 @@ class Tests_Multisite_Update_Blog_Details extends WP_UnitTestCase {
 	/**
 	 * If the ID passed is not that of a current site, we should expect false.
 	 */
-	function test_update_blog_details_invalid_blog_id() {
+	public function test_update_blog_details_invalid_blog_id() {
 		$result = update_blog_details( 999, array( 'domain' => 'example.com' ) );
 		$this->assertFalse( $result );
 	}
 
-	function test_update_blog_details() {
+	public function test_update_blog_details() {
 		$blog_id = self::factory()->blog->create();
 
 		$result = update_blog_details( $blog_id, array( 'domain' => 'example.com', 'path' => 'my_path/' ) );

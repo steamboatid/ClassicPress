@@ -10,7 +10,7 @@ class Tests_Kses extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20210
 	 */
-	function test_wp_filter_post_kses_address() {
+	public function test_wp_filter_post_kses_address() {
 		global $allowedposttags;
 
 		$attributes = array(
@@ -33,7 +33,7 @@ class Tests_Kses extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20210
 	 */
-	function test_wp_filter_post_kses_a() {
+	public function test_wp_filter_post_kses_a() {
 		global $allowedposttags;
 
 		$attributes = array(
@@ -58,7 +58,7 @@ class Tests_Kses extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20210
 	 */
-	function test_wp_filter_post_kses_abbr() {
+	public function test_wp_filter_post_kses_abbr() {
 		global $allowedposttags;
 
 		$attributes = array(
@@ -75,7 +75,7 @@ class Tests_Kses extends WP_UnitTestCase {
 		}
 	}
 
-	function test_feed_links() {
+	public function test_feed_links() {
 		global $allowedposttags;
 
 		$content = <<<EOF
@@ -109,7 +109,7 @@ EOF;
 		$this->assertSame( $expected, wp_kses( $content, $allowedposttags ) );
 	}
 
-	function test_wp_kses_bad_protocol() {
+	public function test_wp_kses_bad_protocol() {
 		$bad = array(
 			'dummy:alert(1)',
 			'javascript:alert(1)',
@@ -399,7 +399,7 @@ EOF;
 		$this->assertSame( $allowedtags, wp_kses_allowed_html( 'data' ) );
 	}
 
-	function test_hyphenated_tag() {
+	public function test_hyphenated_tag() {
 		$string = "<hyphenated-tag attribute=\"value\" otherattribute=\"value2\">Alot of hyphens.</hyphenated-tag>";
 		$custom_tags = array(
 			'hyphenated-tag' => array(
@@ -434,7 +434,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/28506
 	 * @dataProvider data_ctrl_removal
 	 */
-	function test_ctrl_removal( $input, $output ) {
+	public function test_ctrl_removal( $input, $output ) {
 		global $allowedposttags;
 
 		return $this->assertSame( $output, wp_kses( $input, $allowedposttags ) );
@@ -471,7 +471,7 @@ EOF;
 	 * @see https://core.trac.wordpress.org/ticket/28699
 	 * @dataProvider data_slash_zero_removal
 	 */
-	function test_slash_zero_removal( $input, $output ) {
+	public function test_slash_zero_removal( $input, $output ) {
 		global $allowedposttags;
 
 		return $this->assertSame( $output, wp_kses( $input, $allowedposttags ) );
@@ -523,7 +523,7 @@ EOF;
 	 *
 	 * @dataProvider data_hair_parse
 	 */
-	function test_hair_parse( $input, $output ) {
+	public function test_hair_parse( $input, $output ) {
 		return $this->assertSame( $output, wp_kses_hair_parse( $input ) );
 	}
 
@@ -569,7 +569,7 @@ EOF;
 	 *
 	 * @dataProvider data_attr_parse
 	 */
-	function test_attr_parse( $input, $output ) {
+	public function test_attr_parse( $input, $output ) {
 		return $this->assertSame( $output, wp_kses_attr_parse( $input ) );
 	}
 
@@ -627,7 +627,7 @@ EOF;
 	 *
 	 * @dataProvider data_one_attr
 	 */
-	function test_one_attr( $element, $input, $output ) {
+	public function test_one_attr( $element, $input, $output ) {
 		return $this->assertSame( $output, wp_kses_one_attr( $input, $element ) );
 	}
 
@@ -699,7 +699,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/34063
 	 */
-	function test_bdo() {
+	public function test_bdo() {
 		global $allowedposttags;
 
 		$input = '<p>This is <bdo dir="rtl">a BDO tag</bdo>. Weird, <bdo dir="ltr">right?</bdo></p>';
@@ -710,7 +710,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35079
 	 */
-	function test_ol_reversed() {
+	public function test_ol_reversed() {
 		global $allowedposttags;
 
 		$input = '<ol reversed="reversed"><li>Item 1</li><li>Item 2</li><li>Item 3</li></ol>';
@@ -721,7 +721,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40680
 	 */
-	function test_wp_kses_attr_no_attributes_allowed_with_empty_array() {
+	public function test_wp_kses_attr_no_attributes_allowed_with_empty_array() {
 		$element = 'foo';
 		$attribute = 'title="foo" class="bar"';
 
@@ -731,7 +731,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40680
 	 */
-	function test_wp_kses_attr_no_attributes_allowed_with_true() {
+	public function test_wp_kses_attr_no_attributes_allowed_with_true() {
 		$element = 'foo';
 		$attribute = 'title="foo" class="bar"';
 
@@ -741,7 +741,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/40680
 	 */
-	function test_wp_kses_attr_single_attribute_is_allowed() {
+	public function test_wp_kses_attr_single_attribute_is_allowed() {
 		$element = 'foo';
 		$attribute = 'title="foo" class="bar"';
 
@@ -751,7 +751,7 @@ EOF;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/43312
 	 */
-	function test_wp_kses_attr_no_attributes_allowed_with_false() {
+	public function test_wp_kses_attr_no_attributes_allowed_with_false() {
 		$element   = 'foo';
 		$attribute = 'title="foo" class="bar"';
 

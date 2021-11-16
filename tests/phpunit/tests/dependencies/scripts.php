@@ -14,7 +14,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		parent::set_up_before_class();
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->old_wp_scripts = isset( $GLOBALS['wp_scripts'] ) ? $GLOBALS['wp_scripts'] : null;
 		remove_action( 'wp_default_scripts', 'wp_default_scripts' );
@@ -28,7 +28,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		$GLOBALS['wp_scripts']->default_version = self::$asset_version;
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$GLOBALS['wp_scripts'] = $this->old_wp_scripts;
 		add_action( 'wp_default_scripts', 'wp_default_scripts' );
 		remove_filter(
@@ -58,7 +58,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	 * Test versioning
 	 * @see https://core.trac.wordpress.org/ticket/11315
 	 */
-	function test_wp_enqueue_script() {
+	public function test_wp_enqueue_script() {
 		wp_enqueue_script('no-deps-no-version', 'example.com', array());
 		wp_enqueue_script('empty-deps-no-version', 'example.com' );
 		wp_enqueue_script('empty-deps-version', 'example.com', array(), 1.2);
@@ -106,7 +106,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		);
 	}
 
-	function test_wp_enqueue_script_override_default_version() {
+	public function test_wp_enqueue_script_override_default_version() {
 		$ver = 'aaaa';
 		$GLOBALS['wp_scripts']->default_version = $ver;
 		wp_enqueue_script( 'override-default-version', 'example.com' );
@@ -122,7 +122,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_script_override_default_version_and_filter() {
+	public function test_wp_enqueue_script_override_default_version_and_filter() {
 		$ver = 'bbbb';
 		$GLOBALS['wp_scripts']->default_version = 'aaaa';
 		$this->classicpress_asset_version_override = $ver;
@@ -139,7 +139,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_script_filter_default_version() {
+	public function test_wp_enqueue_script_filter_default_version() {
 		$ver = 'cccc';
 		$this->classicpress_asset_version_override = $ver;
 		wp_enqueue_script( 'filter-default-version', 'example.com' );
@@ -155,7 +155,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_script_filter_declared_version() {
+	public function test_wp_enqueue_script_filter_declared_version() {
 		$this->classicpress_asset_version_override = 'oooo';
 		wp_enqueue_script( 'filter-declared-version', 'example.com', array(), 'dddd' );
 		$expected = "<script type='text/javascript' src='http://example.com?ver=oooo'></script>\n";
@@ -170,7 +170,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_script_filter_null_version() {
+	public function test_wp_enqueue_script_filter_null_version() {
 		$this->classicpress_asset_version_override = 'oooo';
 		wp_enqueue_script( 'filter-null-version', 'example.com', array(), null );
 		$expected = "<script type='text/javascript' src='http://example.com?ver=oooo'></script>\n";
@@ -258,7 +258,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	 * Testing `wp_script_add_data` with the data key.
 	 * @see https://core.trac.wordpress.org/ticket/16024
 	 */
-	function test_wp_script_add_data_with_data_key() {
+	public function test_wp_script_add_data_with_data_key() {
 		// Enqueue & add data
 		wp_enqueue_script( 'test-only-data', 'example.com', array(), null );
 		wp_script_add_data( 'test-only-data', 'data', 'testing' );
@@ -276,7 +276,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	 * Testing `wp_script_add_data` with the conditional key.
 	 * @see https://core.trac.wordpress.org/ticket/16024
 	 */
-	function test_wp_script_add_data_with_conditional_key() {
+	public function test_wp_script_add_data_with_conditional_key() {
 		// Enqueue & add conditional comments
 		wp_enqueue_script( 'test-only-conditional', 'example.com', array(), null );
 		wp_script_add_data( 'test-only-conditional', 'conditional', 'gt IE 7' );
@@ -293,7 +293,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	 * Testing `wp_script_add_data` with both the data & conditional keys.
 	 * @see https://core.trac.wordpress.org/ticket/16024
 	 */
-	function test_wp_script_add_data_with_data_and_conditional_keys() {
+	public function test_wp_script_add_data_with_data_and_conditional_keys() {
 		// Enqueue & add data plus conditional comments for both
 		wp_enqueue_script( 'test-conditional-with-data', 'example.com', array(), null );
 		wp_script_add_data( 'test-conditional-with-data', 'data', 'testing' );
@@ -312,7 +312,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	 * Testing `wp_script_add_data` with an anvalid key.
 	 * @see https://core.trac.wordpress.org/ticket/16024
 	 */
-	function test_wp_script_add_data_with_invalid_key() {
+	public function test_wp_script_add_data_with_invalid_key() {
 		// Enqueue & add an invalid key
 		wp_enqueue_script( 'test-invalid', 'example.com', array(), null );
 		wp_script_add_data( 'test-invalid', 'invalid', 'testing' );
@@ -330,7 +330,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/31126
 	 */
-	function test_wp_register_script() {
+	public function test_wp_register_script() {
 		$this->assertTrue( wp_register_script( 'duplicate-handler', 'http://example.com' ) );
 		$this->assertFalse( wp_register_script( 'duplicate-handler', 'http://example.com' ) );
 	}
@@ -338,7 +338,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35229
 	 */
-	function test_wp_register_script_with_handle_without_source() {
+	public function test_wp_register_script_with_handle_without_source() {
 		$expected  = "<script type='text/javascript' src='http://example.com?ver=1'></script>\n";
 		$expected .= "<script type='text/javascript' src='http://example.com?ver=2'></script>\n";
 
@@ -354,7 +354,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35643
 	 */
-	function test_wp_enqueue_script_footer_alias() {
+	public function test_wp_enqueue_script_footer_alias() {
 		wp_register_script( 'foo', false, array( 'bar', 'baz' ), '1.0', true );
 		wp_register_script( 'bar', home_url( 'bar.js' ), array(), '1.0', true );
 		wp_register_script( 'baz', home_url( 'baz.js' ), array(), '1.0', true );
@@ -418,7 +418,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35873
 	 */
-	function test_wp_register_script_with_dependencies_in_head_and_footer() {
+	public function test_wp_register_script_with_dependencies_in_head_and_footer() {
 		wp_register_script( 'parent', '/parent.js', array( 'child-head' ), null, true ); // in footer
 		wp_register_script( 'child-head', '/child-head.js', array( 'child-footer' ), null, false ); // in head
 		wp_register_script( 'child-footer', '/child-footer.js', array(), null, true ); // in footer
@@ -439,7 +439,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35956
 	 */
-	function test_wp_register_script_with_dependencies_in_head_and_footer_in_reversed_order() {
+	public function test_wp_register_script_with_dependencies_in_head_and_footer_in_reversed_order() {
 		wp_register_script( 'child-head', '/child-head.js', array(), null, false ); // in head
 		wp_register_script( 'child-footer', '/child-footer.js', array(), null, true ); // in footer
 		wp_register_script( 'parent', '/parent.js', array( 'child-head', 'child-footer' ), null, true ); // in footer
@@ -460,7 +460,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35956
 	 */
-	function test_wp_register_script_with_dependencies_in_head_and_footer_in_reversed_order_and_two_parent_scripts() {
+	public function test_wp_register_script_with_dependencies_in_head_and_footer_in_reversed_order_and_two_parent_scripts() {
 		wp_register_script( 'grandchild-head', '/grandchild-head.js', array(), null, false ); // in head
 		wp_register_script( 'child-head', '/child-head.js', array(), null, false ); // in head
 		wp_register_script( 'child-footer', '/child-footer.js', array( 'grandchild-head' ), null, true ); // in footer
@@ -491,7 +491,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_returns_bool() {
+	public function test_wp_add_inline_script_returns_bool() {
 		$this->assertFalse( wp_add_inline_script( 'test-example', 'console.log("before");', 'before' ) );
 		wp_enqueue_script( 'test-example', 'example.com', array(), null );
 		$this->assertTrue( wp_add_inline_script( 'test-example', 'console.log("before");', 'before' ) );
@@ -500,7 +500,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_unknown_handle() {
+	public function test_wp_add_inline_script_unknown_handle() {
 		$this->assertFalse( wp_add_inline_script( 'test-invalid', 'console.log("before");', 'before' ) );
 		$this->assertSame( '', get_echo( 'wp_print_scripts' ) );
 	}
@@ -508,7 +508,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_before() {
+	public function test_wp_add_inline_script_before() {
 		wp_enqueue_script( 'test-example', 'example.com', array(), null );
 		wp_add_inline_script( 'test-example', 'console.log("before");', 'before' );
 
@@ -521,7 +521,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_after() {
+	public function test_wp_add_inline_script_after() {
 		wp_enqueue_script( 'test-example', 'example.com', array(), null );
 		wp_add_inline_script( 'test-example', 'console.log("after");' );
 
@@ -534,7 +534,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_before_and_after() {
+	public function test_wp_add_inline_script_before_and_after() {
 		wp_enqueue_script( 'test-example', 'example.com', array(), null );
 		wp_add_inline_script( 'test-example', 'console.log("before");', 'before' );
 		wp_add_inline_script( 'test-example', 'console.log("after");' );
@@ -549,7 +549,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_multiple() {
+	public function test_wp_add_inline_script_multiple() {
 		wp_enqueue_script( 'test-example', 'example.com', array(), null );
 		wp_add_inline_script( 'test-example', 'console.log("before");', 'before' );
 		wp_add_inline_script( 'test-example', 'console.log("before");', 'before' );
@@ -566,7 +566,7 @@ class Tests_Dependencies_Scripts extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/14853
 	 */
-	function test_wp_add_inline_script_localized_data_is_added_first() {
+	public function test_wp_add_inline_script_localized_data_is_added_first() {
 		wp_enqueue_script( 'test-example', 'example.com', array(), null );
 		wp_localize_script( 'test-example', 'testExample', array( 'foo' => 'bar' ) );
 		wp_add_inline_script( 'test-example', 'console.log("before");', 'before' );

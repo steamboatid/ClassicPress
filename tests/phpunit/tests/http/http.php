@@ -11,7 +11,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 	/**
 	 * @dataProvider make_absolute_url_testcases
 	 */
-	function test_make_absolute_url( $relative_url, $absolute_url, $expected ) {
+	public function test_make_absolute_url( $relative_url, $absolute_url, $expected ) {
 		$actual = WP_Http::make_absolute_url( $relative_url, $absolute_url );
 		$this->assertSame( $expected, $actual );
 	}
@@ -67,7 +67,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 	/**
 	 * @dataProvider parse_url_testcases
 	 */
-	function test_wp_parse_url( $url, $expected ) {
+	public function test_wp_parse_url( $url, $expected ) {
 		$actual = wp_parse_url( $url );
 		$this->assertSame( $expected, $actual );
 	}
@@ -136,7 +136,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/36356
 	 */
-	function test_wp_parse_url_with_default_component() {
+	public function test_wp_parse_url_with_default_component() {
 		$actual = wp_parse_url( self::FULL_TEST_URL, -1 );
 		$this->assertSame(
 			array(
@@ -158,7 +158,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 	 *
 	 * @dataProvider parse_url_component_testcases
 	 */
-	function test_wp_parse_url_with_component( $url, $component, $expected ) {
+	public function test_wp_parse_url_with_component( $url, $component, $expected ) {
 		$actual = wp_parse_url( $url, $component );
 		$this->assertSame( $expected, $actual );
 	}
@@ -266,7 +266,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 	 *
 	 * @dataProvider get_component_from_parsed_url_array_testcases
 	 */
-	function test_get_component_from_parsed_url_array( $url, $component, $expected ) {
+	public function test_get_component_from_parsed_url_array( $url, $component, $expected ) {
 		$parts  = wp_parse_url( $url );
 		$actual = _get_component_from_parsed_url_array( $parts, $component );
 		$this->assertSame( $expected, $actual );
@@ -289,7 +289,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 	 *
 	 * @dataProvider wp_translate_php_url_constant_to_key_testcases
 	 */
-	function test_wp_translate_php_url_constant_to_key( $input, $expected ) {
+	public function test_wp_translate_php_url_constant_to_key( $input, $expected ) {
 		$actual = _wp_translate_php_url_constant_to_key( $input );
 		$this->assertSame( $expected, $actual );
 	}
@@ -312,7 +312,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 		);
 	}
 
-	function test_classicpress_user_agent_short() {
+	public function test_classicpress_user_agent_short() {
 		global $wp_version;
 
 		$ua_short = classicpress_user_agent();
@@ -328,7 +328,7 @@ class Tests_HTTP_HTTP extends WP_UnitTestCase {
 		);
 	}
 
-	function test_classicpress_user_agent_full() {
+	public function test_classicpress_user_agent_full() {
 		global $wp_version;
 
 		$ua_full = classicpress_user_agent( true );

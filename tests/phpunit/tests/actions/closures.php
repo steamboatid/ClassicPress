@@ -10,7 +10,7 @@ class Tests_Actions_Closures extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/10493
 	 */
-	function test_action_closure() {
+	public function test_action_closure() {
 		$tag = 'test_action_closure';
 		$closure = function($a, $b) { $GLOBALS[$a] = $b;};
 		add_action($tag, $closure, 10, 2);

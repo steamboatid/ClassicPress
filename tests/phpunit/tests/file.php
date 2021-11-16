@@ -5,7 +5,7 @@
  */
 class Tests_File extends WP_UnitTestCase {
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->dir = untrailingslashit( get_temp_dir() );
@@ -17,9 +17,9 @@ class Tests_File extends WP_UnitTestCase {
 	 * @group plugins
 	 * @group themes
 	 */
-	function test_get_file_data() {
+	public function test_get_file_data() {
 		$theme_headers = array(
-			'Name' => 'Theme Name',
+			'Name'        => 'Theme Name',
 			'ThemeURI' => 'Theme URI',
 			'Description' => 'Description',
 			'Version' => 'Version',
@@ -47,7 +47,7 @@ class Tests_File extends WP_UnitTestCase {
 	 * @group plugins
 	 * @group themes
 	 */
-	function test_get_file_data_cr_line_endings() {
+	public function test_get_file_data_cr_line_endings() {
 		$headers = array( 'SomeHeader' => 'Some Header', 'Description' => 'Description', 'Author' => 'Author' );
 		$actual = get_file_data( DIR_TESTDATA . '/formatting/cr-line-endings-file-header.php', $headers );
 		$expected = array(
@@ -82,7 +82,7 @@ class Tests_File extends WP_UnitTestCase {
 		return $result;
 	}
 
-	function test_unique_filename_is_valid() {
+	public function test_unique_filename_is_valid() {
 		// make sure it produces a valid, writable, unique filename
 		$filename = wp_unique_filename( $this->dir, __FUNCTION__ . '.txt' );
 
@@ -91,7 +91,7 @@ class Tests_File extends WP_UnitTestCase {
 		unlink($this->dir . DIRECTORY_SEPARATOR . $filename);
 	}
 
-	function test_unique_filename_is_unique() {
+	public function test_unique_filename_is_unique() {
 		// make sure it produces two unique filenames
 		$name = __FUNCTION__;
 
@@ -107,7 +107,7 @@ class Tests_File extends WP_UnitTestCase {
 		unlink($this->dir . DIRECTORY_SEPARATOR . $filename2);
 	}
 
-	function test_unique_filename_is_sanitized() {
+	public function test_unique_filename_is_sanitized() {
 		$name = __FUNCTION__;
 		$filename = wp_unique_filename( $this->dir, $name . $this->badchars .  '.txt' );
 
@@ -119,7 +119,7 @@ class Tests_File extends WP_UnitTestCase {
 		unlink($this->dir . DIRECTORY_SEPARATOR . $filename);
 	}
 
-	function test_unique_filename_with_slashes() {
+	public function test_unique_filename_with_slashes() {
 		$name = __FUNCTION__;
 		// "foo/foo.txt"
 		$filename = wp_unique_filename( $this->dir, $name . '/' . $name .  '.txt' );
@@ -132,7 +132,7 @@ class Tests_File extends WP_UnitTestCase {
 		unlink($this->dir . DIRECTORY_SEPARATOR . $filename);
 	}
 
-	function test_unique_filename_multiple_ext() {
+	public function test_unique_filename_multiple_ext() {
 		$name = __FUNCTION__;
 		$filename = wp_unique_filename( $this->dir, $name . '.php.txt' );
 
@@ -144,7 +144,7 @@ class Tests_File extends WP_UnitTestCase {
 		unlink($this->dir . DIRECTORY_SEPARATOR . $filename);
 	}
 
-	function test_unique_filename_no_ext() {
+	public function test_unique_filename_no_ext() {
 		$name = __FUNCTION__;
 		$filename = wp_unique_filename( $this->dir, $name );
 
@@ -152,13 +152,13 @@ class Tests_File extends WP_UnitTestCase {
 
 		$this->assertTrue( $this->is_unique_writable_file($this->dir, $filename) );
 
-		unlink($this->dir . DIRECTORY_SEPARATOR . $filename);
+		unlink( $this->dir . DIRECTORY_SEPARATOR . $filename );
 	}
 
 	/**
 	 * @dataProvider data_wp_tempnam_filenames
 	 */
-	function test_wp_tempnam( $case ) {
+	public function test_wp_tempnam( $case ) {
 		$file = wp_tempnam( $case );
 		unlink( $file );
 

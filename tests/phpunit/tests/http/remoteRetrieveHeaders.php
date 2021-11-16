@@ -8,7 +8,7 @@ class Tests_HTTP_RemoteRetrieveHeaders extends WP_UnitTestCase {
 	/**
 	 * Valid response
 	 */
-	function test_remote_retrieve_headers_valid_response() {
+	public function test_remote_retrieve_headers_valid_response() {
 		$headers = 'headers_data';
 		$response = array( 'headers' => $headers );
 
@@ -19,7 +19,7 @@ class Tests_HTTP_RemoteRetrieveHeaders extends WP_UnitTestCase {
 	/**
 	 * Response is a WP_Error
 	 */
-	function test_remote_retrieve_headers_is_error() {
+	public function test_remote_retrieve_headers_is_error() {
 		$response = new WP_Error( 'Some error' );
 
 		$result = wp_remote_retrieve_headers( $response );
@@ -29,7 +29,7 @@ class Tests_HTTP_RemoteRetrieveHeaders extends WP_UnitTestCase {
 	/**
 	 * Response does not contain 'headers'
 	 */
-	function test_remote_retrieve_headers_invalid_response() {
+	public function test_remote_retrieve_headers_invalid_response() {
 		$response = array( 'no_headers' => 'set');
 
 		$result = wp_remote_retrieve_headers( $response );

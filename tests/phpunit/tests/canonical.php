@@ -18,7 +18,7 @@ class Tests_Canonical extends WP_Canonical_UnitTestCase {
 	/**
 	 * @dataProvider data_canonical
 	 */
-	function test_canonical( $test_url, $expected, $expected_doing_it_wrong = array() ) {
+	public function test_canonical( $test_url, $expected, $expected_doing_it_wrong = array() ) {
 
 		if ( false !== strpos( $test_url, '%d' ) ) {
 			if ( false !== strpos( $test_url, '/?author=%d' ) )

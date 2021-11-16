@@ -6,7 +6,7 @@ require_once dirname( __FILE__ ) . '/base.php';
  * @group import
  */
 class Tests_Import_Parser extends WP_Import_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		if ( ! defined( 'WP_IMPORTING' ) )
@@ -18,7 +18,7 @@ class Tests_Import_Parser extends WP_Import_UnitTestCase {
 		require_once DIR_TESTDATA . '/plugins/wordpress-importer/wordpress-importer.php';
 	}
 
-	function test_malformed_wxr() {
+	public function test_malformed_wxr() {
 		$file = DIR_TESTDATA . '/export/malformed.xml';
 
 		// regex based parser cannot detect malformed XML
@@ -30,7 +30,7 @@ class Tests_Import_Parser extends WP_Import_UnitTestCase {
 		}
 	}
 
-	function test_invalid_wxr() {
+	public function test_invalid_wxr() {
 		$f1 = DIR_TESTDATA . '/export/missing-version-tag.xml';
 		$f2 = DIR_TESTDATA . '/export/invalid-version-tag.xml';
 
@@ -44,7 +44,7 @@ class Tests_Import_Parser extends WP_Import_UnitTestCase {
 		}
 	}
 
-	function test_wxr_version_1_1() {
+	public function test_wxr_version_1_1() {
 		$file = DIR_TESTDATA . '/export/valid-wxr-1.1.xml';
 
 		foreach ( array( 'WXR_Parser_SimpleXML', 'WXR_Parser_XML', 'WXR_Parser_Regex' ) as $p ) {
@@ -125,7 +125,7 @@ class Tests_Import_Parser extends WP_Import_UnitTestCase {
 		}
 	}
 
-	function test_wxr_version_1_0() {
+	public function test_wxr_version_1_0() {
 		$file = DIR_TESTDATA . '/export/valid-wxr-1.0.xml';
 
 		foreach ( array( 'WXR_Parser_SimpleXML', 'WXR_Parser_XML', 'WXR_Parser_Regex' ) as $p ) {
@@ -179,7 +179,7 @@ class Tests_Import_Parser extends WP_Import_UnitTestCase {
 	 *
 	 * @link https://core.trac.wordpress.org/ticket/15203
 	 */
-	function test_escaped_cdata_closing_sequence() {
+	public function test_escaped_cdata_closing_sequence() {
 		$file = DIR_TESTDATA . '/export/crazy-cdata-escaped.xml';
 
 		foreach( array( 'WXR_Parser_SimpleXML', 'WXR_Parser_XML', 'WXR_Parser_Regex' ) as $p ) {
@@ -205,7 +205,7 @@ class Tests_Import_Parser extends WP_Import_UnitTestCase {
 	 * Ensure that the regex parser can still parse invalid CDATA blocks (i.e. those
 	 * with "]]>" unescaped within a CDATA section).
 	 */
-	function test_unescaped_cdata_closing_sequence() {
+	public function test_unescaped_cdata_closing_sequence() {
 		$file = DIR_TESTDATA . '/export/crazy-cdata.xml';
 
 		$parser = new WXR_Parser_Regex;

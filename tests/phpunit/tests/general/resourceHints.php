@@ -8,7 +8,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 	private $old_wp_scripts;
 	private $old_wp_styles;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->old_wp_scripts = isset( $GLOBALS['wp_scripts'] ) ? $GLOBALS['wp_scripts'] : null;
 		$this->old_wp_styles = isset( $GLOBALS['wp_styles'] ) ? $GLOBALS['wp_styles'] : null;
@@ -22,7 +22,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		$GLOBALS['wp_styles']->default_version = get_bloginfo( 'version' );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$GLOBALS['wp_scripts'] = $this->old_wp_scripts;
 		$GLOBALS['wp_styles']  = $this->old_wp_styles;
 
@@ -31,7 +31,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
-	function test_should_have_defaults_on_frontend() {
+	public function test_should_have_defaults_on_frontend() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n";
 
 		$this->expectOutputString( $expected );
@@ -39,7 +39,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		wp_resource_hints();
 	}
 
-	function test_dns_prefetching() {
+	public function test_dns_prefetching() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n" .
 					"<link rel='dns-prefetch' href='//wordpress.org' />\n" .
 					"<link rel='dns-prefetch' href='//google.com' />\n" .
@@ -70,7 +70,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37652
 	 */
-	function test_preconnect() {
+	public function test_preconnect() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n" .
 		            "<link rel='preconnect' href='//wordpress.org' />\n" .
 		            "<link rel='preconnect' href='https://make.wordpress.org' />\n" .
@@ -98,7 +98,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		return $hints;
 	}
 
-	function test_prerender() {
+	public function test_prerender() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n" .
 					"<link rel='prerender' href='https://make.wordpress.org/great-again' />\n" .
 					"<link rel='prerender' href='http://jobs.wordpress.net' />\n" .
@@ -124,7 +124,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		return $hints;
 	}
 
-	function test_parse_url_dns_prefetch() {
+	public function test_parse_url_dns_prefetch() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n" .
 					"<link rel='dns-prefetch' href='//make.wordpress.org' />\n";
 
@@ -145,7 +145,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		return $hints;
 	}
 
-	function test_dns_prefetch_styles() {
+	public function test_dns_prefetch_styles() {
 		$expected = "<link rel='dns-prefetch' href='//fonts.googleapis.com' />\n" .
 					"<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n";
 
@@ -164,7 +164,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 
 	}
 
-	function test_dns_prefetch_scripts() {
+	public function test_dns_prefetch_scripts() {
 		$expected = "<link rel='dns-prefetch' href='//fonts.googleapis.com' />\n" .
 					"<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n";
 
@@ -182,7 +182,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 		$this->assertSame( $expected, $actual );
 	}
 
-	function test_dns_prefetch_scripts_does_not_included_registered_only() {
+	public function test_dns_prefetch_scripts_does_not_included_registered_only() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n";
 		$unexpected = "<link rel='dns-prefetch' href='//wordpress.org' />\n";
 
@@ -199,7 +199,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37502
 	 */
-	function test_deregistered_scripts_are_ignored() {
+	public function test_deregistered_scripts_are_ignored() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n";
 
 		wp_enqueue_script( 'test-script', 'http://example.org/script.js' );
@@ -212,7 +212,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37652
 	 */
-	function test_malformed_urls() {
+	public function test_malformed_urls() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n";
 
 		// Errant colon.
@@ -247,7 +247,7 @@ class Tests_WP_Resource_Hints extends WP_UnitTestCase {
 	/**
 	 * @group 38121
 	 */
-	function test_custom_attributes() {
+	public function test_custom_attributes() {
 		$expected = "<link rel='dns-prefetch' href='//twemoji.classicpress.net' />\n" .
 		            "<link rel='preconnect' href='https://make.wordpress.org' />\n" .
 		            "<link crossorigin as='image' pr='0.5' href='https://example.com/foo.jpeg' rel='prefetch' />\n" .

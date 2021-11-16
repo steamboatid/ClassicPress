@@ -17,7 +17,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		self::$header_video_id = $factory->attachment->create_upload_object( $file );
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		require_once( ABSPATH . WPINC . '/class-wp-customize-manager.php' );
@@ -27,7 +27,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		wp_dequeue_script( 'wp-custom-header' );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$this->customize_manager = null;
 		unset( $GLOBALS['wp_customize'] );
 
@@ -40,21 +40,21 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
-	function test_add_and_remove_theme_support() {
+	public function test_add_and_remove_theme_support() {
 		$this->_add_theme_support();
 		$this->assertTrue( current_theme_supports( 'custom-header' ) );
 		remove_theme_support( 'custom-header' );
 		$this->assertFalse( current_theme_supports( 'custom-header' ) );
 	}
 
-	function test_get_header_image_without_registered_default() {
+	public function test_get_header_image_without_registered_default() {
 		$this->_add_theme_support();
 		$image = get_header_image();
 		$this->assertFalse( has_header_image() );
 		$this->assertEmpty( $image );
 	}
 
-	function test_get_header_image_with_registered_default() {
+	public function test_get_header_image_with_registered_default() {
 		$default = 'http://localhost/default-header.jpg';
 		$this->_add_theme_support( array( 'default-image' => $default ) );
 
@@ -63,7 +63,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertSame( $default, $image );
 	}
 
-	function test_get_header_image_from_theme_mod() {
+	public function test_get_header_image_from_theme_mod() {
 		$default = 'http://localhost/default-header.jpg';
 		$custom = 'http://localhost/custom-header.jpg';
 		$this->_add_theme_support( array( 'default-image' => $default ) );
@@ -79,13 +79,13 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertFalse( $image );
 	}
 
-	function test_get_header_image_tag_without_registered_default_image() {
+	public function test_get_header_image_tag_without_registered_default_image() {
 		$this->_add_theme_support();
 		$html = get_header_image_tag();
 		$this->assertEmpty( $html );
 	}
 
-	function test_get_header_image_tag_with_registered_default_image() {
+	public function test_get_header_image_tag_with_registered_default_image() {
 		$default = 'http://localhost/default-header.jpg';
 		$this->_add_theme_support( array( 'default-image' => $default ) );
 
@@ -97,7 +97,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38633
 	 */
-	function test_get_header_image_tag_with_registered_default_image_and_remove_header_theme_mod() {
+	public function test_get_header_image_tag_with_registered_default_image_and_remove_header_theme_mod() {
 		$default = 'http://localhost/default-header.jpg';
 		$this->_add_theme_support( array( 'default-image' => $default ) );
 
@@ -106,7 +106,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertEmpty( $html );
 	}
 
-	function test_get_header_image_tag_with_registered_default_image_and_custom_theme_mod() {
+	public function test_get_header_image_tag_with_registered_default_image_and_custom_theme_mod() {
 		$default = 'http://localhost/default-header.jpg';
 		$custom = 'http://localhost/custom-header.jpg';
 		$this->_add_theme_support( array( 'default-image' => $default ) );
@@ -117,7 +117,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertStringContainsString( sprintf( 'src="%s"', $custom ), $html );
 	}
 
-	function test_get_custom_header_markup_without_registered_default_image() {
+	public function test_get_custom_header_markup_without_registered_default_image() {
 		$this->_add_theme_support();
 
 		$html = get_custom_header_markup();
@@ -130,7 +130,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertSame( '<div id="wp-custom-header" class="wp-custom-header"></div>', $html );
 	}
 
-	function test_get_custom_header_markup_with_registered_default_image() {
+	public function test_get_custom_header_markup_with_registered_default_image() {
 		$default = 'http://localhost/default-header.jpg';
 		$this->_add_theme_support( array( 'default-image' => $default ) );
 		$html = get_custom_header_markup();
@@ -139,7 +139,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertStringContainsString( sprintf( 'src="%s"', $default ), $html );
 	}
 
-	function test_get_header_video_url() {
+	public function test_get_header_video_url() {
 		$this->_add_theme_support( array( 'video' => true ) );
 
 		$this->assertFalse( has_header_video() );
@@ -148,7 +148,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertSame( wp_get_attachment_url( self::$header_video_id ), get_header_video_url() );
 	}
 
-	function test_get_external_header_video_url() {
+	public function test_get_external_header_video_url() {
 		$external = 'http://example.com/custom-video.mp4';
 		$this->_add_theme_support( array( 'video' => true ) );
 
@@ -158,7 +158,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertSame( $external, get_header_video_url() );
 	}
 
-	function test_get_header_video_url_prefers_local_video() {
+	public function test_get_header_video_url_prefers_local_video() {
 		$external = 'http://example.com/custom-video.mp4';
 		$this->_add_theme_support( array( 'video' => true ) );
 
@@ -167,7 +167,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertSame( wp_get_attachment_url( self::$header_video_id ), get_header_video_url() );
 	}
 
-	function test_get_custom_header_markup_with_video_and_without_an_image() {
+	public function test_get_custom_header_markup_with_video_and_without_an_image() {
 		$custom = 'http://localhost/custom-video.mp4';
 		$this->_add_theme_support( array( 'video' => true, 'video-active-callback' => '__return_true' ) );
 
@@ -178,7 +178,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertSame( '<div id="wp-custom-header" class="wp-custom-header"></div>', $html );
 	}
 
-	function test_header_script_is_not_enqueued_by_the_custom_header_markup_without_video() {
+	public function test_header_script_is_not_enqueued_by_the_custom_header_markup_without_video() {
 		$this->_add_theme_support( array( 'video' => true, 'video-active-callback' => '__return_true' ) );
 
 		ob_start();
@@ -194,7 +194,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertFalse( wp_script_is( 'wp-custom-header', 'enqueued' ) );
 	}
 
-	function test_header_script_is_not_enqueued_by_the_custom_header_markup_when_active_callback_is_false() {
+	public function test_header_script_is_not_enqueued_by_the_custom_header_markup_when_active_callback_is_false() {
 		$this->_add_theme_support( array( 'video' => true, 'video-active-callback' => '__return_false' ) );
 		set_theme_mod( 'external_header_video', 'http://localhost/custom-video.mp4' );
 
@@ -204,7 +204,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertFalse( wp_script_is( 'wp-custom-header', 'enqueued' ) );
 	}
 
-	function test_header_script_is_enqueued_by_the_custom_header_markup_without_video_when_previewing_in_customizer() {
+	public function test_header_script_is_enqueued_by_the_custom_header_markup_without_video_when_previewing_in_customizer() {
 		$this->_add_theme_support( array( 'video' => true, 'video-active-callback' => '__return_true' ) );
 		$this->_set_customize_previewing( true );
 
@@ -214,7 +214,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'wp-custom-header', 'enqueued' ) );
 	}
 
-	function test_header_script_is_enqueued_by_the_custom_header_markup_with_video() {
+	public function test_header_script_is_enqueued_by_the_custom_header_markup_with_video() {
 		$this->_add_theme_support( array( 'video' => true, 'video-active-callback' => '__return_true' ) );
 		set_theme_mod( 'external_header_video', 'http://localhost/custom-video.mp4' );
 
@@ -227,7 +227,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38738
 	 */
-	function test_video_header_callback_front_page_from_front_page() {
+	public function test_video_header_callback_front_page_from_front_page() {
 		global $wp_query;
 
 		$this->_add_theme_support( array(
@@ -248,7 +248,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38738
 	 */
-	function test_video_header_callback_front_page_from_elsewhere() {
+	public function test_video_header_callback_front_page_from_elsewhere() {
 		$this->_add_theme_support( array(
 			'video' => true,
 		) );
@@ -263,7 +263,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38738
 	 */
-	function test_video_header_callback_globally_from_front_page() {
+	public function test_video_header_callback_globally_from_front_page() {
 		$this->_add_theme_support( array(
 			'video' => true,
 			'video-active-callback' => '__return_true',
@@ -279,7 +279,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38738
 	 */
-	function test_video_header_callback_globally_from_elsewhere() {
+	public function test_video_header_callback_globally_from_elsewhere() {
 		$this->_add_theme_support( array(
 			'video' => true,
 			'video-active-callback' => '__return_true',
@@ -295,7 +295,7 @@ class Tests_Theme_Custom_Header extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/38738
 	 */
-	function test_video_header_callback_globally_with_negative_filter() {
+	public function test_video_header_callback_globally_with_negative_filter() {
 		$this->_add_theme_support( array(
 			'video' => true,
 			'video-active-callback' => '__return_true',

@@ -25,7 +25,7 @@ class Tests_Comment extends WP_UnitTestCase {
 		) );
 	}
 
-	function test_wp_update_comment() {
+	public function test_wp_update_comment() {
 		$post = self::factory()->post->create_and_get( array( 'post_title' => 'some-post', 'post_type' => 'post' ) );
 		$post2 = self::factory()->post->create_and_get( array( 'post_title' => 'some-post-2', 'post_type' => 'post' ) );
 		$comments = self::factory()->comment->create_post_comments( $post->ID, 5 );
@@ -63,7 +63,7 @@ class Tests_Comment extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30627
 	 */
-	function test_wp_update_comment_updates_comment_type() {
+	public function test_wp_update_comment_updates_comment_type() {
 		$comment_id = self::factory()->comment->create( array( 'comment_post_ID' => self::$post_id ) );
 
 		wp_update_comment( array( 'comment_ID' => $comment_id, 'comment_type' => 'pingback' ) );
@@ -75,7 +75,7 @@ class Tests_Comment extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/36784
 	 */
-	function test_wp_update_comment_updates_comment_meta() {
+	public function test_wp_update_comment_updates_comment_meta() {
 		$comment_id = self::factory()->comment->create( array( 'comment_post_ID' => self::$post_id ) );
 		wp_update_comment(
 			array(
@@ -93,7 +93,7 @@ class Tests_Comment extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/30307
 	 */
-	function test_wp_update_comment_updates_user_id() {
+	public function test_wp_update_comment_updates_user_id() {
 		$comment_id = self::factory()->comment->create( array( 'comment_post_ID' => self::$post_id ) );
 
 		wp_update_comment( array( 'comment_ID' => $comment_id, 'user_id' => 1 ) );
@@ -105,7 +105,7 @@ class Tests_Comment extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/34954
 	 */
-	function test_wp_update_comment_with_no_post_id() {
+	public function test_wp_update_comment_with_no_post_id() {
 		$comment_id = self::factory()->comment->create( array( 'comment_post_ID' => 0 ) );
 
 		$updated_comment_text = 'I should be able to update a comment with a Post ID of zero';

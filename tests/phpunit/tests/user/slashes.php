@@ -6,7 +6,7 @@
  * @see https://core.trac.wordpress.org/ticket/21767
  */
 class Tests_User_Slashes extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->author_id = self::factory()->user->create( array( 'role' => 'administrator' ) );
@@ -28,7 +28,7 @@ class Tests_User_Slashes extends WP_UnitTestCase {
 	 * Tests the controller function that expects slashed data
 	 *
 	 */
-	function test_add_user() {
+	public function test_add_user() {
 		$_POST = $_GET = $_REQUEST = array();
 		$_POST['user_login'] = 'slash_example_user_1';
 		$_POST['pass1'] = 'password';
@@ -78,7 +78,7 @@ class Tests_User_Slashes extends WP_UnitTestCase {
 	 * Tests the controller function that expects slashed data
 	 *
 	 */
-	function test_edit_user() {
+	public function test_edit_user() {
 		$id = self::factory()->user->create();
 
 		$_POST = $_GET = $_REQUEST = array();
@@ -124,7 +124,7 @@ class Tests_User_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_insert_user() {
+	public function test_wp_insert_user() {
 		$id = wp_insert_user( array(
 			'user_login' => 'slash_example_user_3',
 			'role' => 'subscriber',
@@ -168,7 +168,7 @@ class Tests_User_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_update_user() {
+	public function test_wp_update_user() {
 		$id = self::factory()->user->create();
 		$id = wp_update_user(array(
 			'ID' => $id,

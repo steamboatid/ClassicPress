@@ -10,7 +10,7 @@ class Tests_Formatting_SeemsUtf8 extends WP_UnitTestCase {
 	 *
 	 * @dataProvider utf8_strings
 	 */
-	function test_returns_true_for_utf8_strings( $utf8_string ) {
+	public function test_returns_true_for_utf8_strings( $utf8_string ) {
 		// from http://www.i18nguy.com/unicode-example.html
 		$this->assertTrue( seems_utf8( $utf8_string ) );
 	}
@@ -27,7 +27,7 @@ class Tests_Formatting_SeemsUtf8 extends WP_UnitTestCase {
 	/**
 	 * @dataProvider big5_strings
 	 */
-	function test_returns_false_for_non_utf8_strings( $big5_string ) {
+	public function test_returns_false_for_non_utf8_strings( $big5_string ) {
 		$this->assertFalse( seems_utf8( $big5_string ) );
 	}
 

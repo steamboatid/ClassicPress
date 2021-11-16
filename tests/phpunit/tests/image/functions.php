@@ -44,7 +44,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		return $mime_type;
 	}
 
-	function test_is_image_positive() {
+	public function test_is_image_positive() {
 		// these are all image files recognized by php
 		$files = array(
 			'test-image-cmyk.jpg',
@@ -75,7 +75,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		}
 	}
 
-	function test_is_image_negative() {
+	public function test_is_image_negative() {
 		// these are actually image files but aren't recognized or usable by php
 		$files = array(
 			'test-image.pct',
@@ -88,7 +88,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		}
 	}
 
-	function test_is_displayable_image_positive() {
+	public function test_is_displayable_image_positive() {
 		// these are all usable in typical web browsers
 		$files = array(
 			'test-image.gif',
@@ -106,7 +106,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 		}
 	}
 
-	function test_is_displayable_image_negative() {
+	public function test_is_displayable_image_negative() {
 		// these are image files but aren't suitable for web pages because of compatibility or size issues
 		$files = array(
 			// 'test-image-cmyk.jpg', Allowed in r9727
@@ -131,7 +131,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 	/**
 	 * @ticket 50833
 	 */
-	function test_is_gd_image_invalid_types() {
+	public function test_is_gd_image_invalid_types() {
 		$this->assertFalse( is_gd_image( new stdClass() ) );
 		$this->assertFalse( is_gd_image( array() ) );
 		$this->assertFalse( is_gd_image( null ) );
@@ -145,7 +145,7 @@ class Tests_Image_Functions extends WP_UnitTestCase {
 	 * @ticket 50833
 	 * @requires extension gd
 	 */
-	function test_is_gd_image_valid_types() {
+	public function test_is_gd_image_valid_types() {
 		$this->assertTrue( is_gd_image( imagecreate( 5, 5 ) ) );
 	}
 

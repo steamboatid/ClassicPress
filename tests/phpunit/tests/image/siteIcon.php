@@ -13,13 +13,13 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 	public $attachment_id = 0;
 	public $attachment_filename = DIR_TESTDATA . '/images/test-image.jpg';
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->wp_site_icon = new WP_Site_Icon();
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$this->_remove_custom_logo();
 		$this->remove_added_uploads();
 		parent::tear_down();
@@ -29,7 +29,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		remove_theme_mod( 'custom_logo' );
 	}
 
-	function test_intermediate_image_sizes() {
+	public function test_intermediate_image_sizes() {
 		$image_sizes = $this->wp_site_icon->intermediate_image_sizes( array() );
 
 		$sizes = array();
@@ -40,7 +40,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		$this->assertSame( $sizes, $image_sizes );
 	}
 
-	function test_intermediate_image_sizes_with_filter() {
+	public function test_intermediate_image_sizes_with_filter() {
 		add_filter( 'site_icon_image_sizes', array( $this, '_custom_test_sizes' ) );
 		$image_sizes = $this->wp_site_icon->intermediate_image_sizes( array() );
 
@@ -61,7 +61,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		remove_filter( 'site_icon_image_sizes', array( $this, '_custom_test_sizes' ) );
 	}
 
-	function test_additional_sizes() {
+	public function test_additional_sizes() {
 		$image_sizes = $this->wp_site_icon->additional_sizes( array() );
 
 		$sizes = array();
@@ -76,7 +76,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		$this->assertSame( $sizes, $image_sizes );
 	}
 
-	function test_additional_sizes_with_filter() {
+	public function test_additional_sizes_with_filter() {
 		add_filter( 'site_icon_image_sizes', array( $this, '_custom_test_sizes' ) );
 		$image_sizes = $this->wp_site_icon->additional_sizes( array() );
 
@@ -99,7 +99,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		unset( $this->wp_site_icon->site_icon_sizes[ array_search( 321, $this->wp_site_icon->site_icon_sizes ) ] );
 	}
 
-	function test_create_attachment_object() {
+	public function test_create_attachment_object() {
 		$attachment_id = $this->_insert_attachment();
 		$parent_url    = get_post( $attachment_id )->guid;
 		$cropped       = str_replace( wp_basename( $parent_url ), 'cropped-test-image.jpg', $parent_url );
@@ -113,7 +113,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		$this->assertSame( basename( $object['guid'] ),         'cropped-test-image.jpg' );
 	}
 
-	function test_insert_cropped_attachment() {
+	public function test_insert_cropped_attachment() {
 		$attachment_id = $this->_insert_attachment();
 		$parent_url    = get_post( $attachment_id )->guid;
 		$cropped       = str_replace( wp_basename( $parent_url ), 'cropped-test-image.jpg', $parent_url );
@@ -125,7 +125,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 		$this->assertGreaterThan( 0, $cropped_id );
 	}
 
-	function test_delete_attachment_data() {
+	public function test_delete_attachment_data() {
 		$attachment_id = $this->_insert_attachment();
 		update_option( 'site_icon', $attachment_id );
 
@@ -137,7 +137,7 @@ class Tests_WP_Site_Icon extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/34368
 	 */
-	function test_get_post_metadata() {
+	public function test_get_post_metadata() {
 		$attachment_id = $this->_insert_attachment();
 		update_option( 'site_icon', $attachment_id );
 

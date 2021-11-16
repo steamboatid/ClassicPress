@@ -77,7 +77,7 @@ class Tests_Feeds_Atom extends WP_UnitTestCase {
 	 * Test the <feed> element to make sure its present and populated
 	 * with the expected child elements and attributes.
 	 */
-	function test_feed_element() {
+	public function test_feed_element() {
 		$this->go_to( '/?feed=atom' );
 		$feed = $this->do_atom();
 		$xml = xml_to_array( $feed );
@@ -121,7 +121,7 @@ class Tests_Feeds_Atom extends WP_UnitTestCase {
 	/**
 	 * Validate <entry> child elements.
 	 */
-	function test_entry_elements() {
+	public function test_entry_elements() {
 		$this->go_to( '/?feed=atom' );
 		$feed = $this->do_atom();
 		$xml = xml_to_array( $feed );

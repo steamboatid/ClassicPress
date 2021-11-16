@@ -26,11 +26,11 @@ class Tests_Cache extends WP_UnitTestCase {
 		return $cache;
 	}
 
-	function test_miss() {
+	public function test_miss() {
 		$this->assertFalse( $this->cache->get( 'test_miss' ) );
 	}
 
-	function test_add_get() {
+	public function test_add_get() {
 		$key = __FUNCTION__;
 		$val = 'val';
 
@@ -38,7 +38,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( $val, $this->cache->get( $key ) );
 	}
 
-	function test_add_get_0() {
+	public function test_add_get_0() {
 		$key = __FUNCTION__;
 		$val = 0;
 
@@ -50,7 +50,7 @@ class Tests_Cache extends WP_UnitTestCase {
 	/**
 	 * @ticket 20004
 	 */
-	function test_add_get_null() {
+	public function test_add_get_null() {
 		$key = __FUNCTION__;
 		$val = null;
 
@@ -62,7 +62,7 @@ class Tests_Cache extends WP_UnitTestCase {
 	/**
 	 * @ticket 20004
 	 */
-	function test_add_get_false() {
+	public function test_add_get_false() {
 		$key = __FUNCTION__;
 		$val = false;
 
@@ -71,7 +71,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( $val, $this->cache->get( $key ) );
 	}
 
-	function test_add() {
+	public function test_add() {
 		$key = __FUNCTION__;
 		$val1 = 'val1';
 		$val2 = 'val2';
@@ -84,7 +84,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( $val1, $this->cache->get( $key ) );
 	}
 
-	function test_replace() {
+	public function test_replace() {
 		$key = __FUNCTION__;
 		$val = 'val1';
 		$val2 = 'val2';
@@ -98,7 +98,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( $val2, $this->cache->get( $key ) );
 	}
 
-	function test_set() {
+	public function test_set() {
 		$key = __FUNCTION__;
 		$val1 = 'val1';
 		$val2 = 'val2';
@@ -111,7 +111,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( $val2, $this->cache->get( $key ) );
 	}
 
-	function test_flush() {
+	public function test_flush() {
 		global $_wp_using_ext_object_cache;
 
 		if ( $_wp_using_ext_object_cache )
@@ -129,7 +129,7 @@ class Tests_Cache extends WP_UnitTestCase {
 	}
 
 	// Make sure objects are cloned going to and from the cache
-	function test_object_refs() {
+	public function test_object_refs() {
 		$key = __FUNCTION__ . '_1';
 		$object_a = new stdClass;
 		$object_a->foo = 'alpha';
@@ -151,7 +151,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( 'bravo', $object_a->foo );
 	}
 
-	function test_incr() {
+	public function test_incr() {
 		$key = __FUNCTION__;
 
 		$this->assertFalse( $this->cache->incr( $key ) );
@@ -164,7 +164,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( 3, $this->cache->get( $key ) );
 	}
 
-	function test_wp_cache_incr() {
+	public function test_wp_cache_incr() {
 		$key = __FUNCTION__;
 
 		$this->assertFalse( wp_cache_incr( $key ) );
@@ -177,7 +177,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( 3, wp_cache_get( $key ) );
 	}
 
-	function test_decr() {
+	public function test_decr() {
 		$key = __FUNCTION__;
 
 		$this->assertFalse( $this->cache->decr( $key ) );
@@ -197,7 +197,7 @@ class Tests_Cache extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/21327
 	 */
-	function test_wp_cache_decr() {
+	public function test_wp_cache_decr() {
 		$key = __FUNCTION__;
 
 		$this->assertFalse( wp_cache_decr( $key ) );
@@ -214,7 +214,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( 0, wp_cache_get( $key ) );
 	}
 
-	function test_delete() {
+	public function test_delete() {
 		$key = __FUNCTION__;
 		$val = 'val';
 
@@ -229,7 +229,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertFalse( $this->cache->delete( $key, 'default') );
 	}
 
-	function test_wp_cache_delete() {
+	public function test_wp_cache_delete() {
 		$key = __FUNCTION__;
 		$val = 'val';
 
@@ -248,7 +248,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertFalse( wp_cache_delete( $key, 'default') );
 	}
 
-	function test_switch_to_blog() {
+	public function test_switch_to_blog() {
 		if ( ! method_exists( $this->cache, 'switch_to_blog' ) )
 			return;
 
@@ -293,7 +293,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		$this->assertSame( $val2, $this->cache->get( $key, 'global-cache-test' ) );
 	}
 
-	function test_wp_cache_init() {
+	public function test_wp_cache_init() {
 		$new_blank_cache_object = new WP_Object_Cache();
 		wp_cache_init();
 
@@ -307,7 +307,7 @@ class Tests_Cache extends WP_UnitTestCase {
 		}
 	}
 
-	function test_wp_cache_replace() {
+	public function test_wp_cache_replace() {
 		$key  = 'my-key';
 		$val1 = 'first-val';
 		$val2 = 'second-val';

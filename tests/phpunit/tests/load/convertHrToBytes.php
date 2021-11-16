@@ -16,7 +16,7 @@ class Tests_Functions_Convert_Hr_To_Bytes extends WP_UnitTestCase {
 	 * @param int|string $value    The value passed to wp_convert_hr_to_bytes().
 	 * @param int        $expected The expected output of wp_convert_hr_to_bytes().
 	 */
-	function test_wp_convert_hr_to_bytes( $value, $expected ) {
+	public function test_wp_convert_hr_to_bytes( $value, $expected ) {
 		$this->assertSame( $expected, wp_convert_hr_to_bytes( $value ) );
 	}
 

@@ -5,14 +5,14 @@
  */
 
 class Tests_Post_getPages extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 	}
 
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23167
 	 */
-	function test_get_pages_cache() {
+	public function test_get_pages_cache() {
 		global $wpdb;
 
 		self::factory()->post->create_many( 3, array( 'post_type' => 'page' ) );
@@ -224,7 +224,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20376
 	 */
-	function test_get_pages_meta() {
+	public function test_get_pages_meta() {
 		$posts = self::factory()->post->create_many( 3, array( 'post_type' => 'page' ) );
 		add_post_meta( $posts[0], 'some-meta-key', '0' );
 		add_post_meta( $posts[1], 'some-meta-key', '' );
@@ -258,7 +258,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22074
 	 */
-	function test_get_pages_include_exclude() {
+	public function test_get_pages_include_exclude() {
 		$page_ids = array();
 
 		foreach ( range( 1, 20 ) as $i )
@@ -283,7 +283,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/9470
 	 */
-	function test_get_pages_parent() {
+	public function test_get_pages_parent() {
 		$page_id1 = self::factory()->post->create( array( 'post_type' => 'page' ) );
 		$page_id2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_parent' => $page_id1 ) );
 		$page_id3 = self::factory()->post->create( array( 'post_type' => 'page', 'post_parent' => $page_id2 ) );
@@ -326,7 +326,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22389
 	 */
-	function test_wp_dropdown_pages() {
+	public function test_wp_dropdown_pages() {
 		self::factory()->post->create_many( 5, array( 'post_type' => 'page' ) );
 
 		preg_match_all( '#<option#', wp_dropdown_pages( 'echo=0' ), $matches );
@@ -337,7 +337,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/22208
 	 */
-	function test_get_chidren_fields_ids() {
+	public function test_get_chidren_fields_ids() {
 		$post_id = self::factory()->post->create();
 		$child_ids = self::factory()->post->create_many( 5, array( 'post_parent' => $post_id ) );
 
@@ -353,7 +353,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/25750
 	 */
-	function test_get_pages_hierarchical_and_no_parent() {
+	public function test_get_pages_hierarchical_and_no_parent() {
 		global $wpdb;
 		$page_1 = self::factory()->post->create( array( 'post_type' => 'page' ) );
 		$page_2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_parent' => $page_1 ) );
@@ -500,7 +500,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 
 	}
 
-	function test_wp_list_pages_classes() {
+	public function test_wp_list_pages_classes() {
 		$type = 'taco';
 		register_post_type( $type, array( 'hierarchical' => true, 'public' => true ) );
 
@@ -525,7 +525,7 @@ class Tests_Post_getPages extends WP_UnitTestCase {
 		_unregister_post_type( $type );
 	}
 
-	function test_exclude_tree() {
+	public function test_exclude_tree() {
 		$post_id1 = self::factory()->post->create( array( 'post_type' => 'page' ) );
 		$post_id2 = self::factory()->post->create( array( 'post_type' => 'page', 'post_parent' => $post_id1 ) );
 		$post_id3 = self::factory()->post->create( array( 'post_type' => 'page' ) );

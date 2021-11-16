@@ -31,7 +31,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		}
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		if ( is_callable( array('WP_Http', '_getTransport') ) ) {
@@ -52,7 +52,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		}
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		foreach ( array( 'curl', 'streams', 'fsockopen' ) as $t ) {
 			remove_filter( "use_{$t}_transport", '__return_false' );
 		}
@@ -64,7 +64,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		return $args;
 	}
 
-	function test_redirect_on_301() {
+	public function test_redirect_on_301() {
 		// 5 : 5 & 301
 		$res = wp_remote_request($this->redirection_script . '?code=301&rt=' . 5, array('redirection' => 5) );
 
@@ -73,7 +73,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		$this->assertSame( 200, (int) $res['response']['code'] );
 	}
 
-	function test_redirect_on_302() {
+	public function test_redirect_on_302() {
 		// 5 : 5 & 302
 		$res = wp_remote_request($this->redirection_script . '?code=302&rt=' . 5, array('redirection' => 5) );
 
@@ -85,7 +85,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/16855
 	 */
-	function test_redirect_on_301_no_redirect() {
+	public function test_redirect_on_301_no_redirect() {
 		// 5 > 0 & 301
 		$res = wp_remote_request($this->redirection_script . '?code=301&rt=' . 5, array('redirection' => 0) );
 
@@ -97,7 +97,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/16855
 	 */
-	function test_redirect_on_302_no_redirect() {
+	public function test_redirect_on_302_no_redirect() {
 		// 5 > 0 & 302
 		$res = wp_remote_request($this->redirection_script . '?code=302&rt=' . 5, array('redirection' => 0) );
 
@@ -106,7 +106,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		$this->assertSame( 302, (int) $res['response']['code'] );
 	}
 
-	function test_redirections_equal() {
+	public function test_redirections_equal() {
 		// 5 - 5
 		$res = wp_remote_request($this->redirection_script . '?rt=' . 5, array('redirection' => 5) );
 
@@ -115,7 +115,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		$this->assertSame( 200, (int) $res['response']['code'] );
 	}
 
-	function test_no_head_redirections() {
+	public function test_no_head_redirections() {
 		// No redirections on HEAD request:
 		$res = wp_remote_request($this->redirection_script . '?code=302&rt=' . 1, array('method' => 'HEAD') );
 
@@ -127,7 +127,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/16855
 	 */
-	function test_redirect_on_head() {
+	public function test_redirect_on_head() {
 		// Redirections on HEAD request when Requested
 		$res = wp_remote_request($this->redirection_script . '?rt=' . 5, array('redirection' => 5, 'method' => 'HEAD') );
 
@@ -136,7 +136,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		$this->assertSame( 200, (int) $res['response']['code'] );
 	}
 
-	function test_redirections_greater() {
+	public function test_redirections_greater() {
 		// 10 > 5
 		$res = wp_remote_request($this->redirection_script . '?rt=' . 10, array('redirection' => 5) );
 
@@ -144,7 +144,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		$this->assertWPError( $res );
 	}
 
-	function test_redirections_greater_edgecase() {
+	public function test_redirections_greater_edgecase() {
 		// 6 > 5 (close edgecase)
 		$res = wp_remote_request($this->redirection_script . '?rt=' . 6, array('redirection' => 5) );
 
@@ -152,7 +152,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		$this->assertWPError( $res );
 	}
 
-	function test_redirections_less_edgecase() {
+	public function test_redirections_less_edgecase() {
 		// 4 < 5 (close edgecase)
 		$res = wp_remote_request($this->redirection_script . '?rt=' . 4, array('redirection' => 5) );
 
@@ -163,7 +163,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/16855
 	 */
-	function test_redirections_zero_redirections_specified() {
+	public function test_redirections_zero_redirections_specified() {
 		// 0 redirections asked for, Should return the document?
 		$res = wp_remote_request($this->redirection_script . '?code=302&rt=' . 5, array('redirection' => 0) );
 
@@ -177,7 +177,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/16889
 	 */
-	function test_location_header_on_201() {
+	public function test_location_header_on_201() {
 		// Prints PASS on initial load, FAIL if the client follows the specified redirection
 		$res = wp_remote_request( $this->redirection_script . '?201-location=true' );
 
@@ -191,7 +191,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/16889
 	 */
-	function test_no_redirection_on_PUT() {
+	public function test_no_redirection_on_PUT() {
 		$url = 'http://api.wordpress.org/core/tests/1.0/redirection.php?201-location=1';
 
 		// Test 301 - POST to POST
@@ -205,7 +205,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/11888
 	 */
-	function test_send_headers() {
+	public function test_send_headers() {
 		// Test that the headers sent are recieved by the server
 		$headers = array('test1' => 'test', 'test2' => 0, 'test3' => '');
 		$res = wp_remote_request( $this->redirection_script . '?header-check', array('headers' => $headers) );
@@ -229,7 +229,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 		//$this->assertTrue( isset($headers['test3']) && '' === $headers['test3'] );
 	}
 
-	function test_file_stream() {
+	public function test_file_stream() {
 		$url = $this->fileStreamUrl;
 		$size = 5764;
 		$res = wp_remote_request( $url, array( 'stream' => true, 'timeout' => 30 ) ); //Auto generate the filename.
@@ -251,7 +251,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26726
 	 */
-	function test_file_stream_limited_size() {
+	public function test_file_stream_limited_size() {
 		$url = $this->fileStreamUrl;
 		$size = 5000;
 		$res = wp_remote_request( $url, array( 'stream' => true, 'timeout' => 30, 'limit_response_size' => $size ) ); //Auto generate the filename.
@@ -273,7 +273,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/31172
 	 */
-	function test_request_limited_size() {
+	public function test_request_limited_size() {
 		$url = $this->fileStreamUrl;
 		$size = 5000;
 
@@ -291,7 +291,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/17588
 	 */
-	function test_post_redirect_to_method_300( $response_code, $method ) {
+	public function test_post_redirect_to_method_300( $response_code, $method ) {
 		$url = 'http://api.wordpress.org/core/tests/1.0/redirection.php?post-redirect-to-method=1';
 
 		$res = wp_remote_post( add_query_arg( 'response_code', $response_code, $url ), array( 'timeout' => 30 ) );
@@ -330,7 +330,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/24182
 	 */
-	function test_ip_url_with_host_header() {
+	public function test_ip_url_with_host_header() {
 		$ip = gethostbyname( 'api.wordpress.org' );
 		$url = 'http://' . $ip . '/core/tests/1.0/redirection.php?print-pass=1';
 		$args = array(
@@ -353,7 +353,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/33978
 	 */
-	function test_https_url_without_ssl_verification() {
+	public function test_https_url_without_ssl_verification() {
 		$url = 'https://wordpress.org/';
 		$args = array(
 			'sslverify' => false,
@@ -375,7 +375,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/16890
 	 */
-	function test_multiple_location_headers() {
+	public function test_multiple_location_headers() {
 		$url = 'http://api.wordpress.org/core/tests/1.0/redirection.php?multiple-location-headers=1';
 		$res = wp_remote_head( $url, array( 'timeout' => 30 ) );
 
@@ -395,7 +395,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/21182
 	 */
-	function test_cookie_handling() {
+	public function test_cookie_handling() {
 		$url = 'http://api.wordpress.org/core/tests/1.0/redirection.php?cookie-test=1';
 
 		$res = wp_remote_get( $url );
@@ -410,7 +410,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	 * @group ssl
 	 * @see https://core.trac.wordpress.org/ticket/25007
 	 */
-	function test_ssl() {
+	public function test_ssl() {
 		$res = wp_remote_get( 'https://wordpress.org/' );
 
 		$this->skipTestOnTimeout( $res );
@@ -420,7 +420,7 @@ abstract class WP_HTTP_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37733
 	 */
-	function test_url_with_double_slashes_path() {
+	public function test_url_with_double_slashes_path() {
 		$url = $this->redirection_script . '?rt=' . 0;
 
 		$path = parse_url( $url, PHP_URL_PATH );

@@ -81,7 +81,7 @@ class Tests_Multisite_Is_Upload_Space_Available extends WP_UnitTestCase {
 		$this->assertTrue( $available );
 	}
 
-	function test_is_upload_space_available_space_used_is_more_than_allowed() {
+	public function test_is_upload_space_available_space_used_is_more_than_allowed() {
 		update_option( 'blog_upload_space', 350 );
 
 		add_filter( 'pre_get_space_used', array( $this, '_filter_space_used_large' ) );
@@ -95,7 +95,7 @@ class Tests_Multisite_Is_Upload_Space_Available extends WP_UnitTestCase {
 	 * More comprehensive testing a 0 condition is handled in the tests
 	 * for `get_space_allowed()`. We cover one scenario here.
 	 */
-	function test_is_upload_space_available_upload_space_0_defaults_to_100() {
+	public function test_is_upload_space_available_upload_space_0_defaults_to_100() {
 		update_option( 'blog_upload_space', 0 );
 
 		add_filter( 'pre_get_space_used', array( $this, '_filter_space_used_small' ) );
@@ -105,7 +105,7 @@ class Tests_Multisite_Is_Upload_Space_Available extends WP_UnitTestCase {
 		$this->assertFalse( $available );
 	}
 
-	function test_is_upload_space_available_upload_space_negative() {
+	public function test_is_upload_space_available_upload_space_negative() {
 		update_site_option( 'blog_upload_space', -1 );
 
 		add_filter( 'pre_get_space_used', array( $this, '_filter_space_used_small' ) );

@@ -9,7 +9,7 @@ class Tests_Admin_includesFile extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/20449
 	 */
-	function test_get_home_path() {
+	public function test_get_home_path() {
 		$home = get_option( 'home' );
 		$siteurl = get_option( 'siteurl' );
 		$sfn = $_SERVER['SCRIPT_FILENAME'];

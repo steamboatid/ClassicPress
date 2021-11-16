@@ -6,7 +6,7 @@
  */
 class Tests_General_Errors extends WP_UnitTestCase {
 
-	function test_create_error() {
+	public function test_create_error() {
 		$error = new WP_Error( 'foo', 'message', 'data' );
 
 		$this->assertWPError( $error );
@@ -15,7 +15,7 @@ class Tests_General_Errors extends WP_UnitTestCase {
 		$this->assertEquals( 'data', $error->get_error_data() );
 	}
 
-	function test_add_error() {
+	public function test_add_error() {
 		$error = new WP_Error();
 		$error->add( 'foo', 'message', 'data' );
 
@@ -25,7 +25,7 @@ class Tests_General_Errors extends WP_UnitTestCase {
 		$this->assertEquals( 'data', $error->get_error_data() );
 	}
 
-	function test_multiple_errors() {
+	public function test_multiple_errors() {
 		$error = new WP_Error();
 		$error->add( 'foo', 'foo message', 'foo data' );
 		$error->add( 'bar', 'bar message', 'bar data' );
@@ -44,7 +44,7 @@ class Tests_General_Errors extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/28092
 	 */
-	function test_remove_error() {
+	public function test_remove_error() {
 		$error = new WP_Error();
 		$error->add( 'foo', 'This is the first error message', 'some error data' );
 		$error->add( 'foo', 'This is the second error message' );

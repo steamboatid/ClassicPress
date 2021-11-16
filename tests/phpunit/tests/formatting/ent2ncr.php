@@ -7,7 +7,7 @@ class Tests_Formatting_Ent2NCR extends WP_UnitTestCase {
 	/**
 	 * @dataProvider entities
 	 */
-	function test_converts_named_entities_to_numeric_character_references( $entity, $ncr ) {
+	public function test_converts_named_entities_to_numeric_character_references( $entity, $ncr ) {
 		$entity = '&' . $entity . ';';
 		$ncr = '&#' . $ncr . ';';
 		$this->assertSame( $ncr, ent2ncr( $entity ), $entity );

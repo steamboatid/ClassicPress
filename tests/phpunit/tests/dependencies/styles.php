@@ -14,7 +14,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		parent::set_up_before_class();
 	}
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		if ( empty( $GLOBALS['wp_styles'] ) ) {
@@ -33,7 +33,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		$GLOBALS['wp_styles']->default_version = self::$asset_version;
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		$GLOBALS['wp_styles'] = $this->old_wp_styles;
 		add_action( 'wp_default_styles', 'wp_default_styles' );
 		add_action( 'wp_print_styles', 'print_emoji_styles' );
@@ -66,7 +66,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 	 * Test versioning
 	 * @see https://core.trac.wordpress.org/ticket/11315
 	 */
-	function test_wp_enqueue_style() {
+	public function test_wp_enqueue_style() {
 		wp_enqueue_style('no-deps-no-version', 'example.com' );
 		wp_enqueue_style('no-deps-version', 'example.com', array(), 1.2);
 		wp_enqueue_style('no-deps-null-version', 'example.com', array(), null);
@@ -111,7 +111,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_style_override_default_version() {
+	public function test_wp_enqueue_style_override_default_version() {
 		$ver = 'aaaa';
 		$GLOBALS['wp_styles']->default_version = $ver;
 		wp_enqueue_style( 'override-default-version', 'example.com' );
@@ -127,7 +127,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_style_override_default_version_and_filter() {
+	public function test_wp_enqueue_style_override_default_version_and_filter() {
 		$ver = 'bbbb';
 		$GLOBALS['wp_styles']->default_version = 'aaaa';
 		$this->classicpress_asset_version_override = $ver;
@@ -144,7 +144,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_style_filter_default_version() {
+	public function test_wp_enqueue_style_filter_default_version() {
 		$ver = 'cccc';
 		$this->classicpress_asset_version_override = $ver;
 		wp_enqueue_style( 'filter-default-version', 'example.com' );
@@ -160,7 +160,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_style_filter_declared_version() {
+	public function test_wp_enqueue_style_filter_declared_version() {
 		$this->classicpress_asset_version_override = 'oooo';
 		wp_enqueue_style( 'filter-declared-version', 'example.com', array(), 'dddd' );
 		$expected = "<link rel='stylesheet' id='filter-declared-version-css'  href='http://example.com?ver=oooo' type='text/css' media='all' />\n";
@@ -175,7 +175,7 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 		), $this->classicpress_asset_version_calls );
 	}
 
-	function test_wp_enqueue_style_filter_null_version() {
+	public function test_wp_enqueue_style_filter_null_version() {
 		$this->classicpress_asset_version_override = 'oooo';
 		wp_enqueue_style( 'filter-null-version', 'example.com', array(), null );
 		$expected = "<link rel='stylesheet' id='filter-null-version-css'  href='http://example.com?ver=oooo' type='text/css' media='all' />\n";
@@ -379,7 +379,7 @@ CSS;
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/31126
 	 */
-	function test_wp_register_style() {
+	public function test_wp_register_style() {
 		$this->assertTrue( wp_register_style( 'duplicate-handler', 'http://example.com' ) );
 		$this->assertFalse( wp_register_style( 'duplicate-handler', 'http://example.com' ) );
 	}
@@ -387,7 +387,7 @@ CSS;
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/35229
 	 */
-	function test_wp_add_inline_style_for_handle_without_source() {
+	public function test_wp_add_inline_style_for_handle_without_source() {
 		$style  = "a { color: blue; }";
 
 		$expected  = "<link rel='stylesheet' id='handle-one-css'  href='http://example.com?ver=1' type='text/css' media='all' />\n";
@@ -410,7 +410,7 @@ CSS;
 	 * @see https://core.trac.wordpress.org/ticket/35921
 	 * @dataProvider data_styles_with_media
 	 */
-	function test_wp_enqueue_style_with_media( $expected, $media ) {
+	public function test_wp_enqueue_style_with_media( $expected, $media ) {
 		wp_enqueue_style( 'handle', 'http://example.com', array(), 1, $media );
 		$this->assertStringContainsString( $expected, get_echo( 'wp_print_styles' ) );
 	}

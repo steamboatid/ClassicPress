@@ -35,14 +35,14 @@ class Tests_Compat extends WP_UnitTestCase {
 	/**
 	 * @dataProvider utf8_string_lengths
 	 */
-	function test_mb_strlen( $string, $expected_character_length ) {
+	public function test_mb_strlen( $string, $expected_character_length ) {
 		$this->assertSame( $expected_character_length, _mb_strlen( $string, 'UTF-8' ) );
 	}
 
 	/**
 	 * @dataProvider utf8_string_lengths
 	 */
-	function test_mb_strlen_via_regex( $string, $expected_character_length ) {
+	public function test_mb_strlen_via_regex( $string, $expected_character_length ) {
 		_wp_can_use_pcre_u( false );
 		$this->assertSame( $expected_character_length, _mb_strlen( $string, 'UTF-8' ) );
 		_wp_can_use_pcre_u( 'reset' );
@@ -51,21 +51,21 @@ class Tests_Compat extends WP_UnitTestCase {
 	/**
 	 * @dataProvider utf8_string_lengths
 	 */
-	function test_8bit_mb_strlen( $string, $expected_character_length, $expected_byte_length ) {
+	public function test_8bit_mb_strlen( $string, $expected_character_length, $expected_byte_length ) {
 		$this->assertSame( $expected_byte_length, _mb_strlen( $string, '8bit' ) );
 	}
 
 	/**
 	 * @dataProvider utf8_substrings
 	 */
-	function test_mb_substr( $string, $start, $length, $expected_character_substring ) {
+	public function test_mb_substr( $string, $start, $length, $expected_character_substring ) {
 		$this->assertSame( $expected_character_substring, _mb_substr( $string, $start, $length, 'UTF-8' ) );
 	}
 
 	/**
 	 * @dataProvider utf8_substrings
 	 */
-	function test_mb_substr_via_regex( $string, $start, $length, $expected_character_substring ) {
+	public function test_mb_substr_via_regex( $string, $start, $length, $expected_character_substring ) {
 		_wp_can_use_pcre_u( false );
 		$this->assertSame( $expected_character_substring, _mb_substr( $string, $start, $length, 'UTF-8' ) );
 		_wp_can_use_pcre_u( 'reset' );
@@ -74,11 +74,11 @@ class Tests_Compat extends WP_UnitTestCase {
 	/**
 	 * @dataProvider utf8_substrings
 	 */
-	function test_8bit_mb_substr( $string, $start, $length, $expected_character_substring, $expected_byte_substring ) {
+	public function test_8bit_mb_substr( $string, $start, $length, $expected_character_substring, $expected_byte_substring ) {
 		$this->assertSame( $expected_byte_substring, _mb_substr( $string, $start, $length, '8bit' ) );
 	}
 
-	function test_mb_substr_phpcore(){
+	public function test_mb_substr_phpcore(){
 		/* https://github.com/php/php-src/blob/php-5.6.8/ext/mbstring/tests/mb_substr_basic.phpt */
 		$string_ascii = 'ABCDEF';
 		$string_mb = base64_decode('5pel5pys6Kqe44OG44Kt44K544OI44Gn44GZ44CCMDEyMzTvvJXvvJbvvJfvvJjvvJnjgII=');
@@ -165,22 +165,22 @@ EOT;
 
 	}
 
-	function test_hash_hmac_simple() {
+	public function test_hash_hmac_simple() {
 		$this->assertSame( '140d1cb79fa12e2a31f32d35ad0a2723', _hash_hmac( 'md5', 'simple', 'key' ) );
 		$this->assertSame( '993003b95758e0ac2eba451a4c5877eb1bb7b92a', _hash_hmac( 'sha1', 'simple', 'key' ) );
 	}
 
-	function test_hash_hmac_padding() {
+	public function test_hash_hmac_padding() {
 		$this->assertSame( '3c1399103807cf12ec38228614416a8c', _hash_hmac( 'md5', 'simple', '65 character key 65 character key 65 character key 65 character k' ) );
 		$this->assertSame( '4428826d20003e309d6c2a6515891370daf184ea', _hash_hmac( 'sha1', 'simple', '65 character key 65 character key 65 character key 65 character k' ) );
 	}
 
-	function test_hash_hmac_output() {
+	public function test_hash_hmac_output() {
 		$this->assertSame( array( 1 => '140d1cb79fa12e2a31f32d35ad0a2723' ), unpack( 'H32', _hash_hmac( 'md5', 'simple', 'key', true ) ) );
 		$this->assertSame( array( 1 => '993003b95758e0ac2eba451a4c5877eb1bb7b92a' ), unpack( 'H40', _hash_hmac( 'sha1', 'simple', 'key', true ) ) );
 	}
 
-	function test_json_encode_decode() {
+	public function test_json_encode_decode() {
 		$this->expectNotice();
 
 		require_once ABSPATH . WPINC . '/class-json.php';
@@ -195,7 +195,7 @@ EOT;
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43583
 	 */
-	function test_is_countable_availability() {
+	public function test_is_countable_availability() {
 		$this->assertTrue( function_exists( 'is_countable' ) );
 	}
 
@@ -209,7 +209,7 @@ EOT;
 	 * @param mixed $variable     Variable to check.
 	 * @param bool  $is_countable The expected return value of PHP 7.3 is_countable() function.
 	 */
-	function test_is_countable_functionality( $variable, $is_countable ) {
+	public function test_is_countable_functionality( $variable, $is_countable ) {
 		$this->assertSame( is_countable( $variable ), $is_countable );
 	}
 
@@ -244,7 +244,7 @@ EOT;
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43583
 	 */
-	function test_is_countable_ResourceBundle() {
+	public function test_is_countable_ResourceBundle() {
 		if ( ! class_exists( 'ResourceBundle' ) ) {
 			$this->markTestSkipped( 'The intl extension is not loaded. ResourceBundle not tested for is_countable().' );
 		}
@@ -257,7 +257,7 @@ EOT;
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43583
 	 */
-	function test_is_countable_SimpleXMLElement() {
+	public function test_is_countable_SimpleXMLElement() {
 		if ( ! class_exists( 'SimpleXMLElement' ) ) {
 			$this->markTestSkipped( 'The xml extension is not loaded. SimpleXMLElement not tested for is_countable().' );
 		}
@@ -270,7 +270,7 @@ EOT;
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/43619
 	 */
-	function test_is_iterable_availability() {
+	public function test_is_iterable_availability() {
 		$this->assertTrue( function_exists( 'is_iterable' ) );
 	}
 
@@ -284,7 +284,7 @@ EOT;
 	 * @param mixed $variable    Variable to check.
 	 * @param bool  $is_iterable The expected return value of PHP 7.1 is_iterable() function.
 	 */
-	function test_is_iterable_functionality( $variable, $is_iterable ) {
+	public function test_is_iterable_functionality( $variable, $is_iterable ) {
 		$this->assertSame( is_iterable( $variable ), $is_iterable );
 	}
 

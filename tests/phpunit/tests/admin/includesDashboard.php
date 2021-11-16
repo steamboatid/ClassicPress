@@ -54,7 +54,7 @@ class Tests_Admin_includesDashboard extends WP_UnitTestCase {
 		return ob_get_clean();
 	}
 
-	function test_cp_dashboard_petitions_output() {
+	public function test_cp_dashboard_petitions_output() {
 		$output = $this->get_cp_dashboard_petitions_output();
 
 		$this->assertStringContainsString(

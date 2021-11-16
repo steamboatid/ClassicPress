@@ -363,7 +363,7 @@ class Tests_Query_SetupPostdata extends WP_UnitTestCase {
 	 * setup_postdata( $a_post ) followed by the_content() in a loop that does not update
 	 * global $post should use the content of $a_post rather then the global post.
 	 */
-	function test_setup_postdata_loop() {
+	public function test_setup_postdata_loop() {
 		$post_id = self::factory()->post->create( array( 'post_content' => 'global post' ) );
 		$GLOBALS['wp_query']->post = $GLOBALS['post'] = get_post( $post_id );
 

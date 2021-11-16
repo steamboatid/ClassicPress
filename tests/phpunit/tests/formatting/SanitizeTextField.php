@@ -100,7 +100,7 @@ class Tests_Formatting_SanitizeTextField extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/32257
 	 * @dataProvider data_sanitize_text_field
 	 */
-	function test_sanitize_text_field( $string, $expected ) {
+	public function test_sanitize_text_field( $string, $expected ) {
 		if ( is_array( $expected ) ) {
 			$expected_oneline = $expected['oneline'];
 			$expected_multiline = $expected['multiline'];

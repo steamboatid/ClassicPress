@@ -51,7 +51,7 @@ class Tests_Functions_canonical_charset extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/23688
 	 */
-	function test_update_option_blog_charset() {
+	public function test_update_option_blog_charset() {
 		$orig_blog_charset = get_option( 'blog_charset' );
 
 		update_option( 'blog_charset', 'utf8' );

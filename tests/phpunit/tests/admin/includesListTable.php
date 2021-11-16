@@ -70,7 +70,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/15459
 	 */
-	function test_list_hierarchical_pages_first_page() {
+	public function test_list_hierarchical_pages_first_page() {
 		$this->_test_list_hierarchical_page( array(
 			'paged'          => 1,
 			'posts_per_page' => 2,
@@ -83,7 +83,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/15459
 	 */
-	function test_list_hierarchical_pages_second_page() {
+	public function test_list_hierarchical_pages_second_page() {
 		$this->_test_list_hierarchical_page( array(
 			'paged'          => 2,
 			'posts_per_page' => 2,
@@ -97,7 +97,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/15459
 	 */
-	function test_search_hierarchical_pages_first_page() {
+	public function test_search_hierarchical_pages_first_page() {
 		$this->_test_list_hierarchical_page( array(
 			'paged'          => 1,
 			'posts_per_page' => 2,
@@ -111,7 +111,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/15459
 	 */
-	function test_search_hierarchical_pages_second_page() {
+	public function test_search_hierarchical_pages_second_page() {
 		$this->_test_list_hierarchical_page( array(
 			'paged'          => 2,
 			'posts_per_page' => 2,
@@ -125,7 +125,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/15459
 	 */
-	function test_grandchildren_hierarchical_pages_first_page() {
+	public function test_grandchildren_hierarchical_pages_first_page() {
 		// page 6 is the first page with grandchildren
 		$this->_test_list_hierarchical_page( array(
 			'paged'          => 6,
@@ -141,7 +141,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/15459
 	 */
-	function test_grandchildren_hierarchical_pages_second_page() {
+	public function test_grandchildren_hierarchical_pages_second_page() {
 		// page 7 is the second page with grandchildren
 		$this->_test_list_hierarchical_page( array(
 			'paged'          => 7,
@@ -201,7 +201,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37407
 	 */
-	function test_filter_button_should_not_be_shown_if_there_are_no_posts() {
+	public function test_filter_button_should_not_be_shown_if_there_are_no_posts() {
 		// Set post type to a non-existent one.
 		$this->table->screen->post_type = 'foo';
 
@@ -215,7 +215,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37407
 	 */
-	function test_months_dropdown_should_not_be_shown_if_there_are_no_posts() {
+	public function test_months_dropdown_should_not_be_shown_if_there_are_no_posts() {
 		// Set post type to a non-existent one.
 		$this->table->screen->post_type = 'foo';
 
@@ -229,7 +229,7 @@ class Tests_Admin_includesListTable extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/37407
 	 */
-	function test_category_dropdown_should_not_be_shown_if_there_are_no_posts() {
+	public function test_category_dropdown_should_not_be_shown_if_there_are_no_posts() {
 		// Set post type to a non-existent one.
 		$this->table->screen->post_type = 'foo';
 

@@ -6,7 +6,7 @@
  * @see https://core.trac.wordpress.org/ticket/21767
  */
 class Tests_Attachment_Slashes extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$this->author_id = self::factory()->user->create( array( 'role' => 'editor' ) );
 		wp_set_current_user( $this->author_id );
@@ -25,7 +25,7 @@ class Tests_Attachment_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_insert_attachment() {
+	public function test_wp_insert_attachment() {
 		$id = wp_insert_attachment(array(
 			'post_status' => 'publish',
 			'post_title' => $this->slash_1,

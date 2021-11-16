@@ -11,7 +11,7 @@ class Tests_Formatting_HumanTimeDiff extends WP_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/38773
 	 * @dataProvider data_test_human_time_diff
 	 */
-	function test_human_time_diff( $expected, $stopdate, $message ) {
+	public function test_human_time_diff( $expected, $stopdate, $message ) {
 		$startdate = new DateTime( '2016-01-01 12:00:00' );
 		$this->assertSame( $expected, human_time_diff( $startdate->format( 'U' ), $stopdate->format( 'U' ) ), $message );
 	}

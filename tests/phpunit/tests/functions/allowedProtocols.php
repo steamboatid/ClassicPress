@@ -9,11 +9,11 @@ class Tests_Functions_AllowedProtocols extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/19354
 	 */
-	function test_data_is_not_an_allowed_protocol() {
+	public function test_data_is_not_an_allowed_protocol() {
 		$this->assertNotContains( 'data', wp_allowed_protocols() );
 	}
 
-	function test_allowed_protocol_has_an_example() {
+	public function test_allowed_protocol_has_an_example() {
 		$example_protocols = array();
 		foreach ( $this->data_example_urls() as $example ) {
 			$example_protocols[] = $example[0];
@@ -28,7 +28,7 @@ class Tests_Functions_AllowedProtocols extends WP_UnitTestCase {
 	 * @param string The scheme.
 	 * @param string Example URL.
 	 */
-	function test_allowed_protocols( $protocol, $url ) {
+	public function test_allowed_protocols( $protocol, $url ) {
 		$this->assertSame( $url, esc_url( $url, $protocol ) );
 		$this->assertSame( $url, esc_url( $url, wp_allowed_protocols() ) );
 	}

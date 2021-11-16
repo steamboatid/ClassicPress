@@ -105,7 +105,7 @@ class Tests_Ajax_CustomizeManager extends WP_Ajax_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/30937
 	 * @covers WP_Customize_Manager::save()
 	 */
-	function test_save_failures() {
+	public function test_save_failures() {
 		global $wp_customize;
 		$wp_customize = new WP_Customize_Manager();
 		$wp_customize->register_controls();
@@ -260,7 +260,7 @@ class Tests_Ajax_CustomizeManager extends WP_Ajax_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/30937
 	 * @covers WP_Customize_Manager::save()
 	 */
-	function test_save_success_publish_create() {
+	public function test_save_success_publish_create() {
 		$wp_customize = $this->set_up_valid_state();
 
 		$_POST['customize_changeset_status'] = 'publish';
@@ -287,7 +287,7 @@ class Tests_Ajax_CustomizeManager extends WP_Ajax_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/30937
 	 * @covers WP_Customize_Manager::save()
 	 */
-	function test_save_success_publish_edit() {
+	public function test_save_success_publish_edit() {
 		$uuid = wp_generate_uuid4();
 
 		$post_id = $this->factory()->post->create( array(
@@ -322,7 +322,7 @@ class Tests_Ajax_CustomizeManager extends WP_Ajax_UnitTestCase {
 	 * @see https://core.trac.wordpress.org/ticket/38943
 	 * @covers WP_Customize_Manager::save()
 	 */
-	function test_success_save_post_date() {
+	public function test_success_save_post_date() {
 		$uuid = wp_generate_uuid4();
 		$post_id = $this->factory()->post->create( array(
 			'post_name' => $uuid,

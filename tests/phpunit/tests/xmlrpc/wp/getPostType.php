@@ -7,7 +7,7 @@ class Tests_XMLRPC_wp_getPostType extends WP_XMLRPC_UnitTestCase {
 	var $cpt_name;
 	var $cpt_args;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		$this->cpt_name = 'post_type_test';
@@ -23,19 +23,19 @@ class Tests_XMLRPC_wp_getPostType extends WP_XMLRPC_UnitTestCase {
 		register_post_type( $this->cpt_name, $this->cpt_args );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		_unregister_post_type( $this->cpt_name );
 
 		parent::tear_down();
 	}
 
-	function test_invalid_username_password() {
+	public function test_invalid_username_password() {
 		$result = $this->myxmlrpcserver->wp_getPostType( array( 1, 'username', 'password', 'post' ) );
 		$this->assertIXRError( $result );
 		$this->assertSame( 403, $result->code );
 	}
 
-	function test_invalid_post_type_name() {
+	public function test_invalid_post_type_name() {
 		$this->make_user_by_role( 'editor' );
 
 		$result = $this->myxmlrpcserver->wp_getPostType( array( 1, 'editor', 'editor', 'foobar' ) );
@@ -43,14 +43,14 @@ class Tests_XMLRPC_wp_getPostType extends WP_XMLRPC_UnitTestCase {
 		$this->assertSame( 403, $result->code );
 	}
 
-	function test_valid_post_type_name() {
+	public function test_valid_post_type_name() {
 		$this->make_user_by_role( 'editor' );
 
 		$result = $this->myxmlrpcserver->wp_getPostType( array( 1, 'editor', 'editor', 'post' ) );
 		$this->assertNotIXRError( $result );
 	}
 
-	function test_incapable_user() {
+	public function test_incapable_user() {
 		$this->make_user_by_role( 'subscriber' );
 
 		$result = $this->myxmlrpcserver->wp_getPostType( array( 1, 'subscriber', 'subscriber', 'post' ) );
@@ -58,7 +58,7 @@ class Tests_XMLRPC_wp_getPostType extends WP_XMLRPC_UnitTestCase {
 		$this->assertSame( 401, $result->code );
 	}
 
-	function test_valid_type() {
+	public function test_valid_type() {
 		$this->make_user_by_role( 'editor' );
 
 		$result = $this->myxmlrpcserver->wp_getPostType( array( 1, 'editor', 'editor', $this->cpt_name, array( 'labels', 'cap', 'menu', 'taxonomies' ) ) );

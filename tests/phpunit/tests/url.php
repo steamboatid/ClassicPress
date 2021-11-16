@@ -6,7 +6,7 @@
  */
 class Tests_URL extends WP_UnitTestCase {
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		$GLOBALS['pagenow'] = '';
 	}
@@ -14,7 +14,7 @@ class Tests_URL extends WP_UnitTestCase {
 	/**
 	 * @dataProvider data_is_ssl
 	 */
-	function test_is_ssl( $value, $expected ) {
+	public function test_is_ssl( $value, $expected ) {
 		$_SERVER['HTTPS'] = $value;
 
 		$is_ssl = is_ssl();
@@ -46,7 +46,7 @@ class Tests_URL extends WP_UnitTestCase {
 		);
 	}
 
-	function test_is_ssl_by_port() {
+	public function test_is_ssl_by_port() {
 		unset( $_SERVER['HTTPS'] );
 		$_SERVER['SERVER_PORT'] = '443';
 
@@ -54,7 +54,7 @@ class Tests_URL extends WP_UnitTestCase {
 		$this->assertTrue( $is_ssl );
 	}
 
-	function test_is_ssl_with_no_value() {
+	public function test_is_ssl_with_no_value() {
 		unset( $_SERVER['HTTPS'] );
 
 		$is_ssl = is_ssl();
@@ -67,7 +67,7 @@ class Tests_URL extends WP_UnitTestCase {
 	 * @param string $url      Test URL.
 	 * @param string $expected Expected result.
 	 */
-	function test_admin_url( $url, $expected ) {
+	public function test_admin_url( $url, $expected ) {
 		$siteurl_http   = get_option( 'siteurl' );
 		$admin_url_http = admin_url( $url );
 
@@ -135,7 +135,7 @@ class Tests_URL extends WP_UnitTestCase {
 	 * @param string $url      Test URL.
 	 * @param string $expected Expected result.
 	 */
-	function test_home_url( $url, $expected ) {
+	public function test_home_url( $url, $expected ) {
 		$homeurl_http  = get_option( 'home' );
 		$home_url_http = home_url( $url );
 
@@ -197,7 +197,7 @@ class Tests_URL extends WP_UnitTestCase {
 		);
 	}
 
-	function test_home_url_from_admin() {
+	public function test_home_url_from_admin() {
 		$screen = get_current_screen();
 
 		// Pretend to be in the site admin
@@ -246,7 +246,7 @@ class Tests_URL extends WP_UnitTestCase {
 		$GLOBALS['current_screen'] = $screen;
 	}
 
-	function test_network_home_url_from_admin() {
+	public function test_network_home_url_from_admin() {
 		$screen = get_current_screen();
 
 		// Pretend to be in the site admin
@@ -271,7 +271,7 @@ class Tests_URL extends WP_UnitTestCase {
 		$GLOBALS['current_screen'] = $screen;
 	}
 
-	function test_set_url_scheme() {
+	public function test_set_url_scheme() {
 		if ( ! function_exists( 'set_url_scheme' ) )
 			return;
 

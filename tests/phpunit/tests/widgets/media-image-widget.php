@@ -31,7 +31,7 @@ class Test_WP_Widget_Media_Image extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Image::get_instance_schema
 	 */
-	function test_get_instance_schema() {
+	public function test_get_instance_schema() {
 		$widget = new WP_Widget_Media_Image();
 		$schema = $widget->get_instance_schema();
 
@@ -62,7 +62,7 @@ class Test_WP_Widget_Media_Image extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Image::__construct()
 	 */
-	function test_constructor() {
+	public function test_constructor() {
 		$widget = new WP_Widget_Media_Image();
 
 		$this->assertArrayHasKey( 'mime_type', $widget->widget_options );
@@ -91,7 +91,7 @@ class Test_WP_Widget_Media_Image extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Image::update
 	 */
-	function test_update() {
+	public function test_update() {
 		$widget = new WP_Widget_Media_Image();
 		$instance = array();
 
@@ -314,7 +314,7 @@ class Test_WP_Widget_Media_Image extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Image::render_media
 	 */
-	function test_render_media() {
+	public function test_render_media() {
 		$widget = new WP_Widget_Media_Image();
 
 		$test_image = get_temp_dir() . 'canola.jpg';
@@ -472,7 +472,7 @@ class Test_WP_Widget_Media_Image extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Image::enqueue_admin_scripts
 	 */
-	function test_enqueue_admin_scripts() {
+	public function test_enqueue_admin_scripts() {
 		set_current_screen( 'widgets.php' );
 		$widget = new WP_Widget_Media_Image();
 		$widget->enqueue_admin_scripts();
@@ -485,7 +485,7 @@ class Test_WP_Widget_Media_Image extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media_Image::render_control_template_scripts
 	 */
-	function test_render_control_template_scripts() {
+	public function test_render_control_template_scripts() {
 		$widget = new WP_Widget_Media_Image();
 
 		ob_start();

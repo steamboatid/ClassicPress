@@ -14,7 +14,7 @@ class Tests_Term_WpSetObjectTerms extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26570
 	 */
-	function test_set_object_terms() {
+	public function test_set_object_terms() {
 		$non_hier = rand_str( 10 );
 		$hier     = rand_str( 10 );
 
@@ -99,7 +99,7 @@ class Tests_Term_WpSetObjectTerms extends WP_UnitTestCase {
 		$this->assertTrue( has_term( array( $cat1->slug, $cat2->slug, $cat3->slug ), $hier, $post_id ) );
 	}
 
-	function test_set_object_terms_by_id() {
+	public function test_set_object_terms_by_id() {
 		$ids = self::$post_ids;
 
 		$terms = array();
@@ -129,7 +129,7 @@ class Tests_Term_WpSetObjectTerms extends WP_UnitTestCase {
 		}
 	}
 
-	function test_set_object_terms_by_name() {
+	public function test_set_object_terms_by_name() {
 		$ids = self::$post_ids;
 
 		$terms = array(
@@ -162,7 +162,7 @@ class Tests_Term_WpSetObjectTerms extends WP_UnitTestCase {
 		}
 	}
 
-	function test_set_object_terms_invalid() {
+	public function test_set_object_terms_invalid() {
 		// bogus taxonomy
 		$result = wp_set_object_terms( self::$post_ids[0], array(rand_str()), rand_str() );
 		$this->assertWPError( $result );
@@ -231,7 +231,7 @@ class Tests_Term_WpSetObjectTerms extends WP_UnitTestCase {
 		_unregister_taxonomy( 'wptests_tax' );
 	}
 
-	function test_change_object_terms_by_id() {
+	public function test_change_object_terms_by_id() {
 		// set some terms on an object; then change them while leaving one intact
 
 		$post_id = self::$post_ids[0];
@@ -288,7 +288,7 @@ class Tests_Term_WpSetObjectTerms extends WP_UnitTestCase {
 		$this->assertSame( $tt_1[1], $tt_2[0] );
 	}
 
-	function test_change_object_terms_by_name() {
+	public function test_change_object_terms_by_name() {
 		// set some terms on an object; then change them while leaving one intact
 
 		$post_id = self::$post_ids[0];

@@ -51,7 +51,7 @@ class Tests_TestHelpers extends WP_UnitTestCase {
 	 * @dataProvider data_assertSameSets
 	 * @see https://core.trac.wordpress.org/ticket/30522
 	 */
-	function test_assertSameSets( $expected, $actual, $exception ) {
+	public function test_assertSameSets( $expected, $actual, $exception ) {
 		if ( $exception ) {
 			try {
 				$this->assertSameSets( $expected, $actual );
@@ -146,7 +146,7 @@ class Tests_TestHelpers extends WP_UnitTestCase {
 	 * @dataProvider data_assertSameSetsWithIndex
 	 * @see https://core.trac.wordpress.org/ticket/30522
 	 */
-	function test_assertSameSetsWithIndex( $expected, $actual, $exception ) {
+	public function test_assertSameSetsWithIndex( $expected, $actual, $exception ) {
 		if ( $exception ) {
 			try {
 				$this->assertSameSetsWithIndex( $expected, $actual );

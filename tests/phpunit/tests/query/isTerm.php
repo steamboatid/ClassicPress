@@ -22,7 +22,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 	protected $tag;
 	protected $tax;
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		set_current_screen( 'front' );
@@ -55,7 +55,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts_tax_category_tax_query' ) );
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		global $wp_rewrite;
 
 		_unregister_taxonomy( 'testtax' );
@@ -66,7 +66,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
-	function test_tag_action_tax() {
+	public function test_tag_action_tax() {
 		// tag with tax added
 		$this->go_to( home_url( "/tag/tag-slug/" ) );
 		$this->assertQueryTrue( 'is_tag', 'is_archive' );
@@ -77,7 +77,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		$this->assertEquals( get_queried_object(), $this->tag );
 	}
 
-	function test_tag_query_cat_action_tax() {
+	public function test_tag_query_cat_action_tax() {
 		// tag + category with tax added
 		$this->go_to( home_url( "/tag/tag-slug/?cat=$this->cat_id" ) );
 		$this->assertQueryTrue( 'is_category', 'is_tag', 'is_archive' );
@@ -89,7 +89,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		$this->assertEquals( get_queried_object(), $this->cat );
 	}
 
-	function test_tag_query_cat_query_tax_action_tax() {
+	public function test_tag_query_cat_query_tax_action_tax() {
 		// tag + category + tax with tax added
 		$this->go_to( home_url( "/tag/tag-slug/?cat=$this->cat_id&testtax=tax-slug2" ) );
 		$this->assertQueryTrue( 'is_category', 'is_tag', 'is_tax', 'is_archive' );
@@ -102,7 +102,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		$this->assertEquals( get_queried_object(), $this->cat );
 	}
 
-	function test_cat_action_tax() {
+	public function test_cat_action_tax() {
 		// category with tax added
 		$this->go_to( home_url( "/category/cat-slug/" ) );
 		$this->assertQueryTrue( 'is_category', 'is_archive' );
@@ -116,7 +116,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26627
 	 */
-	function test_cat_uncat_action_tax() {
+	public function test_cat_uncat_action_tax() {
 		// category with tax added
 		add_action( 'pre_get_posts', array( $this, '_cat_uncat_action_tax' ), 11 );
 
@@ -142,7 +142,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 	/**
 	 * @see https://core.trac.wordpress.org/ticket/26728
 	 */
-	function test_tax_action_tax() {
+	public function test_tax_action_tax() {
 		// tax with tax added
 		$this->go_to( home_url( '/testtax/tax-slug2/' ) );
 		$this->assertQueryTrue( 'is_tax', 'is_archive' );
@@ -152,7 +152,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		$this->assertEquals( get_queried_object(), get_term( $this->tax_id, 'testtax' ) );
 	}
 
-	function test_tax_query_tag_action_tax() {
+	public function test_tax_query_tag_action_tax() {
 		// tax + tag with tax added
 		$this->go_to( home_url( "/testtax/tax-slug2/?tag_id=$this->tag_id" ) );
 		$this->assertQueryTrue( 'is_tag', 'is_tax', 'is_archive' );
@@ -163,7 +163,7 @@ class Tests_Query_IsTerm extends WP_UnitTestCase {
 		$this->assertEquals( get_queried_object(), $this->tag );
 	}
 
-	function test_tax_query_cat_action_tax() {
+	public function test_tax_query_cat_action_tax() {
 		// tax + cat with tax added
 		$this->go_to( home_url( "/testtax/tax-slug2/?cat=$this->cat_id" ) );
 		$this->assertQueryTrue( 'is_category', 'is_tax', 'is_archive' );

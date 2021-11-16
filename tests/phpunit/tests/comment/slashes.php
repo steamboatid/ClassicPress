@@ -6,7 +6,7 @@
  * @see https://core.trac.wordpress.org/ticket/21767
  */
 class Tests_Comment_Slashes extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		// we need an admin user to bypass comment flood protection
@@ -28,7 +28,7 @@ class Tests_Comment_Slashes extends WP_UnitTestCase {
 	 * Tests the extended model function that expects slashed data
 	 *
 	 */
-	function test_wp_new_comment() {
+	public function test_wp_new_comment() {
 		$post_id = self::factory()->post->create();
 
 		// not testing comment_author_email or comment_author_url
@@ -68,7 +68,7 @@ class Tests_Comment_Slashes extends WP_UnitTestCase {
 	 * Tests the controller function that expects slashed data
 	 *
 	 */
-	function test_edit_comment() {
+	public function test_edit_comment() {
 		$post_id = self::factory()->post->create();
 		$comment_id = self::factory()->comment->create(array(
 			'comment_post_ID' => $post_id
@@ -111,7 +111,7 @@ class Tests_Comment_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_insert_comment() {
+	public function test_wp_insert_comment() {
 		$post_id = self::factory()->post->create();
 
 		$comment_id = wp_insert_comment(array(
@@ -139,7 +139,7 @@ class Tests_Comment_Slashes extends WP_UnitTestCase {
 	 * Tests the model function that expects slashed data
 	 *
 	 */
-	function test_wp_update_comment() {
+	public function test_wp_update_comment() {
 		$post_id = self::factory()->post->create();
 		$comment_id = self::factory()->comment->create(array(
 			'comment_post_ID' => $post_id

@@ -53,7 +53,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 * @covers WP_Widget_Media::__construct()
 	 * @covers WP_Widget_Media::_register()
 	 */
-	function test_constructor() {
+	public function test_constructor() {
 		$widget = $this->get_mocked_class_instance();
 		$widget->_register();
 
@@ -113,7 +113,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 * @covers WP_Widget_Media::__construct()
 	 * @covers WP_Widget_Media::_register()
 	 */
-	function test_constructor_in_customize_preview() {
+	public function test_constructor_in_customize_preview() {
 		global $wp_customize;
 		wp_set_current_user( $this->factory()->user->create( array(
 			'role' => 'administrator',
@@ -134,7 +134,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::is_attachment_with_mime_type
 	 */
-	function test_is_attachment_with_mime_type() {
+	public function test_is_attachment_with_mime_type() {
 
 		$test_image = get_temp_dir() . 'canola.jpg';
 		copy( DIR_TESTDATA . '/images/canola.jpg', $test_image );
@@ -161,7 +161,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::sanitize_token_list
 	 */
-	function test_sanitize_token_list_string() {
+	public function test_sanitize_token_list_string() {
 		$widget = $this->get_mocked_class_instance();
 
 		$result = $widget->sanitize_token_list( 'What A false class with-token <a href="#">and link</a>' );
@@ -199,7 +199,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::get_instance_schema
 	 */
-	function test_get_instance_schema() {
+	public function test_get_instance_schema() {
 		$widget = $this->get_mocked_class_instance();
 		$schema = $widget->get_instance_schema();
 
@@ -227,7 +227,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::update()
 	 */
-	function test_update() {
+	public function test_update() {
 		$widget = $this->get_mocked_class_instance();
 		$instance = array();
 
@@ -314,7 +314,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 * @covers WP_Widget_Media::widget()
 	 * @covers WP_Widget_Media::render_media()
 	 */
-	function test_widget() {
+	public function test_widget() {
 		$args = array(
 			'before_title' => '<h2>',
 			'after_title' => "</h2>\n",
@@ -388,7 +388,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::form()
 	 */
-	function test_form() {
+	public function test_form() {
 		$widget = $this->get_mocked_class_instance();
 
 		ob_start();
@@ -405,7 +405,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::display_media_state()
 	 */
-	function test_display_media_state() {
+	public function test_display_media_state() {
 		$widget = $this->get_mocked_class_instance();
 		$attachment_id = self::factory()->attachment->create_object( array(
 			'file' => DIR_TESTDATA . '/images/canola.jpg',
@@ -441,7 +441,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::enqueue_admin_scripts()
 	 */
-	function test_enqueue_admin_scripts() {
+	public function test_enqueue_admin_scripts() {
 		set_current_screen( 'widgets.php' );
 		$widget = $this->get_mocked_class_instance();
 		$widget->enqueue_admin_scripts();
@@ -454,7 +454,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::render_control_template_scripts
 	 */
-	function test_render_control_template_scripts() {
+	public function test_render_control_template_scripts() {
 		$widget = $this->get_mocked_class_instance();
 
 		ob_start();
@@ -469,7 +469,7 @@ class Test_WP_Widget_Media extends WP_UnitTestCase {
 	 *
 	 * @covers WP_Widget_Media::has_content()
 	 */
-	function test_has_content() {
+	public function test_has_content() {
 		$attachment_id = self::factory()->attachment->create_object( array(
 			'file' => DIR_TESTDATA . '/images/canola.jpg',
 			'post_parent' => 0,

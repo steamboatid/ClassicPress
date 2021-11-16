@@ -4,7 +4,7 @@
  * @group mayfail
  */
 class Tests_Login extends WP_UnitTestCase {
-	function set_up() {
+	public function set_up() {
 		// Something about these tests (@runInSeparateProcess maybe?) requires
 		// the object cache to be (re)initialized.
 		if ( wp_using_ext_object_cache() ) {
@@ -14,7 +14,7 @@ class Tests_Login extends WP_UnitTestCase {
 		reset_phpmailer_instance();
 	}
 
-	function tear_down() {
+	public function tear_down() {
 		reset_phpmailer_instance();
 		parent::tear_down();
 	}

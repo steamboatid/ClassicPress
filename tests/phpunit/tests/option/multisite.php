@@ -12,19 +12,19 @@ if ( is_multisite() ) :
 class Tests_Multisite_Option extends WP_UnitTestCase {
 	protected $suppress = false;
 
-		function set_up() {
+		public function set_up() {
 		global $wpdb;
 			parent::set_up();
 		$this->suppress = $wpdb->suppress_errors();
 	}
 
-		function tear_down() {
+		public function tear_down() {
 		global $wpdb;
 		$wpdb->suppress_errors( $this->suppress );
 			parent::tear_down();
 	}
 
-	function test_from_same_site() {
+	public function test_from_same_site() {
 		$key    = __FUNCTION__ . '_1';
 		$key2   = __FUNCTION__ . '_2';
 		$value  = __FUNCTION__ . '_val1';
@@ -61,7 +61,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 		$this->assertFalse( get_option( $key2 ) ); // check get_option()
 	}
 
-	function test_from_same_site_with_null_blog_id() {
+	public function test_from_same_site_with_null_blog_id() {
 		$key    = __FUNCTION__ . '_1';
 		$key2   = __FUNCTION__ . '_2';
 		$value  = __FUNCTION__ . '_val1';
@@ -97,7 +97,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 		$this->assertFalse( get_option( $key2 ) ); // check get_option()
 	}
 
-	function test_with_another_site() {
+	public function test_with_another_site() {
 		$user_id = self::factory()->user->create();
 			$this->assertIsInt( $user_id );
 
@@ -149,7 +149,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 	/**
 	 * @group multisite
 	 */
-	function test_site_notoptions() {
+	public function test_site_notoptions() {
 		$network_id = get_current_network_id();
 		$notoptions_key = "{$network_id}:notoptions";
 
@@ -166,7 +166,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 		$this->assertNotEmpty( $notoptions1 );
 	}
 
-	function test_users_can_register_signup_filter() {
+	public function test_users_can_register_signup_filter() {
 
 		$registration = get_site_option('registration');
 		$this->assertFalse( users_can_register_signup_filter() );
@@ -184,7 +184,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 	/**
 	 * @dataProvider data_illegal_names
 	 */
-	function test_sanitize_network_option_illegal_names( $option_value, $sanitized_option_value ) {
+	public function test_sanitize_network_option_illegal_names( $option_value, $sanitized_option_value ) {
 		update_site_option( 'illegal_names', $option_value );
 			$this->assertSame( $sanitized_option_value, get_site_option( 'illegal_names' ) );
 	}
@@ -203,7 +203,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 	 * @param $option_value
 	 * @param $sanitized_option_value
 	 */
-	function test_sanitize_network_option_limited_email_domains( $option_value, $sanitized_option_value ) {
+	public function test_sanitize_network_option_limited_email_domains( $option_value, $sanitized_option_value ) {
 		update_site_option( 'limited_email_domains', $option_value );
 			$this->assertSame( $sanitized_option_value, get_site_option( 'limited_email_domains' ) );
 	}
@@ -214,7 +214,7 @@ class Tests_Multisite_Option extends WP_UnitTestCase {
 	 * @param $option_value
 	 * @param $sanitized_option_value
 	 */
-	function test_sanitize_network_option_banned_email_domains( $option_value, $sanitized_option_value ) {
+	public function test_sanitize_network_option_banned_email_domains( $option_value, $sanitized_option_value ) {
 		update_site_option( 'banned_email_domains', $option_value );
 			$this->assertSame( $sanitized_option_value, get_site_option( 'banned_email_domains' ) );
 	}

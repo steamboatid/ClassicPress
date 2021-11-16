@@ -8,7 +8,7 @@ require_once dirname( __FILE__ ) . '/base.php';
  */
 class WP_Filesystem_find_folder_UnitTestCases extends WP_Filesystem_UnitTestCase {
 
-	function test_ftp_has_root_access() {
+	public function test_ftp_has_root_access() {
 		global $wp_filesystem;
 		$fs = $wp_filesystem;
 		$fs->init('
@@ -25,7 +25,7 @@ class WP_Filesystem_find_folder_UnitTestCases extends WP_Filesystem_UnitTestCase
 
 	}
 
-	function test_sibling_classicpress_in_subdir() {
+	public function test_sibling_classicpress_in_subdir() {
 		global $wp_filesystem;
 		$fs = $wp_filesystem;
 		$fs->init('
@@ -53,7 +53,7 @@ class WP_Filesystem_find_folder_UnitTestCases extends WP_Filesystem_UnitTestCase
 	 * example.com at /
 	 * cp.example.com at /cp.example.com/classicpress/
 	 */
-	function test_subdir_of_another() {
+	public function test_subdir_of_another() {
 		global $wp_filesystem;
 		$fs = $wp_filesystem;
 		$fs->init('
@@ -78,7 +78,7 @@ class WP_Filesystem_find_folder_UnitTestCases extends WP_Filesystem_UnitTestCase
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/20934
 	 */
-	function test_multiple_tokens_in_path1() {
+	public function test_multiple_tokens_in_path1() {
 		global $wp_filesystem;
 		$fs = $wp_filesystem;
 		$fs->init('

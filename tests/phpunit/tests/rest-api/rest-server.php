@@ -191,7 +191,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 	 * Pass a capability which the user does not have, this should
 	 * result in a 403 error.
 	 */
-	function test_rest_route_capability_authorization_fails() {
+	public function test_rest_route_capability_authorization_fails() {
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'      => 'GET',
 			'callback'     => '__return_null',
@@ -209,7 +209,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 	 * An editor should be able to get access to an route with the
 	 * edit_posts capability.
 	 */
-	function test_rest_route_capability_authorization() {
+	public function test_rest_route_capability_authorization() {
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'      => 'GET',
 			'callback'     => '__return_null',
@@ -232,7 +232,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 	 * An "Allow" HTTP header should be sent with a request
 	 * for all available methods on that route.
 	 */
-	function test_allow_header_sent() {
+	public function test_allow_header_sent() {
 
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'      => 'GET',
@@ -256,7 +256,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 	 * The "Allow" HTTP header should include all available
 	 * methods that can be sent to a route.
 	 */
-	function test_allow_header_sent_with_multiple_methods() {
+	public function test_allow_header_sent_with_multiple_methods() {
 
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'      => 'GET',
@@ -288,7 +288,7 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 	 * The "Allow" HTTP header should NOT include other methods
 	 * which the user does not have access to.
 	 */
-	function test_allow_header_send_only_permitted_methods() {
+	public function test_allow_header_send_only_permitted_methods() {
 
 		register_rest_route( 'test-ns', '/test', array(
 			'methods'      => 'GET',

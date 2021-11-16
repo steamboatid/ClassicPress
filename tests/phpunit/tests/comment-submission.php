@@ -7,7 +7,7 @@ class Tests_Comment_Submission extends WP_UnitTestCase {
 
 	protected $preprocess_comment_data = array();
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 		require_once ABSPATH . WPINC . '/class-phpass.php';
 	}

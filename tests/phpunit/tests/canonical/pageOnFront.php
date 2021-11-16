@@ -8,7 +8,7 @@
  */
 class Tests_Canonical_PageOnFront extends WP_Canonical_UnitTestCase {
 
-	function set_up() {
+	public function set_up() {
 		parent::set_up();
 
 		update_option( 'show_on_front', 'page' );

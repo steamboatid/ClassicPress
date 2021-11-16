@@ -15,8 +15,8 @@ rm -rf $dirroot/build
 #-- fresh composer install & update
 rm -rf vendor
 composer install --no-interaction
-composer update --no-interaction --lock
-composer update --no-interaction
+composer update -W --no-interaction --lock
+composer update -W --no-interaction
 
 #-- install npm-check-updates
 npm install -g npm-check-updates

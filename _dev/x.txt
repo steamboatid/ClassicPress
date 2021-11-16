@@ -1,0 +1,36 @@
+<phpunit
+	bootstrap="tests/phpunit/includes/bootstrap.php"
+		backupGlobals="false"
+		colors="true"
+		beStrictAboutTestsThatDoNotTestAnything="true"
+		>
+    <testsuites>
+        <testsuite name="default">
+					<directory suffix=".php">tests/phpunit/tests</directory>
+        </testsuite>
+    </testsuites>
+		<coverage cacheDirectory="/dev/shm/phpunit-tmp/">
+			<include>
+				<directory suffix=".php">src</directory>
+			</include>
+			<report>
+				<text outputFile="coverage.txt" showUncoveredFiles="true" showOnlySummary="true"/>
+			</report>
+		</coverage>
+    <groups>
+        <exclude>
+            <group>ajax</group>
+            <group>ms-files</group>
+            <group>ms-required</group>
+            <group>external-http</group>
+        </exclude>
+    </groups>
+    <logging>
+			<junit outputFile="tests/phpunit/build/logs/junit.xml" />
+			<testdoxText outputFile="tests/phpunit/build/logs/testdox.txt"/>
+			<text outputFile="tests/phpunit/build/logs/phpunit-results.txt"/>
+    </logging>
+    <php>
+        <const name="WP_RUN_CORE_TESTS" value="1" />
+    </php>
+</phpunit>
